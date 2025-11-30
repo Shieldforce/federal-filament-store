@@ -9,6 +9,7 @@ class StoreList extends Component
 {
     use WithPagination;
 
+    public int $page = 1;   // 👈 CORREÇÃO AQUI
     public string $search = '';
     public string $category = '';
 
