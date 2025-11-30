@@ -1,3 +1,3 @@
-<x-filament::page>
+<div>
     @livewire('federal-filament-store.store-list')
-</x-filament::page>
+</div>
