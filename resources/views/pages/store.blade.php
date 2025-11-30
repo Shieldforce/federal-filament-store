@@ -27,9 +27,9 @@
                 <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm overflow-hidden border border-gray-200 dark:border-gray-700 hover:shadow-md transition">
 
                     <img
-                        src="{{ $product['image'] ?? 'https://via.placeholder.com/400x300' }}"
+                        src="{{ $product['image'] ?: asset('vendor/federal-filament-store/not-products-image.png') }}"
                         class="w-full h-48 object-cover"
-                    >
+                    />
 
                     <div class="p-4">
                         <h3 class="font-semibold text-lg text-gray-800 dark:text-gray-200">

@@ -29,7 +29,7 @@ php artisan migrate
 php artisan vendor:publish --tag="federal-filament-store-views"
 
 # Publicar as assets
-php artisan vendor:publish --tag="federal-filament-store-assets --force"
+php artisan vendor:publish --tag=federal-filament-store-assets --force
 ```
 
 ## Changelog
