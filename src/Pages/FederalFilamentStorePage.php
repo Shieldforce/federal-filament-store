@@ -54,6 +54,14 @@ class FederalFilamentStorePage extends Page implements HasForms
                 ->topbar(false)*/
             ;
         }
+
+        $this->filtrar();
+    }
+
+    public function updated()
+    {
+        $this->resetPage();
+        $this->filtrar();
     }
 
     public function addToCart($id)
