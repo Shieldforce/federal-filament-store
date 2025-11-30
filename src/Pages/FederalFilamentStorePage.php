@@ -7,10 +7,12 @@ use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Auth;
+use Livewire\WithPagination;
 
 class FederalFilamentStorePage extends Page implements HasForms
 {
     use InteractsWithForms;
+    use WithPagination;
 
     protected static string $view = 'federal-filament-store::pages.store';
     protected static ?string $label = 'Loja';
