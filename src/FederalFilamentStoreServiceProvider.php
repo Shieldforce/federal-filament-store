@@ -17,7 +17,7 @@ use Spatie\LaravelPackageTools\PackageServiceProvider;
 
 class FederalFilamentStoreServiceProvider extends PackageServiceProvider
 {
-    public static string $name          = 'federal-filament-store';
+    public static string $name = 'federal-filament-store';
     public static string $viewNamespace = 'federal-filament-store';
 
     public function configurePackage(Package $package): void
@@ -56,7 +56,9 @@ class FederalFilamentStoreServiceProvider extends PackageServiceProvider
         }
     }
 
-    public function packageRegistered(): void {}
+    public function packageRegistered(): void
+    {
+    }
 
     public function packageBooted(): void
     {
@@ -157,6 +159,14 @@ class FederalFilamentStoreServiceProvider extends PackageServiceProvider
             $this->publishes([
                 __DIR__ . '/../resources/views' => resource_path('views/vendor/federal-filament-store'),
             ], 'federal-filament-store-views');
+        }
+
+        $assetsPath = __DIR__ . '/../../resources/assets';
+        if (is_dir($assetsPath)) {
+            $this->loadViewsFrom($assetsPath, 'federal-filament-store');
+            $this->publishes([
+                __DIR__ . '/../resources/assets' => public_path('vendor/federal-filament-store'),
+            ], 'federal-filament-store-assets');
         }
 
         return parent::boot();
