@@ -18,6 +18,8 @@ class FederalFilamentStorePage extends Page implements HasForms
     protected static ?string $label = 'Loja';
     protected static ?string $navigationLabel = 'Loja';
     protected static ?string $title = 'Loja';
+    public array $result = [];
+    protected int $perPage = 20;
 
     public function getLayout(): string
     {
