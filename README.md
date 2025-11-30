@@ -15,7 +15,7 @@ Instalar Via Composer:
 composer require shieldforce/federal-filament-store
 ```
 
-Você precisa publicar as migrações e views:
+Você precisa publicar as migrações, views e assets:
 
 ```bash
 
