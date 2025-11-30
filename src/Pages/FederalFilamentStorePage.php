@@ -8,12 +8,14 @@ use Filament\Forms\Contracts\HasForms;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Auth;
 use Livewire\WithPagination;
+use Shieldforce\FederalFilamentStore\FederalFilamentStorePlugin;
 
 class FederalFilamentStorePage extends Page implements HasForms
 {
     use InteractsWithForms;
     use WithPagination;
 
+    protected FederalFilamentStorePlugin $plugin;
     protected static string $view = 'federal-filament-store::pages.store';
     protected static ?string $label = 'Loja';
     protected static ?string $navigationLabel = 'Loja';
@@ -45,8 +47,10 @@ class FederalFilamentStorePage extends Page implements HasForms
         return config()->get('federal-filament-store.sidebar_group');
     }
 
-    public function mount(): void
+    public function mount(FederalFilamentStorePlugin $plugin): void
     {
+        $this->plugin = $plugin;
+
         if (!Auth::check()) {
             filament()
                 ->getCurrentPanel()
@@ -80,14 +84,11 @@ class FederalFilamentStorePage extends Page implements HasForms
 
     protected function getData(): array
     {
-        $callback = config('federal-filament-store.getProducts');
+        // Pega os produtos do plugin
+        return array_reverse($this->plugin->getProducts());
 
-        if (is_callable($callback)) {
-            return array_reverse($callback());
-        }
-
-        return array_reverse([
-            /*['id' => 1, 'name' => 'Camiseta ShieldForce', 'price' => 79.90, 'categories' => ['Roupas'], 'image' => null],
+        /*return array_reverse([
+            ['id' => 1, 'name' => 'Camiseta ShieldForce', 'price' => 79.90, 'categories' => ['Roupas'], 'image' => null],
             ['id' => 2, 'name' => 'Mouse Gamer RGB', 'price' => 149.90, 'categories' => ['Eletrônicos'], 'image' => null],
             ['id' => 3, 'name' => 'Teclado Mecânico ShieldForce', 'price' => 399.00, 'categories' => ['Eletrônicos'], 'image' => null],
             ['id' => 4, 'name' => 'Boné ShieldForce', 'price' => 59.90, 'categories' => ['Roupas'], 'image' => null],
@@ -101,8 +102,8 @@ class FederalFilamentStorePage extends Page implements HasForms
             ['id' => 12, 'name' => 'Luminária Smart RGB', 'price' => 159.90, 'categories' => ['Decoração'], 'image' => null],
             ['id' => 13, 'name' => 'Quadro Decorativo Cyberpunk', 'price' => 129.90, 'categories' => ['Decoração'], 'image' => null],
             ['id' => 14, 'name' => 'Mini Drone 4K', 'price' => 399.90, 'categories' => ['Eletrônicos'], 'image' => null],
-            ['id' => 15, 'name' => 'Smartwatch ShieldForce Active', 'price' => 599.90, 'categories' => ['Eletrônicos'], 'image' => null],*/
-        ]);
+            ['id' => 15, 'name' => 'Smartwatch ShieldForce Active', 'price' => 599.90, 'categories' => ['Eletrônicos'], 'image' => null],
+        ]);*/
     }
 
     public function getPaginatedProductsProperty()

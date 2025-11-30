@@ -25,6 +25,9 @@ php artisan federal-filament-store:install
 php artisan vendor:publish --tag="federal-filament-store-migrations"
 php artisan migrate
 
+# Publicar a config
+php artisan vendor:publish --tag="federal-filament-store-config"
+
 # Publicar as views
 php artisan vendor:publish --tag="federal-filament-store-views"
 
