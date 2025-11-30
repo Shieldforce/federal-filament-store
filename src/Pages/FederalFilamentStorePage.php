@@ -14,7 +14,7 @@ class FederalFilamentStorePage extends Page implements HasForms
     use InteractsWithForms;
     use WithPagination;
 
-    protected static string $view = 'vendor.federal-filament-log.pages.store';
+    protected static string $view = 'federal-filament-store::pages.store';
     protected static ?string $navigationIcon = 'heroicon-o-list-bullet';
     protected static ?string $navigationGroup = 'Loja';
     protected static ?string $label = 'Loja';
