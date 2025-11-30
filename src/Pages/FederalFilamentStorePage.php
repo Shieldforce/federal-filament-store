@@ -3,34 +3,43 @@
 namespace Shieldforce\FederalFilamentStore\Pages;
 
 use Filament\Pages\Page;
-use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
+use Filament\Forms\Concerns\InteractsWithForms;
+use Livewire\WithPagination;
 use Illuminate\Support\Facades\Auth;
 
 class FederalFilamentStorePage extends Page implements HasForms
 {
     use InteractsWithForms;
+    use WithPagination;
 
     protected static string $view = 'federal-filament-store::pages.store';
-    protected static ?string $navigationIcon = 'heroicon-o-shopping-cart';
-    protected static ?string $navigationGroup = 'Loja';
-    protected static ?string $label = 'Loja';
-    protected static ?string $navigationLabel = 'Loja';
-    protected static ?string $title = 'Loja';
-    protected array $result = [];
+
+    public string $search = '';
+    public string $category = '';
+
+    protected array $products = [
+        [
+            'id' => 1,
+            'name' => 'Camiseta ShieldForce',
+            'price' => 79.90,
+            'category' => 'Roupas',
+            'image' => '/images/camisa1.jpg',
+        ],
+        [
+            'id' => 2,
+            'name' => 'Mouse Gamer',
+            'price' => 149.90,
+            'category' => 'Eletrônicos',
+            'image' => '/images/mouse.jpg',
+        ],
+    ];
 
     public function getLayout(): string
     {
-        if (request()->query('external') === '1') {
-            return 'federal-filament-store::layouts.external';
-        }
-
-        return parent::getLayout();
-    }
-
-    public static function getSlug(): string
-    {
-        return 'external-ffs-store';
+        return request()->query('external') === '1'
+            ? 'federal-filament-store::layouts.external'
+            : parent::getLayout();
     }
 
     public static function shouldRegisterNavigation(): bool
@@ -38,38 +47,62 @@ class FederalFilamentStorePage extends Page implements HasForms
         return false;
     }
 
-    public static function getNavigationGroup(): ?string
-    {
-        return config()->get('federal-filament-store.sidebar_group');
-    }
-
-    public function mount(): void
+    public function mount()
     {
         if (!Auth::check()) {
             filament()
                 ->getCurrentPanel()
-                ->topNavigation()/*
-                ->topbar(false)*/
-            ;
+                ->topNavigation();
         }
-
-        $this->filtrar();
     }
 
     public function updated()
     {
         $this->resetPage();
-        $this->filtrar();
     }
 
-    public function filtrar()
+    public function getCategoriesProperty()
     {
-        $data = $this->getData();
-        $this->result = array_values($data);
+        return collect($this->products)->pluck('category')->unique()->values();
     }
 
-    protected function getData(): array
+    public function getResultProperty()
     {
-        return [];
+        return collect($this->products)
+            ->when($this->search, fn ($q) =>
+            $q->filter(fn ($p) =>
+            str_contains(strtolower($p['name']), strtolower($this->search))
+            )
+            )
+            ->when($this->category, fn ($q) =>
+            $q->where('category', $this->category)
+            )
+            ->values();
+    }
+
+    public function getResultPaginatedProperty()
+    {
+        return $this->paginateCollection($this->result, 12);
+    }
+
+    private function paginateCollection($items, int $perPage)
+    {
+        $page = $this->page ?? 1;
+        $offset = ($page - 1) * $perPage;
+
+        return new \Illuminate\Pagination\LengthAwarePaginator(
+            array_slice($items->toArray(), $offset, $perPage),
+            count($items),
+            $perPage,
+            $page,
+            ['path' => request()->url(), 'query' => request()->query()]
+        );
+    }
+
+    public function addToCart($id)
+    {
+        session()->push('cart.items', $id);
+
+        $this->dispatch('notify', title: 'Adicionado ao carrinho');
     }
 }
