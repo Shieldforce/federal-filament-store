@@ -27,7 +27,7 @@
                 <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm overflow-hidden border border-gray-200 dark:border-gray-700 hover:shadow-md transition">
 
                     <img
-                        src="{{ $product['image'] ?: asset('vendor/federal-filament-store/files/not-products-image.png') }}"
+                        src="{{ $product['image'] ?? asset('vendor/federal-filament-store/files/not-products-image.png') }}"
                         class="w-full h-48 object-cover"
                     />
 
