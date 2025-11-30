@@ -24,14 +24,14 @@ class FederalFilamentStorePage extends Page implements HasForms
             'name' => 'Camiseta ShieldForce',
             'price' => 79.90,
             'category' => 'Roupas',
-            'image' => '/images/camisa1.jpg',
+            'image' => null,
         ],
         [
             'id' => 2,
             'name' => 'Mouse Gamer',
             'price' => 149.90,
             'category' => 'Eletrônicos',
-            'image' => '/images/mouse.jpg',
+            'image' => null,
         ],
     ];
 
