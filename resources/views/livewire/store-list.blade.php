@@ -18,7 +18,7 @@
 
     {{-- Grid --}}
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mt-3">
-        @forelse ($this->result_paginated as $product)
+        @forelse ($this->resultPaginated() as $product)
             <div class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl shadow-sm overflow-hidden hover:shadow-lg transition group">
                 <div class="relative rounded-t-2xl overflow-hidden">
                     <img
@@ -61,6 +61,6 @@
 
     {{-- Paginação --}}
     <div class="mt-8">
-        {{ $this->result_paginated->links() }}
+        {{ $this->resultPaginated()->links() }}
     </div>
 </div>
