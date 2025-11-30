@@ -12,7 +12,13 @@ class StoreList extends Component
     public string $search = '';
     public string $category = '';
 
-    protected $paginationTheme = 'tailwind'; // ou 'bootstrap' se preferir
+    protected $paginationTheme = 'tailwind';
+
+    protected $queryString = [
+        'search' => ['except' => ''],
+        'category' => ['except' => ''],
+        'page' => ['except' => 1],
+    ];
 
     // produtos simulados
     public array $products = [
@@ -49,12 +55,12 @@ class StoreList extends Component
     {
         return collect($this->products)
             ->when($this->search, fn($q) =>
-                $q->filter(fn($p) => str_contains(
-                    strtolower($p['name']),
-                    strtolower($this->search)
-            )))
+            $q->filter(fn($p) =>
+            str_contains(strtolower($p['name']), strtolower($this->search))
+            )
+            )
             ->when($this->category, fn($q) =>
-                $q->where('category', $this->category)
+            $q->where('category', $this->category)
             )
             ->values();
     }
@@ -62,8 +68,11 @@ class StoreList extends Component
     public function getResultPaginatedProperty()
     {
         $perPage = 12;
-        $page = $this->page ?? 1;
+
+        $page = (int) ($this->page ?: 1);
+
         $items = $this->result->toArray();
+
         $slice = array_slice($items, ($page - 1) * $perPage, $perPage);
 
         return new \Illuminate\Pagination\LengthAwarePaginator(
@@ -71,7 +80,10 @@ class StoreList extends Component
             count($items),
             $perPage,
             $page,
-            ['path' => request()->url(), 'query' => request()->query()]
+            [
+                'path' => url()->current(),
+                'query' => request()->query(),
+            ]
         );
     }
 
@@ -80,7 +92,6 @@ class StoreList extends Component
         session()->push('cart.items', $id);
 
         dd($id);
-        //$this->dispatchBrowserEvent('notify', ['title' => 'Adicionado ao carrinho']);
     }
 
     public function render()
