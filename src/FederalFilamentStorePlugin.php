@@ -21,9 +21,7 @@ class FederalFilamentStorePlugin implements Plugin
     {
         $panel
             ->routes(function () {
-                Route::get('/ffs-store', FederalFilamentStorePage::class)
-                    ->name('ffs-store.store.external')
-                    ->defaults('external', 1);
+
             })
             ->navigationItems([
                 NavigationItem::make('loja')
@@ -31,6 +29,12 @@ class FederalFilamentStorePlugin implements Plugin
                     ->label('Produtos')
                     ->url("/admin/ffs-store")
                     ->icon('heroicon-o-shopping-bag')
+                    ->group("Loja"),
+                NavigationItem::make('cart')
+                    ->visible()
+                    ->label('Carrinho')
+                    ->url("/admin/ffs-cart")
+                    ->icon('heroicon-o-shopping-cart')
                     ->group("Loja"),
             ])
             ->pages([
