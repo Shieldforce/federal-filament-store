@@ -154,6 +154,9 @@ class FederalFilamentStoreServiceProvider extends PackageServiceProvider
 
         if (is_dir($viewsPath)) {
             $this->loadViewsFrom($viewsPath, 'federal-filament-store');
+            $this->publishes([
+                __DIR__ . '/../resources/views' => resource_path('views/vendor/federal-filament-store'),
+            ], 'federal-filament-store-views');
         }
 
         return parent::boot();
