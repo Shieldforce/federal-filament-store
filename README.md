@@ -15,14 +15,18 @@ Instalar Via Composer:
 composer require shieldforce/federal-filament-store
 ```
 
-Você precisa publicar as migrações:
+Você precisa publicar as migrações e views:
 
 ```bash
 
 php artisan federal-filament-store:install
 
+# Publicar as tabelas
 php artisan vendor:publish --tag="federal-filament-store-migrations"
 php artisan migrate
+
+# Publicar as views
+php artisan vendor:publish --tag="federal-filament-store-views"
 ```
 
 ## Changelog

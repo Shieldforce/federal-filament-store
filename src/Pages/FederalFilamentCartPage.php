@@ -14,7 +14,7 @@ class FederalFilamentCartPage extends Page implements HasForms
     use InteractsWithForms;
     use WithPagination;
 
-    protected static string $view = 'federal-filament-log::pages.cart';
+    protected static string $view = 'vendor.federal-filament-log.pages.cart';
     protected static ?string $navigationIcon = 'heroicon-o-list-bullet';
     protected static ?string $navigationGroup = 'Loja';
     protected static ?string $label = 'Carrinho';
