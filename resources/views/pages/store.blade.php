@@ -3,6 +3,8 @@
 
         {{-- Barra de filtros --}}
         <div class="flex flex-col md:flex-row justify-between gap-4 mb-6">
+
+            {{-- Busca --}}
             <input
                 wire:model.debounce.500ms="search"
                 type="text"
@@ -10,6 +12,7 @@
                 class="w-full md:w-1/3 filament-input rounded-lg"
             >
 
+            {{-- Categorias --}}
             <select
                 wire:model="category"
                 class="filament-input rounded-lg"
@@ -21,14 +24,16 @@
             </select>
         </div>
 
-        {{-- Grid de produtos --}}
+        {{-- Grid --}}
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mt-3">
+
             @forelse ($this->result as $product)
+
                 <div
-                    class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl shadow-sm overflow-hidden hover:shadow-md transition group">
+                    class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl shadow-sm overflow-hidden hover:shadow-lg transition group">
 
                     {{-- Imagem --}}
-                    <div class="relative rounded-t-xl overflow-hidden">
+                    <div class="relative rounded-t-2xl overflow-hidden">
                         <img
                             src="{{ $product['image'] ?? asset('vendor/federal-filament-store/files/not-products-image.png') }}"
                             class="w-full h-48 object-cover transition duration-300 group-hover:scale-105"
@@ -38,18 +43,16 @@
                     {{-- Conteúdo --}}
                     <div class="p-4 flex flex-col gap-3">
 
-                        {{-- Nome --}}
-                        <h3 class="font-semibold text-lg text-gray-800 dark:text-gray-200 leading-tight line-clamp-2 min-h-[48px]">
+                        <h3 class="font-semibold text-lg text-gray-800 dark:text-gray-200 line-clamp-2 min-h-[48px]">
                             {{ $product['name'] }}
                         </h3>
 
-                        {{-- Descrição curta --}}
                         <p class="text-gray-500 dark:text-gray-400 text-sm line-clamp-2 min-h-[36px]">
                             {{ $product['short'] ?? 'Descrição breve do produto...' }}
                         </p>
 
                         {{-- Preço + Botão --}}
-                        <div class="flex items-center justify-between pt-2 mt-auto">
+                        <div class="flex items-center justify-between mt-auto pt-2">
                             <span class="text-xl font-bold text-primary-600">
                                 R$ {{ number_format($product['price'], 2, ',', '.') }}
                             </span>
@@ -59,18 +62,20 @@
                                 color="primary"
                                 icon="heroicon-o-shopping-cart"
                                 size="sm"
-                                class="shadow-sm"
                             >
                                 Adicionar
                             </x-filament::button>
                         </div>
                     </div>
+
                 </div>
+
             @empty
                 <div class="col-span-full text-center text-gray-400 py-16">
                     Nenhum produto encontrado.
                 </div>
             @endforelse
+
         </div>
 
         {{-- Paginação --}}
