@@ -23,7 +23,7 @@
 
         {{-- Grid de produtos --}}
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            @forelse ($result as $product)
+            @forelse ($this->result as $product)
                 <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm overflow-hidden border border-gray-200 dark:border-gray-700 hover:shadow-md transition">
 
                     <img
