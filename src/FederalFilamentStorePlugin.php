@@ -5,8 +5,6 @@ namespace Shieldforce\FederalFilamentStore;
 use Filament\Contracts\Plugin;
 use Filament\Panel;
 use Illuminate\Support\Facades\Route;
-use Shieldforce\FederalFilamentStore\Pages\FederalFilamentCartPage;
-use Shieldforce\FederalFilamentStore\Pages\FederalFilamentProductPage;
 use Shieldforce\FederalFilamentStore\Pages\FederalFilamentStorePage;
 
 class FederalFilamentStorePlugin implements Plugin
