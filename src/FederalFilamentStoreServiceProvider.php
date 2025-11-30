@@ -54,6 +54,8 @@ class FederalFilamentStoreServiceProvider extends PackageServiceProvider
         if (file_exists($package->basePath('/../resources/views'))) {
             $package->hasViews(static::$viewNamespace);
         }
+
+
     }
 
     public function packageRegistered(): void
@@ -163,7 +165,6 @@ class FederalFilamentStoreServiceProvider extends PackageServiceProvider
 
         $assetsPath = __DIR__ . '/../../resources/assets';
         if (is_dir($assetsPath)) {
-            $this->loadViewsFrom($assetsPath, 'federal-filament-store');
             $this->publishes([
                 __DIR__ . '/../resources/assets' => public_path('vendor/federal-filament-store'),
             ], 'federal-filament-store-assets');
