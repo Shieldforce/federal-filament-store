@@ -63,7 +63,10 @@ class FederalFilamentStorePage extends Page implements HasForms
 
     public function getCategoriesProperty()
     {
-        return collect($this->products)->pluck('category')->unique()->values();
+        return collect($this->products)
+            ->pluck('category')
+            ->unique()
+            ->values();
     }
 
     public function getResultProperty()

@@ -15,7 +15,7 @@
                 class="filament-input rounded-lg"
             >
                 <option value="">Todas categorias</option>
-                @foreach ($categories as $cat)
+                @foreach ($this->categories as $cat)
                     <option value="{{ $cat }}">{{ $cat }}</option>
                 @endforeach
             </select>
