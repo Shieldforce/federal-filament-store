@@ -12,7 +12,7 @@ class FederalFilamentStorePage extends Page implements HasForms
     use InteractsWithForms;
 
     protected static string $view = 'federal-filament-store::pages.store';
-    protected static ?string $navigationIcon = 'heroicon-o-list-bullet';
+    protected static ?string $navigationIcon = 'heroicon-o-shopping-cart';
     protected static ?string $navigationGroup = 'Loja';
     protected static ?string $label = 'Loja';
     protected static ?string $navigationLabel = 'Loja';
