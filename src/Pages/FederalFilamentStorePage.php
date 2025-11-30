@@ -82,12 +82,11 @@ class FederalFilamentStorePage extends Page implements HasForms
         $this->result = $list;
     }
 
-    protected function getData(): array
+    /*protected function getData(): array
     {
-        // Pega os produtos do plugin
         return array_reverse($this->plugin->getProducts());
 
-        /*return array_reverse([
+        return array_reverse([
             ['id' => 1, 'name' => 'Camiseta ShieldForce', 'price' => 79.90, 'categories' => ['Roupas'], 'image' => null],
             ['id' => 2, 'name' => 'Mouse Gamer RGB', 'price' => 149.90, 'categories' => ['Eletrônicos'], 'image' => null],
             ['id' => 3, 'name' => 'Teclado Mecânico ShieldForce', 'price' => 399.00, 'categories' => ['Eletrônicos'], 'image' => null],
@@ -103,7 +102,23 @@ class FederalFilamentStorePage extends Page implements HasForms
             ['id' => 13, 'name' => 'Quadro Decorativo Cyberpunk', 'price' => 129.90, 'categories' => ['Decoração'], 'image' => null],
             ['id' => 14, 'name' => 'Mini Drone 4K', 'price' => 399.90, 'categories' => ['Eletrônicos'], 'image' => null],
             ['id' => 15, 'name' => 'Smartwatch ShieldForce Active', 'price' => 599.90, 'categories' => ['Eletrônicos'], 'image' => null],
-        ]);*/
+        ]);
+    }*/
+
+    protected function getData(): array
+    {
+        // Recupera a instância do plugin registrada no painel
+        $plugin = \Filament\Facades\Filament::getPlugin(
+            \Shieldforce\FederalFilamentStore\FederalFilamentStorePlugin::class
+        );
+
+        if (!$plugin) {
+            return []; // fallback caso o plugin não esteja registrado
+        }
+
+        $products = $plugin->getProducts();
+
+        return array_reverse($products);
     }
 
     public function getPaginatedProductsProperty()
