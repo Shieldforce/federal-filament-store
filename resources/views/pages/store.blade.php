@@ -68,20 +68,14 @@
     </div>
 
     {{-- PAGINAÇÃO INFERIOR --}}
-    <div class="flex justify-between items-center mt-6 mb-2">
-        <div class="text-sm text-gray-600 dark:text-gray-300">
+    <div class="flex items-center mt-6 mb-2">
+        {{--<div class="text-sm text-gray-600 dark:text-gray-300">
             {{ $this->paginatedProducts->firstItem() }} até {{ $this->paginatedProducts->lastItem() }}
             de {{ $this->paginatedProducts->total() }} resultados
-        </div>
+        </div>--}}
 
-        <div class="w-full flex justify-end">
+        <div>
             {{ $this->paginatedProducts->links() }}
         </div>
     </div>
-
-    <style>
-        .filament-pagination .flex-1 > div:first-child {
-            display: none;
-        }
-    </style>
 </x-filament::page>

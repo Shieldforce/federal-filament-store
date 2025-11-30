@@ -1,6 +1,1 @@
 @import '../../vendor/filament/filament/resources/css/theme.css';
-
-/* Remove o texto “Mostrando X até Y” do paginator do Filament */
-.filament-pagination .flex-1 > div:first-child {
-    display: none;
-}
