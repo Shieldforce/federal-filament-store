@@ -14,14 +14,14 @@ class FederalFilamentStorePage extends Page implements HasForms
     use InteractsWithForms;
     use WithPagination;
 
-    protected static string  $view            = 'federal-filament-log::pages.store';
-    protected static ?string $navigationIcon  = 'heroicon-o-list-bullet';
+    protected static string $view = 'federal-filament-log::pages.store';
+    protected static ?string $navigationIcon = 'heroicon-o-list-bullet';
     protected static ?string $navigationGroup = 'Loja';
-    protected static ?string $label           = 'Loja';
+    protected static ?string $label = 'Loja';
     protected static ?string $navigationLabel = 'Loja';
-    protected static ?string $slug            = 'ffs-store';
-    protected static ?string $title           = 'Loja';
-    protected array          $result          = [];
+    protected static ?string $slug = 'ffs-store';
+    protected static ?string $title = 'Loja';
+    protected array $result = [];
 
     public function mount(): void
     {
@@ -36,7 +36,7 @@ class FederalFilamentStorePage extends Page implements HasForms
 
     public function filtrar()
     {
-        $data         = $this->getData();
+        $data = $this->getData();
         $this->result = array_values($data);
     }
 
