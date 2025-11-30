@@ -106,7 +106,7 @@ class FederalFilamentStorePage extends Page implements HasForms
         $perPage = 12;
         $items = collect($this->result)->slice(($page - 1) * $perPage, $perPage)->values();
 
-        $paginator = new Paginator(
+        return new Paginator(
             $items,
             $perPage,
             $page,
