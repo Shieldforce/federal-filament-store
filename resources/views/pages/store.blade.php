@@ -73,7 +73,8 @@
             {{ $this->paginatedProducts->firstItem() }} até {{ $this->paginatedProducts->lastItem() }}
             de {{ $this->paginatedProducts->total() }} resultados
         </div>
-        <div class="ml-5">
+
+        <div class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-end">
             {{ $this->paginatedProducts->links() }}
         </div>
     </div>
