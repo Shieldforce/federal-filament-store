@@ -63,12 +63,23 @@ class StoreList extends Component
             ->values();
     }
 
+    public function mount()
+    {
+        $this->usePageResolver(fn() => $this->page);
+    }
+
     public function resultPaginated()
     {
         $perPage = 12;
         $items = $this->result;
 
-        return collect($items)->paginate($perPage, page: $this->page);
+        return new \Illuminate\Pagination\LengthAwarePaginator(
+            $items->forPage($this->page, $perPage),
+            count($items),
+            $perPage,
+            $this->page,
+            ['path' => url()->current()]
+        );
     }
 
     public function addToCart($id)
