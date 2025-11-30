@@ -60,6 +60,10 @@ class FederalFilamentStoreServiceProvider extends PackageServiceProvider
 
     public function packageRegistered(): void
     {
+        \Livewire\Livewire::component(
+            'federal-filament-store.store-list',
+            \Shieldforce\FederalFilamentStore\Livewire\StoreList::class
+        );
     }
 
     public function packageBooted(): void

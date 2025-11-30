@@ -57,8 +57,6 @@ class FederalFilamentStorePage extends Page implements HasForms
 
     public function updated($field)
     {
-        dd("teste");
-
         if (in_array($field, ['search', 'category'])) {
             $this->resetPage();
         }
