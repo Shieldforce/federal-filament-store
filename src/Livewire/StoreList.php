@@ -63,11 +63,6 @@ class StoreList extends Component
             ->values();
     }
 
-    public function mount()
-    {
-        $this->usePageResolver(fn() => $this->page);
-    }
-
     public function resultPaginated()
     {
         $perPage = 12;
