@@ -30,7 +30,7 @@ class FederalFilamentStorePage extends Page implements HasForms
 
     public static function getSlug(): string
     {
-        return 'ffs-store';
+        return 'internal-ffs-store';
     }
 
     public static function shouldRegisterNavigation(): bool
