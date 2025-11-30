@@ -66,25 +66,17 @@ class StoreList extends Component
             ->values();
     }
 
-    public function getResultPaginatedProperty()
+    public function resultPaginated()
     {
         $perPage = 12;
-
-        $page = (int) ($this->page ?: 1);
-
-        $items = $this->result->toArray();
-
-        $slice = array_slice($items, ($page - 1) * $perPage, $perPage);
+        $items = $this->result;
 
         return new \Illuminate\Pagination\LengthAwarePaginator(
-            $slice,
-            count($items),
+            $items->forPage($this->page, $perPage),
+            $items->count(),
             $perPage,
-            $page,
-            [
-                'path' => url()->current(),
-                'query' => request()->query(),
-            ]
+            $this->page,
+            ['path' => request()->url(), 'query' => request()->query()]
         );
     }
 
