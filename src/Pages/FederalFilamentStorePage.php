@@ -102,16 +102,15 @@ class FederalFilamentStorePage extends Page implements HasForms
 
     public function getPaginatedProductsProperty()
     {
-        $page = $this->getPage();
-        $offset = ($page - 1) * $this->perPage;
-        $items = array_slice($this->result, $offset, $this->perPage);
+        $page = Paginator::resolveCurrentPage('page');
+        $perPage = 12;
+        $items = collect($this->result)->slice(($page - 1) * $perPage, $perPage)->values();
 
-        return new Paginator(
+        $paginator = new Paginator(
             $items,
-            count($this->result),
-            $this->perPage,
+            $perPage,
             $page,
-            ['path' => request()->url()]
+            ['path' => request()->url(), 'query' => request()->query()]
         );
     }
 }
