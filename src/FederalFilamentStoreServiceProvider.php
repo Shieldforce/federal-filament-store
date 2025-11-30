@@ -163,10 +163,11 @@ class FederalFilamentStoreServiceProvider extends PackageServiceProvider
             ], 'federal-filament-store-views');
         }
 
-        $assetsPath = __DIR__ . '/../../resources/assets';
+        // Assets
+        $assetsPath = __DIR__ . '/../resources/assets';
         if (is_dir($assetsPath)) {
             $this->publishes([
-                __DIR__ . '/../resources/assets' => public_path('vendor/federal-filament-store'),
+                $assetsPath => public_path('vendor/federal-filament-store'),
             ], 'federal-filament-store-assets');
         }
 
