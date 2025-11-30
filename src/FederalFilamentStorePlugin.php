@@ -29,9 +29,7 @@ class FederalFilamentStorePlugin implements Plugin
                 NavigationItem::make('loja')
                     ->visible()
                     ->label('Produtos')
-                    ->url(fn(): string => FederalFilamentStorePage::getUrl(
-                        parameters: []
-                    ))
+                    ->url("/admin/ffs-store")
                     ->icon('heroicon-o-shopping-bag')
                     ->group("Loja"),
             ])
