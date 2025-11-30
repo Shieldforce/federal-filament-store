@@ -6,14 +6,13 @@ use Filament\Contracts\Plugin;
 use Filament\Navigation\NavigationItem;
 use Filament\Panel;
 use Illuminate\Support\Facades\Route;
+use Shieldforce\FederalFilamentStore\Middleware\SetStoreMiddleware;
 use Shieldforce\FederalFilamentStore\Pages\FederalFilamentCartPage;
 use Shieldforce\FederalFilamentStore\Pages\FederalFilamentStorePage;
 
 class FederalFilamentStorePlugin implements Plugin
 {
     public string $labelGroupSidebar = "Loja";
-    /*protected $productsCallback;
-    protected $categoriesCallback;*/
 
     public function getId(): string
     {
@@ -83,33 +82,4 @@ class FederalFilamentStorePlugin implements Plugin
     {
         return $this->labelGroupSidebar;
     }
-
-    /*public function setProducts(callable $callback): self
-    {
-        $this->productsCallback = $callback;
-        return $this;
-    }*/
-
-    /*public function setCategories(callable $callback): self
-    {
-        $this->categoriesCallback = $callback;
-        return $this;
-    }*/
-
-    /*public function getProducts(): array
-    {
-        if (is_callable($this->productsCallback)) {
-            return ($this->productsCallback)();
-        }
-        return [];
-    }*/
-
-    /*public function getCategories(): array
-    {
-        if (is_callable($this->categoriesCallback)) {
-            return ($this->categoriesCallback)();
-        }
-        return [];
-    }*/
-
 }
