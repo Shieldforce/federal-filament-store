@@ -27,7 +27,7 @@ class FederalFilamentStorePlugin implements Plugin
                     ->defaults('external', 1);
 
                 Route::get('/ffs-cart', FederalFilamentCartPage::class)
-                    ->name('ffs-cart.store.external')
+                    ->name('ffs-cart.cart.external')
                     ->defaults('external', 1);
             })
             ->navigationItems([

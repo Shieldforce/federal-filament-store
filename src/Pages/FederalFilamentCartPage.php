@@ -6,14 +6,10 @@ use Filament\Pages\Page;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
 use Illuminate\Support\Facades\Auth;
-use Livewire\WithPagination;
-use Shieldforce\FederalFilamentStore\Services\Permissions\CanPageTrait;
 
 class FederalFilamentCartPage extends Page implements HasForms
 {
-    use CanPageTrait;
     use InteractsWithForms;
-    use WithPagination;
 
     protected static string $view = 'federal-filament-store::pages.cart';
     protected static ?string $navigationIcon = 'heroicon-o-list-bullet';
