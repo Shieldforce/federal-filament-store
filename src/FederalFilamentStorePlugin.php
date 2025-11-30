@@ -3,6 +3,7 @@
 namespace Shieldforce\FederalFilamentStore;
 
 use Filament\Contracts\Plugin;
+use Filament\Navigation\NavigationItem;
 use Filament\Panel;
 use Illuminate\Support\Facades\Route;
 use Shieldforce\FederalFilamentStore\Pages\FederalFilamentStorePage;
@@ -23,10 +24,17 @@ class FederalFilamentStorePlugin implements Plugin
                 Route::get('/ffs-store', FederalFilamentStorePage::class)
                     ->name('ffs-store.store.external')
                     ->defaults('external', 1);
-                Route::get('/external-ffs-store', FederalFilamentStorePage::class)
-                    ->name('external-ffs-store.store.external')
-                    ->defaults('external', 1);
             })
+            ->navigationItems([
+                NavigationItem::make('loja')
+                    ->visible()
+                    ->label('Produtos')
+                    ->url(fn(): string => FederalFilamentStorePage::getUrl(
+                        parameters: []
+                    ))
+                    ->icon('heroicon-o-shopping-bag')
+                    ->group("Loja"),
+            ])
             ->pages([
                 \Shieldforce\FederalFilamentStore\Pages\FederalFilamentStorePage::class,
                 \Shieldforce\FederalFilamentStore\Pages\FederalFilamentProductPage::class,

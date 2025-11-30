@@ -30,16 +30,12 @@ class FederalFilamentStorePage extends Page implements HasForms
 
     public static function getSlug(): string
     {
-        if(auth()->check()) {
-            return 'ffs-store';
-        }
-
         return 'external-ffs-store';
     }
 
     public static function shouldRegisterNavigation(): bool
     {
-        return true;
+        return false;
     }
 
     public static function getNavigationGroup(): ?string
