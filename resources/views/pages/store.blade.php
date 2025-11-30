@@ -73,7 +73,7 @@
             {{ $this->paginatedProducts->firstItem() }} até {{ $this->paginatedProducts->lastItem() }}
             de {{ $this->paginatedProducts->total() }} resultados
         </div>
-        <div>
+        <div class="ml-5">
             {{ $this->paginatedProducts->links() }}
         </div>
     </div>
