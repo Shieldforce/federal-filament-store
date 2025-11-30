@@ -25,13 +25,13 @@
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mt-3">
             @forelse ($this->result as $product)
                 <div
-                    class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl shadow-sm overflow-hidden hover:shadow-lg transition group">
+                    class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl shadow-sm overflow-hidden hover:shadow-md transition group">
 
                     {{-- Imagem --}}
-                    <div class="relative">
+                    <div class="relative rounded-t-xl overflow-hidden">
                         <img
                             src="{{ $product['image'] ?? asset('vendor/federal-filament-store/files/not-products-image.png') }}"
-                            class="w-full h-48 object-cover transition group-hover:scale-105 duration-300"
+                            class="w-full h-48 object-cover transition duration-300 group-hover:scale-105"
                         />
                     </div>
 
@@ -50,7 +50,6 @@
 
                         {{-- Preço + Botão --}}
                         <div class="flex items-center justify-between pt-2 mt-auto">
-
                             <span class="text-xl font-bold text-primary-600">
                                 R$ {{ number_format($product['price'], 2, ',', '.') }}
                             </span>
@@ -67,7 +66,6 @@
                         </div>
                     </div>
                 </div>
-
             @empty
                 <div class="col-span-full text-center text-gray-400 py-16">
                     Nenhum produto encontrado.
