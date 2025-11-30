@@ -22,8 +22,8 @@ class FederalFilamentStorePlugin implements Plugin
     {
         $panel
             ->routes(function () {
-                Route::get('/ffs-loja', FederalFilamentStorePage::class)
-                    ->name('ffs-loja.store.external')
+                Route::get('/ffs-store', FederalFilamentStorePage::class)
+                    ->name('ffs-store.store.external')
                     ->defaults('external', 1);
 
                 Route::get('/ffs-cart', FederalFilamentCartPage::class)

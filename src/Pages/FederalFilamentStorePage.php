@@ -31,12 +31,16 @@ class FederalFilamentStorePage extends Page implements HasForms
 
     public function getLayout(): string
     {
-        return 'filament::components.layouts.base';
+        if (request()->query('external') === '1') {
+            return 'filament::components.layouts.base';
+        }
+
+        return parent::getLayout();
     }
 
     public static function getSlug(): string
     {
-        return 'ffs-loja';
+        return 'ffs-store';
     }
 
     public function mount(): void
