@@ -22,7 +22,18 @@ class FederalFilamentProductPage extends Page implements HasForms
     protected static ?string $slug = 'ffs-product';
     protected static ?string $title = 'Produto';
     protected array $result = [];
-    protected static bool $shouldRegisterNavigation = false;
+
+    // 🔓 Permite acessar SEM autenticação
+    public static function canAccess(): bool
+    {
+        return true;
+    }
+
+    // 📌 Exibir no menu APENAS se estiver logado
+    public static function shouldRegisterNavigation(): bool
+    {
+        return false;
+    }
 
     public function mount(): void
     {

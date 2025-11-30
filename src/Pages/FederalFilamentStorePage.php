@@ -23,6 +23,18 @@ class FederalFilamentStorePage extends Page implements HasForms
     protected static ?string $title = 'Loja';
     protected array $result = [];
 
+    // 🔓 Permite acessar SEM autenticação
+    public static function canAccess(): bool
+    {
+        return true;
+    }
+
+    // 📌 Exibir no menu APENAS se estiver logado
+    public static function shouldRegisterNavigation(): bool
+    {
+        return auth()->check();
+    }
+
     public function mount(): void
     {
         $this->filtrar();
