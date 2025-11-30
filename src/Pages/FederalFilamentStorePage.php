@@ -16,7 +16,6 @@ class FederalFilamentStorePage extends Page implements HasForms
     protected static ?string $navigationGroup = 'Loja';
     protected static ?string $label = 'Loja';
     protected static ?string $navigationLabel = 'Loja';
-    protected static ?string $slug = 'ffs-store';
     protected static ?string $title = 'Loja';
     protected array $result = [];
 
@@ -31,7 +30,7 @@ class FederalFilamentStorePage extends Page implements HasForms
 
     public static function getSlug(): string
     {
-        return 'ffs-store';
+        return 'internal-ffs-store';
     }
 
     public static function shouldRegisterNavigation(): bool

@@ -27,9 +27,9 @@ class FederalFilamentStorePlugin implements Plugin
                     ->defaults('external', 1);
             })
             ->pages([
-                //\Shieldforce\FederalFilamentStore\Pages\FederalFilamentStorePage::class,
-                //\Shieldforce\FederalFilamentStore\Pages\FederalFilamentProductPage::class,
-               //\Shieldforce\FederalFilamentStore\Pages\FederalFilamentCartPage::class,
+                \Shieldforce\FederalFilamentStore\Pages\FederalFilamentStorePage::class,
+                \Shieldforce\FederalFilamentStore\Pages\FederalFilamentProductPage::class,
+                \Shieldforce\FederalFilamentStore\Pages\FederalFilamentCartPage::class,
             ]);
     }
 
