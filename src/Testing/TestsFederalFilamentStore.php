@@ -1,13 +1,13 @@
 <?php
 
-namespace Shieldforce\FederalFilamentLog\Testing;
+namespace Shieldforce\FederalFilamentStore\Testing;
 
 use Livewire\Features\SupportTesting\Testable;
 
 /**
  * @mixin Testable
  */
-class TestsFederalFilamentLog
+class TestsFederalFilamentStore
 {
     //
 }

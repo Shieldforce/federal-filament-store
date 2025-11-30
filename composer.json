@@ -1,15 +1,15 @@
 {
-    "name": "shieldforce/federal-filament-log",
-    "description": "This is my package federal-filament-log",
+    "name": "shieldforce/federal-filament-store",
+    "description": "This is my package federal-filament-store",
     "keywords": [
         "Shieldforce",
         "laravel",
-        "federal-filament-log"
+        "federal-filament-store"
     ],
-    "homepage": "https://github.com/shieldforce/federal-filament-log",
+    "homepage": "https://github.com/shieldforce/federal-filament-store",
     "support": {
-        "issues": "https://github.com/shieldforce/federal-filament-log/issues",
-        "source": "https://github.com/shieldforce/federal-filament-log"
+        "issues": "https://github.com/shieldforce/federal-filament-store/issues",
+        "source": "https://github.com/shieldforce/federal-filament-store"
     },
     "license": "MIT",
     "authors": [
@@ -20,9 +20,8 @@
         }
     ],
     "require": {
-        "php": "^8.1",
-        "filament/filament": "^3.0",
-        "mercadopago/dx-php": "3.5.1",
+        "php": "^8.4",
+        "filament/filament": "^3.3",
         "spatie/laravel-package-tools": "^1.15.0"
     },
     "require-dev": {
@@ -40,13 +39,13 @@
     },
     "autoload": {
         "psr-4": {
-            "Shieldforce\\FederalFilamentLog\\": "src/",
-            "Shieldforce\\FederalFilamentLog\\Database\\Factories\\": "database/factories/"
+            "Shieldforce\\FederalFilamentStore\\": "src/",
+            "Shieldforce\\FederalFilamentStore\\Database\\Factories\\": "database/factories/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Shieldforce\\FederalFilamentLog\\Tests\\": "tests/"
+            "Shieldforce\\FederalFilamentStore\\Tests\\": "tests/"
         }
     },
     "scripts": {
@@ -66,10 +65,10 @@
     "extra": {
         "laravel": {
             "providers": [
-                "Shieldforce\\FederalFilamentLog\\Providers\\FederalFilamentLogServiceProvider"
+                "Shieldforce\\FederalFilamentStore\\Providers\\FederalFilamentStoreServiceProvider"
             ],
             "aliases": {
-                "FederalFilamentLog": "Shieldforce\\FederalFilamentLog\\Facades\\FederalFilamentLog"
+                "FederalFilamentStore": "Shieldforce\\FederalFilamentStore\\Facades\\FederalFilamentStore"
             }
         }
     },

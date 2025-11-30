@@ -1,17 +1,17 @@
 <?php
 
-namespace Shieldforce\FederalFilamentLog;
+namespace Shieldforce\FederalFilamentStore;
 
 use Filament\Contracts\Plugin;
 use Filament\Panel;
 
-class FederalFilamentLogPlugin implements Plugin
+class FederalFilamentStorePlugin implements Plugin
 {
-    public string $labelGroupSidebar = "Logs";
+    public string $labelGroupSidebar = "Loja";
 
     public function getId(): string
     {
-        return 'federal-filament-log';
+        return 'federal-filament-store';
     }
 
     public function register(Panel $panel): void
@@ -19,13 +19,15 @@ class FederalFilamentLogPlugin implements Plugin
         $panel
             ->routes(function () {})
             ->pages([
-                \Shieldforce\FederalFilamentLog\Pages\FederalFilamentLogsPage::class,
+                \Shieldforce\FederalFilamentStore\Pages\FederalFilamentStorePage::class,
+                \Shieldforce\FederalFilamentStore\Pages\FederalFilamentProductPage::class,
+                \Shieldforce\FederalFilamentStore\Pages\FederalFilamentCartPage::class,
             ]);
     }
 
     public function boot(Panel $panel): void
     {
-        config()->set('federal-filament-log.sidebar_group', $this->labelGroupSidebar);
+        config()->set('federal-filament-store.sidebar_group', $this->labelGroupSidebar);
     }
 
     public static function make(): static

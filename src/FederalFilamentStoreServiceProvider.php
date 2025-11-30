@@ -1,6 +1,6 @@
 <?php
 
-namespace Shieldforce\FederalFilamentLog;
+namespace Shieldforce\FederalFilamentStore;
 
 use Filament\Support\Assets\Asset;
 use Filament\Support\Assets\Css;
@@ -9,16 +9,16 @@ use Filament\Support\Facades\FilamentAsset;
 use Filament\Support\Facades\FilamentIcon;
 use Illuminate\Filesystem\Filesystem;
 use Livewire\Features\SupportTesting\Testable;
-use Shieldforce\FederalFilamentLog\Commands\FederalFilamentLogCommand;
-use Shieldforce\FederalFilamentLog\Testing\TestsFederalFilamentLog;
+use Shieldforce\FederalFilamentStore\Commands\FederalFilamentStoreCommand;
+use Shieldforce\FederalFilamentStore\Testing\TestsFederalFilamentStore;
 use Spatie\LaravelPackageTools\Commands\InstallCommand;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
 
-class FederalFilamentLogServiceProvider extends PackageServiceProvider
+class FederalFilamentStoreServiceProvider extends PackageServiceProvider
 {
-    public static string $name          = 'federal-filament-log';
-    public static string $viewNamespace = 'federal-filament-log';
+    public static string $name          = 'federal-filament-store';
+    public static string $viewNamespace = 'federal-filament-store';
 
     public function configurePackage(Package $package): void
     {
@@ -34,7 +34,7 @@ class FederalFilamentLogServiceProvider extends PackageServiceProvider
                     ->publishConfigFile()
                     ->publishMigrations()
                     ->askToRunMigrations()
-                    ->askToStarRepoOnGitHub('shieldforce/federal-filament-log');
+                    ->askToStarRepoOnGitHub('shieldforce/federal-filament-store');
             });
 
         $configFileName = $package->shortName();
@@ -78,18 +78,18 @@ class FederalFilamentLogServiceProvider extends PackageServiceProvider
         if (app()->runningInConsole()) {
             foreach (app(Filesystem::class)->files(__DIR__ . '/../stubs/') as $file) {
                 $this->publishes([
-                    $file->getRealPath() => base_path("stubs/federal-filament-log/{$file->getFilename()}"),
-                ], 'federal-filament-log-stubs');
+                    $file->getRealPath() => base_path("stubs/federal-filament-store/{$file->getFilename()}"),
+                ], 'federal-filament-store-stubs');
             }
         }
 
         // Testing
-        Testable::mixin(new TestsFederalFilamentLog());
+        Testable::mixin(new TestsFederalFilamentStore());
     }
 
     protected function getAssetPackageName(): ?string
     {
-        return 'shieldforce/federal-filament-log';
+        return 'shieldforce/federal-filament-store';
     }
 
     /**
@@ -98,9 +98,9 @@ class FederalFilamentLogServiceProvider extends PackageServiceProvider
     protected function getAssets(): array
     {
         return [
-            // AlpineComponent::make('federal-filament-log', __DIR__ . '/../resources/dist/components/federal-filament-log.js'),
-            Css::make('federal-filament-log-styles', __DIR__ . '/../resources/dist/federal-filament-log.css'),
-            Js::make('federal-filament-log-scripts', __DIR__ . '/../resources/dist/federal-filament-log.js'),
+            // AlpineComponent::make('federal-filament-store', __DIR__ . '/../resources/dist/components/federal-filament-store.js'),
+            Css::make('federal-filament-store-styles', __DIR__ . '/../resources/dist/federal-filament-store.css'),
+            Js::make('federal-filament-store-scripts', __DIR__ . '/../resources/dist/federal-filament-store.js'),
         ];
     }
 
@@ -110,7 +110,7 @@ class FederalFilamentLogServiceProvider extends PackageServiceProvider
     protected function getCommands(): array
     {
         return [
-            FederalFilamentLogCommand::class,
+            FederalFilamentStoreCommand::class,
         ];
     }
 
@@ -153,7 +153,7 @@ class FederalFilamentLogServiceProvider extends PackageServiceProvider
         $viewsPath = __DIR__ . '/../../resources/views';
 
         if (is_dir($viewsPath)) {
-            $this->loadViewsFrom($viewsPath, 'federal-filament-log');
+            $this->loadViewsFrom($viewsPath, 'federal-filament-store');
         }
 
         return parent::boot();

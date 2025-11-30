@@ -1,12 +1,12 @@
 <?php
 
-namespace Shieldforce\FederalFilamentLog\Commands;
+namespace Shieldforce\FederalFilamentStore\Commands;
 
 use Illuminate\Console\Command;
 
-class FederalFilamentLogCommand extends Command
+class FederalFilamentStoreCommand extends Command
 {
-    public $signature = 'federal-filament-log';
+    public $signature = 'federal-filament-store';
 
     public $description = 'My command';
 

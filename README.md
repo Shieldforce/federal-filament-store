@@ -1,4 +1,4 @@
-# Plugin para filament log
+# Plugin para filament store
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/shieldforce/checkout-payment.svg?style=flat-square)](https://packagist.org/packages/shieldforce/checkout-payment)
 [![GitHub Tests Action Status](https://img.shields.io/github/actions/workflow/status/shieldforce/checkout-payment/run-tests.yml?branch=main&label=tests&style=flat-square)](https://github.com/shieldforce/checkout-payment/actions?query=workflow%3Arun-tests+branch%3Amain)
@@ -12,16 +12,16 @@ Este plugin implementa checkout de pagamento interno e externo para o filament!
 Instalar Via Composer:
 
 ```bash
-composer require shieldforce/federal-filament-log
+composer require shieldforce/federal-filament-store
 ```
 
 Você precisa publicar as migrações:
 
 ```bash
 
-php artisan federal-filament-log:install
+php artisan federal-filament-store:install
 
-php artisan vendor:publish --tag="federal-filament-log-migrations"
+php artisan vendor:publish --tag="federal-filament-store-migrations"
 php artisan migrate
 ```
 

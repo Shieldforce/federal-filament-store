@@ -1,6 +1,6 @@
 <?php
 
-namespace Shieldforce\FederalFilamentLog\Services\Permissions;
+namespace Shieldforce\FederalFilamentStore\Services\Permissions;
 
 use Illuminate\Support\Facades\Gate;
 
