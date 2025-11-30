@@ -107,9 +107,7 @@ class FederalFilamentStorePage extends Page implements HasForms
 
     protected function getData(): array
     {
-        $callback = config('federal-filament-store.products_callback');
-
-        return is_callable($callback) ? array_reverse($callback()) : [];
+        return config('federal-filament-store.products_callback');
     }
 
     public function getPaginatedProductsProperty()
