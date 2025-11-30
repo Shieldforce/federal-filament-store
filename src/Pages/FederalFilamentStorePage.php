@@ -45,7 +45,6 @@ class FederalFilamentStorePage extends Page implements HasForms
 
     public function mount(): void
     {
-        dd("teste");
         if (!Auth::check()) {
             filament()
                 ->getCurrentPanel()
