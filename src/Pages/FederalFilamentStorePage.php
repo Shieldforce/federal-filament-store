@@ -26,7 +26,7 @@ class FederalFilamentStorePage extends Page implements HasForms
 
     public static function canAccess(): bool
     {
-        return false;
+        return true;
     }
 
     public function getLayout(): string
