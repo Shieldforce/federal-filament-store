@@ -6,12 +6,10 @@ use Filament\Pages\Page;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
 use Illuminate\Support\Facades\Auth;
-use Livewire\WithPagination;
 
 class FederalFilamentStorePage extends Page implements HasForms
 {
     use InteractsWithForms;
-    use WithPagination;
 
     protected static string $view = 'federal-filament-store::pages.store';
     protected static ?string $navigationIcon = 'heroicon-o-list-bullet';
@@ -48,6 +46,7 @@ class FederalFilamentStorePage extends Page implements HasForms
 
     public function mount(): void
     {
+        dd("teste");
         if (!Auth::check()) {
             filament()
                 ->getCurrentPanel()
