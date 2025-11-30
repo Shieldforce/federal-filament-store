@@ -6,6 +6,7 @@ use Filament\Pages\Page;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Auth;
 use Livewire\WithPagination;
 
@@ -105,7 +106,7 @@ class FederalFilamentStorePage extends Page implements HasForms
         $offset = ($page - 1) * $this->perPage;
         $items = array_slice($this->result, $offset, $this->perPage);
 
-        return new LengthAwarePaginator(
+        return new Paginator(
             $items,
             count($this->result),
             $this->perPage,
