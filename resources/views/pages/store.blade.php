@@ -15,7 +15,10 @@
 
     {{-- PAGINAÇÃO SUPERIOR --}}
     <div class="flex justify-between items-center mt-6 mb-3">
-
+        <div class="text-sm text-gray-600 dark:text-gray-300">
+            {{ $this->paginatedProducts->firstItem() }} até {{ $this->paginatedProducts->lastItem() }}
+            de {{ $this->paginatedProducts->total() }} resultados
+        </div>
         <div>
             {{ $this->paginatedProducts->links() }}
         </div>
@@ -66,8 +69,10 @@
 
     {{-- PAGINAÇÃO INFERIOR --}}
     <div class="flex justify-between items-center mt-6 mb-2">
-
-
+        <div class="text-sm text-gray-600 dark:text-gray-300">
+            {{ $this->paginatedProducts->firstItem() }} até {{ $this->paginatedProducts->lastItem() }}
+            de {{ $this->paginatedProducts->total() }} resultados
+        </div>
         <div>
             {{ $this->paginatedProducts->links() }}
         </div>
