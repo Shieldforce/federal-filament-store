@@ -24,16 +24,19 @@ class FederalFilamentStorePage extends Page implements HasForms
     protected array $result = [];
     public static bool $shouldRegisterNavigation = false;
 
-    // 🔓 Permite acessar SEM autenticação
     public static function canAccess(): bool
     {
-        return true;
+        return false;
     }
 
-    // 📌 Exibir no menu APENAS se estiver logado
-    public static function shouldRegisterNavigation(): bool
+    public function getLayout(): string
     {
-        return auth()->check();
+        return 'filament::components.layouts.base';
+    }
+
+    public static function getSlug(): string
+    {
+        return 'ffs-loja';
     }
 
     public function mount(): void

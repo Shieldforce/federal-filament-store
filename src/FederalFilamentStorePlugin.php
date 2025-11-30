@@ -4,6 +4,10 @@ namespace Shieldforce\FederalFilamentStore;
 
 use Filament\Contracts\Plugin;
 use Filament\Panel;
+use Illuminate\Support\Facades\Route;
+use Shieldforce\FederalFilamentStore\Pages\FederalFilamentCartPage;
+use Shieldforce\FederalFilamentStore\Pages\FederalFilamentProductPage;
+use Shieldforce\FederalFilamentStore\Pages\FederalFilamentStorePage;
 
 class FederalFilamentStorePlugin implements Plugin
 {
@@ -17,7 +21,19 @@ class FederalFilamentStorePlugin implements Plugin
     public function register(Panel $panel): void
     {
         $panel
-            ->routes(function () {})
+            ->routes(function () {
+                Route::get('/ffs-loja', FederalFilamentStorePage::class)
+                    ->name('ffs-loja.store.external')
+                    ->defaults('external', 1);
+
+                Route::get('/ffs-cart', FederalFilamentCartPage::class)
+                    ->name('ffs-loja.cart.external')
+                    ->defaults('external', 1);
+
+                Route::get('/ffs-product', FederalFilamentProductPage::class)
+                    ->name('ffs-loja.product.external')
+                    ->defaults('external', 1);
+            })
             ->pages([
                 \Shieldforce\FederalFilamentStore\Pages\FederalFilamentStorePage::class,
                 \Shieldforce\FederalFilamentStore\Pages\FederalFilamentProductPage::class,
