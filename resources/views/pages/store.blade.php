@@ -78,4 +78,10 @@
             {{ $this->paginatedProducts->links() }}
         </div>
     </div>
+
+    <style>
+        .filament-pagination .flex-1 > div:first-child {
+            display: none;
+        }
+    </style>
 </x-filament::page>
