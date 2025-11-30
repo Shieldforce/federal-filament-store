@@ -55,15 +55,25 @@ class StoreList extends Component
     public function getResultProperty()
     {
         return collect($this->products)
-            ->when($this->search, fn($q) =>
-            $q->filter(fn($p) =>
-            str_contains(strtolower($p['name']), strtolower($this->search))
+            ->when($this->search, fn($q) => $q->filter(fn($p) => str_contains(strtolower($p['name']), strtolower($this->search))
             )
             )
-            ->when($this->category, fn($q) =>
-            $q->where('category', $this->category)
+            ->when($this->category, fn($q) => $q->where('category', $this->category)
             )
             ->values();
+    }
+
+    /*public function resultPaginated()
+    {
+        $perPage = 12;
+        $items = $this->result;
+
+        return collect($items)->paginate($perPage, page: $this->page);
+    }*/
+
+    public function mount()
+    {
+        $this->usePageResolver(fn() => $this->page);
     }
 
     public function resultPaginated()
@@ -73,10 +83,10 @@ class StoreList extends Component
 
         return new \Illuminate\Pagination\LengthAwarePaginator(
             $items->forPage($this->page, $perPage),
-            $items->count(),
+            count($items),
             $perPage,
             $this->page,
-            ['path' => request()->url(), 'query' => request()->query()]
+            ['path' => url()->current()]
         );
     }
 
