@@ -107,18 +107,9 @@ class FederalFilamentStorePage extends Page implements HasForms
 
     protected function getData(): array
     {
-        // Recupera a instância do plugin registrada no painel
-        $plugin = \Filament\Facades\Filament::getPlugin(
-            \Shieldforce\FederalFilamentStore\FederalFilamentStorePlugin::class
-        );
+        $callback = config('federal-filament-store.products_callback');
 
-        if (!$plugin) {
-            return []; // fallback caso o plugin não esteja registrado
-        }
-
-        $products = $plugin->getProducts();
-
-        return array_reverse($products);
+        return is_callable($callback) ? array_reverse($callback()) : [];
     }
 
     public function getPaginatedProductsProperty()
