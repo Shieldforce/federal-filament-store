@@ -5,6 +5,7 @@ namespace Shieldforce\FederalFilamentStore\Pages;
 use Filament\Pages\Page;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
+use Illuminate\Support\Facades\Auth;
 use Livewire\WithPagination;
 use Shieldforce\FederalFilamentStore\Services\Permissions\CanPageTrait;
 
@@ -19,25 +20,43 @@ class FederalFilamentCartPage extends Page implements HasForms
     protected static ?string $navigationGroup = 'Loja';
     protected static ?string $label = 'Carrinho';
     protected static ?string $navigationLabel = 'Carrinho';
-    protected static ?string $slug = 'ffs-cart';
     protected static ?string $title = 'Carrinho';
     protected array $result = [];
-    public static bool $shouldRegisterNavigation = false;
 
-    // 🔓 Permite acessar SEM autenticação
-    public static function canAccess(): bool
+    public function getLayout(): string
     {
-        return true;
+        if (request()->query('external') === '1') {
+            return 'federal-filament-store::layouts.external';
+        }
+
+        return parent::getLayout();
     }
 
-    // 📌 Exibir no menu APENAS se estiver logado
+    public static function getSlug(): string
+    {
+        return 'external-ffs-cart';
+    }
+
     public static function shouldRegisterNavigation(): bool
     {
-        return auth()->check();
+        return false;
+    }
+
+    public static function getNavigationGroup(): ?string
+    {
+        return config()->get('federal-filament-store.sidebar_group');
     }
 
     public function mount(): void
     {
+        if (!Auth::check()) {
+            filament()
+                ->getCurrentPanel()
+                ->topNavigation()/*
+                ->topbar(false)*/
+            ;
+        }
+
         $this->filtrar();
     }
 

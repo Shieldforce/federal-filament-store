@@ -6,6 +6,7 @@ use Filament\Contracts\Plugin;
 use Filament\Navigation\NavigationItem;
 use Filament\Panel;
 use Illuminate\Support\Facades\Route;
+use Shieldforce\FederalFilamentStore\Pages\FederalFilamentCartPage;
 use Shieldforce\FederalFilamentStore\Pages\FederalFilamentStorePage;
 
 class FederalFilamentStorePlugin implements Plugin
@@ -21,7 +22,13 @@ class FederalFilamentStorePlugin implements Plugin
     {
         $panel
             ->routes(function () {
+                Route::get('/ffs-store', FederalFilamentStorePage::class)
+                    ->name('ffs-store.store.external')
+                    ->defaults('external', 1);
 
+                Route::get('/ffs-cart', FederalFilamentCartPage::class)
+                    ->name('ffs-cart.store.external')
+                    ->defaults('external', 1);
             })
             ->navigationItems([
                 NavigationItem::make('loja')
