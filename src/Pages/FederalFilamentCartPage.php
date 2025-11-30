@@ -22,6 +22,7 @@ class FederalFilamentCartPage extends Page implements HasForms
     protected static ?string $slug = 'ffs-cart';
     protected static ?string $title = 'Carrinho';
     protected array $result = [];
+    public static bool $shouldRegisterNavigation = false;
 
     // 🔓 Permite acessar SEM autenticação
     public static function canAccess(): bool

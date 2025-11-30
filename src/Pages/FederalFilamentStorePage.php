@@ -10,7 +10,7 @@ use Shieldforce\FederalFilamentStore\Services\Permissions\CanPageTrait;
 
 class FederalFilamentStorePage extends Page implements HasForms
 {
-    use CanPageTrait;
+    //use CanPageTrait;
     use InteractsWithForms;
     use WithPagination;
 
@@ -22,6 +22,7 @@ class FederalFilamentStorePage extends Page implements HasForms
     protected static ?string $slug = 'ffs-store';
     protected static ?string $title = 'Loja';
     protected array $result = [];
+    public static bool $shouldRegisterNavigation = false;
 
     // 🔓 Permite acessar SEM autenticação
     public static function canAccess(): bool
