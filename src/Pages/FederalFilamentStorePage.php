@@ -5,8 +5,9 @@ namespace Shieldforce\FederalFilamentStore\Pages;
 use Filament\Pages\Page;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
+use Illuminate\Pagination\Cursor;
+use Illuminate\Pagination\CursorPaginator;
 use Illuminate\Pagination\LengthAwarePaginator;
-use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Auth;
 use Livewire\WithPagination;
 
@@ -102,15 +103,14 @@ class FederalFilamentStorePage extends Page implements HasForms
 
     public function getPaginatedProductsProperty()
     {
-        $page = Paginator::resolveCurrentPage('page');
-        $perPage = 12;
-        $items = collect($this->result)->slice(($page - 1) * $perPage, $perPage)->values();
+        $items = collect($this->result)->take(12);
+        $cursor = Cursor::fromEncoded(request()->input('cursor'));
 
-        return new Paginator(
+        return new CursorPaginator(
             $items,
-            $perPage,
-            $page,
-            ['path' => request()->url(), 'query' => request()->query()]
+            12,
+            $cursor,
+            ['path' => request()->url()]
         );
     }
 }
