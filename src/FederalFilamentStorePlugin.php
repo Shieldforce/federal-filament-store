@@ -23,6 +23,9 @@ class FederalFilamentStorePlugin implements Plugin
                 Route::get('/ffs-store', FederalFilamentStorePage::class)
                     ->name('ffs-store.store.external')
                     ->defaults('external', 1);
+                Route::get('/external-ffs-store', FederalFilamentStorePage::class)
+                    ->name('external-ffs-store.store.external')
+                    ->defaults('external', 1);
             })
             ->pages([
                 \Shieldforce\FederalFilamentStore\Pages\FederalFilamentStorePage::class,
