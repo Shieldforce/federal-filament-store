@@ -22,7 +22,6 @@ class FederalFilamentStorePage extends Page implements HasForms
     protected static ?string $slug = 'ffs-store';
     protected static ?string $title = 'Loja';
     protected array $result = [];
-    public static bool $shouldRegisterNavigation = false;
 
     public static function canAccess(): bool
     {
@@ -32,7 +31,7 @@ class FederalFilamentStorePage extends Page implements HasForms
     public function getLayout(): string
     {
         if (request()->query('external') === '1') {
-            return 'filament::components.layouts.base';
+            return 'federal-filament-store::layouts.external';
         }
 
         return parent::getLayout();
@@ -41,6 +40,11 @@ class FederalFilamentStorePage extends Page implements HasForms
     public static function getSlug(): string
     {
         return 'ffs-store';
+    }
+
+    public static function shouldRegisterNavigation(): bool
+    {
+        return false;
     }
 
     public function mount(): void
