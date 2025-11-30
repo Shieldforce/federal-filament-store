@@ -12,8 +12,8 @@ use Shieldforce\FederalFilamentStore\Pages\FederalFilamentStorePage;
 class FederalFilamentStorePlugin implements Plugin
 {
     public string $labelGroupSidebar = "Loja";
-    protected $productsCallback;
-    protected $categoriesCallback;
+    /*protected $productsCallback;
+    protected $categoriesCallback;*/
 
     public function getId(): string
     {
@@ -84,32 +84,32 @@ class FederalFilamentStorePlugin implements Plugin
         return $this->labelGroupSidebar;
     }
 
-    public function setProducts(callable $callback): self
+    /*public function setProducts(callable $callback): self
     {
         $this->productsCallback = $callback;
         return $this;
-    }
+    }*/
 
-    public function setCategories(callable $callback): self
+    /*public function setCategories(callable $callback): self
     {
         $this->categoriesCallback = $callback;
         return $this;
-    }
+    }*/
 
-    public function getProducts(): array
+    /*public function getProducts(): array
     {
         if (is_callable($this->productsCallback)) {
             return ($this->productsCallback)();
         }
         return [];
-    }
+    }*/
 
-    public function getCategories(): array
+    /*public function getCategories(): array
     {
         if (is_callable($this->categoriesCallback)) {
             return ($this->categoriesCallback)();
         }
         return [];
-    }
+    }*/
 
 }
