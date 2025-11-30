@@ -55,9 +55,10 @@ class FederalFilamentStorePage extends Page implements HasForms
         }
     }
 
-    /** 🔥 CORREÇÃO: agora busca e categorias funcionam */
     public function updated($field)
     {
+        dd("teste");
+
         if (in_array($field, ['search', 'category'])) {
             $this->resetPage();
         }
@@ -71,12 +72,11 @@ class FederalFilamentStorePage extends Page implements HasForms
     public function getResultProperty()
     {
         return collect($this->products)
-            ->when($this->search, fn($q) => $q->filter(fn($p) => str_contains(strtolower($p['name']), strtolower($this->search))
-            )
-            )
-            ->when($this->category, fn($q) => $q->where('category', $this->category)
-            )
-            ->values();
+            ->when(
+                $this->search,
+                fn($q) => $q->filter(fn($p) => str_contains(strtolower($p['name']), strtolower($this->search)))
+            )->when($this->category, fn($q) => $q->where('category', $this->category)
+            )->values();
     }
 
     public function getResultPaginatedProperty()
