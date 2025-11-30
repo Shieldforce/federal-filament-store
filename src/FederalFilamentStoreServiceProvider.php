@@ -54,20 +54,20 @@ class FederalFilamentStoreServiceProvider extends PackageServiceProvider
         if (file_exists($package->basePath('/../resources/views'))) {
             $package->hasViews(static::$viewNamespace);
         }
-
-
     }
 
     public function packageRegistered(): void
+    {
+        //
+    }
+
+    public function packageBooted(): void
     {
         \Livewire\Livewire::component(
             'federal-filament-store.store-list',
             \Shieldforce\FederalFilamentStore\Livewire\StoreList::class
         );
-    }
 
-    public function packageBooted(): void
-    {
         // Asset Registration
         FilamentAsset::register(
             $this->getAssets(),
