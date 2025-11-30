@@ -74,7 +74,7 @@
             de {{ $this->paginatedProducts->total() }} resultados
         </div>
 
-        <div class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-end">
+        <div class="w-full flex justify-end">
             {{ $this->paginatedProducts->links() }}
         </div>
     </div>
