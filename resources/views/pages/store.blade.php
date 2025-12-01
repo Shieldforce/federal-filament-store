@@ -47,9 +47,8 @@
                         <div class="relative overflow-hidden">
                             <img
                                 src="{{ isset($product['image'])
-                                        ? "storage/{$product['image']}"
-                                        : asset('vendor/federal-filament-store/files/not-products-image.png')
-                                     }}"
+                                        ? "/storage/{$product['image']}"
+                                        : asset('vendor/federal-filament-store/files/not-products-image.png') }}"
                                 class="w-full h-48 object-cover transition-transform duration-300 group-hover:scale-105"
                             />
                         </div>
