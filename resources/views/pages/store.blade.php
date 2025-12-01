@@ -79,6 +79,7 @@
                         <!-- Imagem/Ícone ilustrativo -->
                         <div class="flex-shrink-0 mr-6">
                             <img
+                                width="150"
                                 src="{{ asset('vendor/federal-filament-store/files/not-products-image.png') }}"
                                 alt="Nenhum produto encontrado"
                                 class="w-24 h-24 object-contain"
