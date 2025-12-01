@@ -29,6 +29,7 @@
         {{-- SIDEBAR --}}
         <div
             class="md:w-[480px] lg:w-[520px] xl:w-[560px] md:flex-none pl-6 filtros-store-ec"
+            style="border-radius: 0 !important;"
         >
             <x-filament::section class="!max-w-[480px] w-full !rounded-none">
                 {{--<h3 class="text-lg font-semibold mb-2">Filtros</h3>--}}
