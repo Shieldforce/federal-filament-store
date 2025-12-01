@@ -2,6 +2,10 @@
 
 namespace Shieldforce\FederalFilamentStore\Pages;
 
+use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\Grid;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TextInput;
 use Filament\Pages\Page;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
@@ -82,29 +86,6 @@ class FederalFilamentStorePage extends Page implements HasForms
         $this->result = $list;
     }
 
-    /*protected function getData(): array
-    {
-        return array_reverse($this->plugin->getProducts());
-
-        return array_reverse([
-            ['id' => 1, 'name' => 'Camiseta ShieldForce', 'price' => 79.90, 'categories' => ['Roupas'], 'image' => null],
-            ['id' => 2, 'name' => 'Mouse Gamer RGB', 'price' => 149.90, 'categories' => ['Eletrônicos'], 'image' => null],
-            ['id' => 3, 'name' => 'Teclado Mecânico ShieldForce', 'price' => 399.00, 'categories' => ['Eletrônicos'], 'image' => null],
-            ['id' => 4, 'name' => 'Boné ShieldForce', 'price' => 59.90, 'categories' => ['Roupas'], 'image' => null],
-            ['id' => 5, 'name' => 'Pulseira Smart FitBand', 'price' => 199.90, 'categories' => ['Acessórios'], 'image' => null],
-            ['id' => 6, 'name' => 'Caneca Gamer Neon', 'price' => 49.90, 'categories' => ['Acessórios'], 'image' => null],
-            ['id' => 7, 'name' => 'Capa de Celular Anti-Impacto', 'price' => 89.90, 'categories' => ['Acessórios'], 'image' => null],
-            ['id' => 8, 'name' => 'Cadeira Gamer Thunder Pro', 'price' => 1299.00, 'categories' => ['Móveis'], 'image' => null],
-            ['id' => 9, 'name' => 'Mesa de Escritório Compacta', 'price' => 599.99, 'categories' => ['Móveis'], 'image' => null],
-            ['id' => 10, 'name' => 'Fone Bluetooth Bass+', 'price' => 249.90, 'categories' => ['Eletrônicos'], 'image' => null],
-            ['id' => 11, 'name' => 'Camiseta Dev Dark Mode', 'price' => 89.90, 'categories' => ['Roupas'], 'image' => null],
-            ['id' => 12, 'name' => 'Luminária Smart RGB', 'price' => 159.90, 'categories' => ['Decoração'], 'image' => null],
-            ['id' => 13, 'name' => 'Quadro Decorativo Cyberpunk', 'price' => 129.90, 'categories' => ['Decoração'], 'image' => null],
-            ['id' => 14, 'name' => 'Mini Drone 4K', 'price' => 399.90, 'categories' => ['Eletrônicos'], 'image' => null],
-            ['id' => 15, 'name' => 'Smartwatch ShieldForce Active', 'price' => 599.90, 'categories' => ['Eletrônicos'], 'image' => null],
-        ]);
-    }*/
-
     protected function getData(): array
     {
         return config('federal-filament-store.products_callback');
@@ -126,4 +107,28 @@ class FederalFilamentStorePage extends Page implements HasForms
 
         return $lengthAwarePaginator;
     }
+
+    protected function getFormSchema(): array
+    {
+        return [
+            Grid::make(3)->schema([
+                TextInput::make('search')->label('Palavra-chave'),
+                Select::make('categories')
+                    ->label('Categorias')
+                    ->options([
+                        ''          => 'Todos',
+                        'emergency' => 'EMERGENCY',
+                        'alert'     => 'ALERT',
+                        'critical'  => 'CRITICAL',
+                        'error'     => 'ERROR',
+                        'warning'   => 'WARNING',
+                        'notice'    => 'NOTICE',
+                        'info'      => 'INFO',
+                        'debug'     => 'DEBUG',
+                    ]),
+                DatePicker::make('data')->label('Data')->format('Y-m-d'),
+            ]),
+        ];
+    }
+
 }
