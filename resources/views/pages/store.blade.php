@@ -61,15 +61,12 @@
                 </div>
             </div>--}}
 
-            <div class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700
-            rounded-2xl shadow-sm hover:shadow-lg transition group overflow-hidden">
+            <div class="rounded-2xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 shadow-sm hover:shadow-lg transition overflow-hidden">
 
-                <div class="relative">
-                    <img
-                        src="{{ $product['image'] ?? asset('vendor/federal-filament-store/files/not-products-image.png') }}"
-                        class="w-full h-48 object-cover transition group-hover:scale-105 duration-300"
-                    />
-                </div>
+                <img
+                    src="{{ $product['image'] ?? asset('vendor/federal-filament-store/files/not-products-image.png') }}"
+                    class="w-full h-48 object-cover transition duration-300 group-hover:scale-105"
+                />
 
                 <div class="p-4 flex flex-col gap-3">
                     <h3 class="font-semibold text-lg text-gray-800 dark:text-gray-200 line-clamp-2">
@@ -87,14 +84,15 @@
 
                         <x-filament::button
                             wire:click="addToCart({{ $product['id'] }})"
-                            color="primary"
-                            icon="heroicon-o-shopping-cart"
                             size="sm"
+                            icon="heroicon-o-shopping-cart"
+                            color="primary"
                         >
                             Adicionar
                         </x-filament::button>
                     </div>
                 </div>
+
             </div>
 
         @empty
