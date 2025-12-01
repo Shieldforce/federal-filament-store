@@ -74,9 +74,9 @@ class FederalFilamentStorePage extends Page implements HasForms
 
     public function addToCart($id)
     {
-        session()->push('cart.items', $id);
+        //session()->push('cart.items', $id);
 
-        dd($id);
+        dd($this->categories);
     }
 
     public function filtrar()
