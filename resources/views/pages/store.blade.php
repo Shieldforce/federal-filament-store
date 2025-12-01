@@ -47,6 +47,7 @@
                         <div class="relative overflow-hidden">
                             <img
                                 height="150"
+                                style="height: 150px !important;"
                                 src="{{ isset($product['image'])
                                         ? asset("storage/{$product['image']}")
                                         : asset('vendor/federal-filament-store/files/not-products-image.png') }}"
