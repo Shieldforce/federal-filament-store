@@ -39,7 +39,7 @@
 
             {{-- GRID DE PRODUTOS --}}
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-                @foreach ($this->paginatedProducts as $product)
+                @forelse($this->paginatedProducts as $product)
 
                     <div class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700
                                 rounded-2xl shadow-sm overflow-hidden hover:shadow-lg transition group">
@@ -73,7 +73,11 @@
 
                     </div>
 
-                @endforeach
+                @empty
+                    <div style="height: 200px !important;" class="col-span-full text-center text-gray-400 py-16">
+                        Nenhum produto encontrado.
+                    </div>
+                @endforelse
             </div>
 
             {{-- PAGINAÇÃO INFERIOR --}}
