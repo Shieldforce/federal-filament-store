@@ -74,27 +74,28 @@
                     </div>
 
                 @empty
-                    <div class="col-span-full flex flex-col items-center justify-center p-8 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl shadow-md">
+                    <div class="col-span-full flex items-center p-6 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl shadow-md">
 
                         <!-- Imagem/Ícone ilustrativo -->
-                        <img
-                            src="{{ asset('vendor/federal-filament-store/files/not-products-image.png') }}"
-                            alt="Nenhum produto encontrado"
-                            class="w-24 h-24 mb-4 object-contain"
-                        />
+                        <div class="flex-shrink-0 mr-6">
+                            <img
+                                src="{{ asset('vendor/federal-filament-store/files/not-products-image.png') }}"
+                                alt="Nenhum produto encontrado"
+                                class="w-24 h-24 object-contain"
+                            />
+                        </div>
 
-                        <!-- Texto principal -->
-                        <h3 class="text-gray-600 dark:text-gray-300 text-lg font-semibold mb-2">
-                            Nenhum produto encontrado
-                        </h3>
-
-                        <!-- Texto secundário -->
-                        <p class="text-gray-400 dark:text-gray-500 text-sm">
-                            Tente ajustar os filtros ou buscar por outro termo.
-                        </p>
+                        <!-- Texto -->
+                        <div class="flex flex-col justify-center">
+                            <h3 class="text-gray-600 dark:text-gray-300 text-lg font-semibold mb-1">
+                                Nenhum produto encontrado
+                            </h3>
+                            <p class="text-gray-400 dark:text-gray-500 text-sm">
+                                Tente ajustar os filtros ou buscar por outro termo.
+                            </p>
+                        </div>
 
                     </div>
-
                 @endforelse
             </div>
 
