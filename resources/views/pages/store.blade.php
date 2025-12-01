@@ -3,7 +3,13 @@
     <div class="w-full flex flex-col md:flex-row gap-6">
 
         {{-- SIDEBAR --}}
-        <div class="md:w-[480px] lg:w-[520px] xl:w-[560px] md:flex-none pl-6" style="margin-top: 20px !important;">
+        <div
+            class="md:w-[480px] lg:w-[520px] xl:w-[560px] md:flex-none pl-6"
+            style="
+                margin-top: 50px !important;
+                width: 15% !important;
+            "
+        >
 
             <x-filament::section class="!max-w-[480px] w-full">
                 <h3 class="text-lg font-semibold mb-2">Filtros</h3>
