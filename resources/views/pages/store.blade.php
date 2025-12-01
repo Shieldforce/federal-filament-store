@@ -74,7 +74,14 @@
                     </div>
 
                 @empty
-                    <div class="col-span-full flex items-center p-6 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl shadow-md">
+                    <div
+                        class="
+                            col-span-full
+                            flex items-center p-6 bg-white dark:bg-gray-800 border
+                            border-gray-200 dark:border-gray-700 rounded-2xl shadow-md
+                        "
+                        style="margin-top: 53px !important;"
+                    >
 
                         <!-- Imagem/Ícone ilustrativo -->
                         <div class="flex-shrink-0 mr-6">
@@ -83,6 +90,7 @@
                                 src="{{ asset('vendor/federal-filament-store/files/not-products-image.png') }}"
                                 alt="Nenhum produto encontrado"
                                 class="w-24 h-24 object-contain"
+                                style="margin-right: 30px;"
                             />
                         </div>
 
