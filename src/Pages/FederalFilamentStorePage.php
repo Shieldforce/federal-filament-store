@@ -110,17 +110,19 @@ class FederalFilamentStorePage extends Page implements HasForms
 
     protected function getFormSchema(): array
     {
+        $categories = ["items"];
+
+        foreach ($this->categories as $category) {
+            $categories[$category['id']] = $category['name'];
+        }
+
         return [
             Grid::make(1)->schema([
                 TextInput::make('search')
                     ->label('Palavra-chave'),
                 Select::make('categories')
                     ->label('Categorias')
-                    ->options(array_map(function ($category) {
-                        return [
-                            $category['id'] => $category['name'],
-                        ];
-                    }, $this->categories)),
+                    ->options($categories),
                 DatePicker::make('data')->label('Data')->format('Y-m-d'),
             ]),
         ];
