@@ -76,7 +76,7 @@ class FederalFilamentStorePage extends Page implements HasForms
     {
         //session()->push('cart.items', $id);
 
-        dd($this->categories);
+        dd("teste");
     }
 
     public function filtrar()
@@ -116,17 +116,11 @@ class FederalFilamentStorePage extends Page implements HasForms
                     ->label('Palavra-chave'),
                 Select::make('categories')
                     ->label('Categorias')
-                    ->options([
-                        '' => 'Todos',
-                        'emergency' => 'EMERGENCY',
-                        'alert' => 'ALERT',
-                        'critical' => 'CRITICAL',
-                        'error' => 'ERROR',
-                        'warning' => 'WARNING',
-                        'notice' => 'NOTICE',
-                        'info' => 'INFO',
-                        'debug' => 'DEBUG',
-                    ]),
+                    ->options(array_map(function ($category) {
+                        return [
+                            $category->id => $category->name,
+                        ];
+                    }, $this->categories)),
                 DatePicker::make('data')->label('Data')->format('Y-m-d'),
             ]),
         ];
