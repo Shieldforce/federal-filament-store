@@ -1,4 +1,5 @@
-/* Distância entre o texto e os botões da paginação */
-.filament-tables-pagination > div:last-child {
-    margin-left: 20px; /* ajuste como quiser */
+nav[aria-label="Pagination Navigation"]
+> .sm\:flex-1.sm\:flex.sm\:items-center.sm\:justify-between
+> div:last-child {
+    margin-left: 2rem;
 }
