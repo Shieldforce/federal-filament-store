@@ -28,15 +28,15 @@
         <div>
 
             {{-- PAGINAÇÃO SUPERIOR --}}
-            <div class="flex justify-between items-center mb-4">
+            {{--<div class="flex justify-between items-center mb-4">
                 <div class="text-sm text-gray-600 dark:text-gray-300"></div>
                 <div>
                     {{ $this->paginatedProducts->links() }}
                 </div>
-            </div>
+            </div>--}}
 
             {{-- GRID --}}
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-6">
                 @forelse ($this->paginatedProducts as $product)
 
                     <div class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700
@@ -82,12 +82,12 @@
             </div>
 
             {{-- PAGINAÇÃO INFERIOR --}}
-            <div class="flex justify-between items-center mt-6">
+            {{--<div class="flex justify-between items-center mt-6">
                 <div></div>
                 <div>
                     {{ $this->paginatedProducts->links() }}
                 </div>
-            </div>
+            </div>--}}
 
         </div>
 
