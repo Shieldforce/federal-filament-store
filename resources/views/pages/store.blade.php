@@ -1,6 +1,7 @@
 <x-filament::page class="!max-w-full px-0">
 
-    <div class="w-full grid grid-cols-1 md:grid-cols-[280px_1fr] gap-6">
+    <!-- items-start FIXA AS COLUNAS NO TOPO -->
+    <div class="w-full grid grid-cols-1 md:grid-cols-[280px_1fr] gap-6 items-start">
 
         {{-- SIDEBAR DE FILTROS — ESQUERDA --}}
         <div class="space-y-6 pl-4 filtros">
