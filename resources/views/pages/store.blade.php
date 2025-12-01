@@ -32,7 +32,7 @@
         </div>
 
         {{-- PRODUTOS --}}
-        <div class="flex-1 pr-6">
+        <div class="flex-2 pr-6">
 
             {{-- PAGINAÇÃO SUPERIOR --}}
             <div class="flex justify-between items-center mb-4">
