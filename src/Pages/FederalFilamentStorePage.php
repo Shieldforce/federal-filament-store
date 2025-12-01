@@ -17,9 +17,9 @@ class FederalFilamentStorePage extends Page implements HasForms
 
     protected FederalFilamentStorePlugin $plugin;
     protected static string $view = 'federal-filament-store::pages.store';
-    protected static ?string $label = 'Loja';
-    protected static ?string $navigationLabel = 'Loja';
-    protected static ?string $title = 'Loja';
+    protected static ?string $label = 'Loja de Produtos';
+    protected static ?string $navigationLabel = 'Loja de Produtos';
+    protected static ?string $title = 'Loja de Produtos';
     public array $result = [];
     protected int $perPage = 8;
 
