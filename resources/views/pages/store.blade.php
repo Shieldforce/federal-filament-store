@@ -74,9 +74,27 @@
                     </div>
 
                 @empty
-                    <div style="height: 200px !important;" class="col-span-full text-center text-gray-400 py-16">
-                        Nenhum produto encontrado.
+                    <div class="col-span-full flex flex-col items-center justify-center p-8 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl shadow-md">
+
+                        <!-- Imagem/Ícone ilustrativo -->
+                        <img
+                            src="{{ asset('vendor/federal-filament-store/files/not-products-image.png') }}"
+                            alt="Nenhum produto encontrado"
+                            class="w-24 h-24 mb-4 object-contain"
+                        />
+
+                        <!-- Texto principal -->
+                        <h3 class="text-gray-600 dark:text-gray-300 text-lg font-semibold mb-2">
+                            Nenhum produto encontrado
+                        </h3>
+
+                        <!-- Texto secundário -->
+                        <p class="text-gray-400 dark:text-gray-500 text-sm">
+                            Tente ajustar os filtros ou buscar por outro termo.
+                        </p>
+
                     </div>
+
                 @endforelse
             </div>
 
