@@ -3,7 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <title>{{ $title ?? 'Loja' }}</title>
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @vite([
+         'resources/css/app.css',
+         'resources/js/app.js',
+         'vendor/federal-filament-store/app.css', // CSS do plugin
+     ])
     @livewireStyles
 </head>
 <body class="bg-gray-100">
