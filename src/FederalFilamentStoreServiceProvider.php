@@ -54,6 +54,10 @@ class FederalFilamentStoreServiceProvider extends PackageServiceProvider
         if (file_exists($package->basePath('/../resources/views'))) {
             $package->hasViews(static::$viewNamespace);
         }
+
+        if (file_exists($package->basePath('/../resources/assets'))) {
+            $package->hasAssets();
+        }
     }
 
     public function packageRegistered(): void
@@ -168,6 +172,14 @@ class FederalFilamentStoreServiceProvider extends PackageServiceProvider
             $this->publishes([
                 $assetsPath => public_path('vendor/federal-filament-store'),
             ], 'federal-filament-store-assets');
+        }
+
+        // Css
+        $cssPath = __DIR__ . '/../resources/css';
+        if (is_dir($cssPath)) {
+            $this->publishes([
+                $cssPath => public_path('vendor/federal-filament-store'),
+            ], 'federal-filament-store-css');
         }
 
         return parent::boot();
