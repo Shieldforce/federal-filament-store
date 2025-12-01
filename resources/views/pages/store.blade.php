@@ -1,8 +1,8 @@
 <x-filament::page class="!max-w-full px-0">
 
-    <div class="w-full grid grid-cols-1 md:grid-cols-[1fr_280px] gap-6">
+    <div class="w-full grid grid-cols-1 md:grid-cols-[1fr_280px] md:grid-flow-col gap-6">
 
-        {{-- LISTA DE PRODUTOS (esquerda) --}}
+        {{-- LISTA DE PRODUTOS --}}
         <div class="pr-4 produtos order-2 md:order-1">
 
             {{-- PAGINAÇÃO SUPERIOR --}}
@@ -63,7 +63,7 @@
 
         </div>
 
-        {{-- SIDEBAR DE FILTROS (direita) --}}
+        {{-- SIDEBAR DE FILTROS --}}
         <div class="space-y-6 pl-4 filtros order-1 md:order-2">
 
             <x-filament::section>
