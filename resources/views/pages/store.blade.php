@@ -10,9 +10,9 @@
     <div class="w-full flex flex-col md:flex-row gap-6">
 
         {{-- SIDEBAR --}}
-        <div class="md:w-[350px] md:flex-none pl-6">
+        <div class="md:w-[260px] md:flex-none pl-6">
 
-            <x-filament::section class="!max-w-[350px] w-full">
+            <x-filament::section class="!max-w-[260px] w-full">
                 <h3 class="text-lg font-semibold mb-2">Filtros</h3>
 
                 <x-filament-panels::form wire:submit="filtrar">
@@ -32,7 +32,7 @@
         </div>
 
         {{-- PRODUTOS --}}
-        <div class="flex-2 pr-6">
+        <div class="flex-1 pr-6">
 
             {{-- PAGINAÇÃO SUPERIOR --}}
             <div class="flex justify-between items-center mb-4">
