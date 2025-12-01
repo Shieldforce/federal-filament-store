@@ -6,8 +6,8 @@
         <div
             class="md:w-[480px] lg:w-[520px] xl:w-[560px] md:flex-none pl-6"
             style="
-                margin-top: 50px !important;
-                width: 15% !important;
+                margin-top: 52px !important;
+                width: 30% !important;
             "
         >
 
