@@ -4,11 +4,7 @@
 
         {{-- SIDEBAR --}}
         <div
-            class="md:w-[480px] lg:w-[520px] xl:w-[560px] md:flex-none pl-6"
-            style="
-                margin-top: 52px !important;
-                width: 30% !important;
-            "
+            class="md:w-[480px] lg:w-[520px] xl:w-[560px] md:flex-none pl-6 filtros-store-ec"
         >
 
             <x-filament::section class="!max-w-[480px] w-full">
