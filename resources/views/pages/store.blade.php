@@ -3,7 +3,7 @@
     <div class="w-full grid grid-cols-1 md:grid-cols-[1fr_280px] md:grid-flow-col gap-6">
 
         {{-- SIDEBAR DE FILTROS --}}
-        <div class="pr-4 filtros order-2 md:order-1">
+        <div class="space-y-6 pl-4 filtros order-1 md:order-2">
 
             <x-filament::section>
                 <h3 class="text-lg font-semibold mb-2">Filtros</h3>
@@ -25,7 +25,7 @@
         </div>
 
         {{-- LISTA DE PRODUTOS --}}
-        <div class="space-y-6 pl-4 produtos order-1 md:order-2">
+        <div class="pr-4 produtos order-2 md:order-1">
 
             {{-- PAGINAÇÃO SUPERIOR --}}
             <div class="flex justify-between items-center mb-4">
