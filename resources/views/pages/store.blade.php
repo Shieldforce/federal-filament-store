@@ -1,4 +1,4 @@
-<x-filament::page class="!max-w-full px-0">
+<x-filament::page class="!max-w-none w-full px-0">
 
     <div class="w-full grid grid-cols-1 md:grid-cols-[280px_1fr] gap-6">
 
@@ -28,11 +28,8 @@
         <div class="pr-4">
 
             {{-- PAGINAÇÃO SUPERIOR --}}
-            <div class="flex justify-between items-center mb-4">
-                <div></div>
-                <div>
-                    {{ $this->paginatedProducts->links() }}
-                </div>
+            <div class="w-full flex justify-center mb-4">
+                {{ $this->paginatedProducts->links() }}
             </div>
 
             {{-- GRID DE PRODUTOS --}}
@@ -82,11 +79,8 @@
             </div>
 
             {{-- PAGINAÇÃO INFERIOR --}}
-            <div class="flex justify-between items-center mt-6">
-                <div></div>
-                <div>
-                    {{ $this->paginatedProducts->links() }}
-                </div>
+            <div class="w-full flex justify-center mt-6">
+                {{ $this->paginatedProducts->links() }}
             </div>
 
         </div>
