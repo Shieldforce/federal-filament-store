@@ -1,11 +1,18 @@
 <x-filament::page class="!max-w-full !p-0">
 
-    <div class="w-full grid grid-cols-1 md:grid-cols-5 gap-6">
+    {{-- REMOVE O MAX-WIDTH PADRÃO DO FILAMENT --}}
+    {{--<style>
+        .fi-body, .fi-main {
+            max-width: 100% !important;
+        }
+    </style>--}}
 
-        {{-- SIDEBAR (2 colunas) --}}
-        <div class="col-span-1 md:col-span-2 pl-6">
+    <div class="w-full flex flex-col md:flex-row gap-6">
 
-            <x-filament::section class="w-full">
+        {{-- SIDEBAR --}}
+        <div class="md:w-[340px] lg:w-[380px] xl:w-[420px] md:flex-none pl-6">
+
+            <x-filament::section class="!max-w-[340px] w-full">
                 <h3 class="text-lg font-semibold mb-2">Filtros</h3>
 
                 <x-filament-panels::form wire:submit="filtrar">
@@ -24,8 +31,8 @@
 
         </div>
 
-        {{-- PRODUTOS (3 colunas) --}}
-        <div class="col-span-1 md:col-span-3 pr-6">
+        {{-- PRODUTOS --}}
+        <div class="flex-1 pr-6">
 
             {{-- PAGINAÇÃO SUPERIOR --}}
             <div class="flex justify-between items-center mb-4">
@@ -42,7 +49,6 @@
                     <div class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700
                                 rounded-2xl shadow-sm overflow-hidden hover:shadow-lg transition group">
 
-                        {{-- IMAGEM --}}
                         <div class="relative overflow-hidden">
                             <img
                                 src="{{ $product['image'] ?? asset('vendor/federal-filament-store/files/not-products-image.png') }}"
@@ -50,7 +56,6 @@
                             />
                         </div>
 
-                        {{-- DETALHES --}}
                         <div class="p-4 flex flex-col gap-3">
                             <h3 class="font-semibold text-lg">{{ $product['name'] }}</h3>
                             <p class="text-gray-500 text-sm">{{ $product['short'] ?? '' }}</p>
