@@ -118,7 +118,7 @@ class FederalFilamentStorePage extends Page implements HasForms
                     ->label('Categorias')
                     ->options(array_map(function ($category) {
                         return [
-                            $category->id => $category->name,
+                            $category['id'] => $category['name'],
                         ];
                     }, $this->categories)),
                 DatePicker::make('data')->label('Data')->format('Y-m-d'),
