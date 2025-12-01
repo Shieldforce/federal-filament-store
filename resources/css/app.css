@@ -1,0 +1,4 @@
+/* Distância entre o texto e os botões da paginação */
+.filament-tables-pagination > div:last-child {
+    margin-left: 20px; /* ajuste como quiser */
+}

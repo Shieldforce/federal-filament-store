@@ -35,6 +35,72 @@ php artisan vendor:publish --tag="federal-filament-store-views"
 php artisan vendor:publish --tag=federal-filament-store-assets --force
 ```
 
+# Algumas configurações obrigatórias
+```php
+// Adicionar o plugin no AdminPanel plugins
+->plugins([
+    //... outros plugins
+    \Shieldforce\FederalFilamentStore\FederalFilamentStorePlugin::make()
+      ->setLabelGroupSidebar("Loja"),
+])
+
+// Criar p Middleware
+<?php
+
+namespace App\Http\Middleware;
+
+use Closure;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Schema;
+use Symfony\Component\HttpFoundation\Response;
+
+class SetStoreMiddleware
+{
+    public function handle(Request $request, Closure $next): Response
+    {
+        if($request->route() && str_contains($request->route()->getName(), "ffs-")) {
+            $this->setPluginStore();
+        }
+
+        return $next($request);
+    }
+
+    public function setPluginStore()
+    {
+        if (
+            Schema::hasTable('products') &&
+            Schema::hasTable('categories') &&
+            Schema::hasTable('products_categories')
+        ) {
+            $products = \App\Models\Product::with('categories')->get()->map(fn($p) => [
+                'id'         => $p->id,
+                'name'       => $p->name,
+                'price'      => $p->price_main,
+                'categories' => $p->categories->map(fn($c) => ['id' => $c->id, 'name' => $c->name])->toArray(),
+                'image'      => $p->picture,
+            ])->toArray();
+
+            $categories = \App\Models\Category::all()->map(fn($c) => [
+                'id'   => $c->id,
+                'name' => $c->name,
+            ])->toArray();
+
+            config([
+                'federal-filament-store.products_callback'   => $products,
+                'federal-filament-store.categories_callback' => $categories,
+            ]);
+        }
+    }
+}
+    
+// Adicionar o middleware no AdminPanel em ->middlewares([]) para alimentar as paginas com informações locais
+->middlewares([
+    //...outros middlewares
+    \App\Http\Middleware\SetStoreMiddleware::class
+])
+
+```
+
 ## Changelog
 
 Consulte [CHANGELOG](CHANGELOG.md) para obter mais informações sobre o que mudou recentemente.
