@@ -1,9 +1,9 @@
 <x-filament::page>
 
-    <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+    <div class="w-full grid grid-cols-1 md:grid-cols-[280px_1fr] gap-6">
 
-        {{-- COLUNA DE FILTROS --}}
-        <div class="md:col-span-1 space-y-6">
+        {{-- SIDEBAR DE FILTROS --}}
+        <div class="space-y-6">
 
             <x-filament::section>
                 <h3 class="text-lg font-semibold mb-2">Filtros</h3>
@@ -11,7 +11,6 @@
                 <x-filament-panels::form wire:submit="filtrar">
                     {{ $this->form }}
 
-                    {{-- BOTÃO FILTRAR --}}
                     <x-filament::button
                         type="submit"
                         icon="heroicon-o-funnel"
@@ -25,8 +24,8 @@
 
         </div>
 
-        {{-- COLUNA DA LISTA + PAGINAÇÃO --}}
-        <div class="md:col-span-3">
+        {{-- LISTA DE PRODUTOS --}}
+        <div>
 
             {{-- PAGINAÇÃO SUPERIOR --}}
             <div class="flex justify-between items-center mb-4">
@@ -36,11 +35,12 @@
                 </div>
             </div>
 
-            {{-- GRID DE PRODUTOS --}}
+            {{-- GRID --}}
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                 @forelse ($this->paginatedProducts as $product)
 
-                    <div style="border-radius: 10px !important;" class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl shadow-sm overflow-hidden hover:shadow-lg transition group">
+                    <div class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700
+                                rounded-2xl shadow-sm overflow-hidden hover:shadow-lg transition">
                         <div class="relative rounded-t-2xl overflow-hidden">
                             <img
                                 src="{{ $product['image'] ?? asset('vendor/federal-filament-store/files/not-products-image.png') }}"
@@ -54,13 +54,13 @@
                             </h3>
 
                             <p class="text-gray-500 dark:text-gray-400 text-sm line-clamp-2">
-                                {{ $product['short'] ?? 'Descrição breve do produto...' }}
+                                {{ $product['short'] ?? 'Descrição breve...' }}
                             </p>
 
                             <div class="flex items-center justify-between mt-auto pt-2">
-                        <span class="text-xl font-bold text-primary-600">
-                            R$ {{ number_format($product['price'], 2, ',', '.') }}
-                        </span>
+                                <span class="text-xl font-bold text-primary-600">
+                                    R$ {{ number_format($product['price'], 2, ',', '.') }}
+                                </span>
 
                                 <x-filament::button
                                     wire:click="addToCart({{ $product['id'] }})"
