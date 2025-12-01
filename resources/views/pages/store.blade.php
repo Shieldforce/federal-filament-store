@@ -46,6 +46,7 @@
 
                         <div class="relative overflow-hidden">
                             <img
+                                height="150"
                                 src="{{ isset($product['image'])
                                         ? asset("storage/{$product['image']}")
                                         : asset('vendor/federal-filament-store/files/not-products-image.png') }}"
@@ -55,7 +56,7 @@
 
                         <div class="p-4 flex flex-col gap-3">
                             <h3 class="font-semibold text-lg">{{ substr($product['name'], 0, 17) }}...</h3>
-                            <p class="text-gray-500 text-sm">{{ $product['description'] ? substr($product['description'], 0, 17)."..." : '' }}</p>
+                            <p class="text-gray-500 text-sm">{{ $product['code'] ? substr($product['code'], 0, 17)."..." : '' }}</p>
 
                             <div class="flex items-center justify-between mt-auto pt-2">
                                 <span class="text-xl font-bold text-primary-600">
