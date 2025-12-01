@@ -110,7 +110,7 @@ class FederalFilamentStorePage extends Page implements HasForms
 
     protected function getFormSchema(): array
     {
-        $categories = ["items"];
+        $categories = [];
 
         foreach ($this->categories as $category) {
             $categories[$category['id']] = $category['name'];
