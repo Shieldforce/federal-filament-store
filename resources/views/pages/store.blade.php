@@ -7,10 +7,10 @@
         }
     </style>--}}
 
-    <div class="w-full flex flex-col md:flex-row gap-6">
+    <div class="grid grid-cols-2">
 
         {{-- SIDEBAR --}}
-        <div class="col-6">
+        <div class="">
 
             <x-filament::section class="!max-w-[260px] w-full">
                 <h3 class="text-lg font-semibold mb-2">Filtros</h3>
@@ -32,7 +32,7 @@
         </div>
 
         {{-- PRODUTOS --}}
-        <div class="col-6">
+        <div class="">
 
             {{-- PAGINAÇÃO SUPERIOR --}}
             <div class="flex justify-between items-center mb-4">
