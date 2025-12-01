@@ -5,9 +5,9 @@
     <title>{{ $title ?? 'Loja' }}</title>
     @vite([
          'resources/css/app.css',
-         'resources/js/app.js',
-         'vendor/federal-filament-store/app.css', // CSS do plugin
+         'resources/js/app.js'
      ])
+    <link rel="stylesheet" type="text/css" href="{{ asset('vendor/federal-filament-store/app.css') }}">
     @livewireStyles
 </head>
 <body class="bg-gray-100">
