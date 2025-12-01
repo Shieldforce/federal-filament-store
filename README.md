@@ -104,6 +104,19 @@ class SetStoreMiddleware
 
 ```
 
+# CSS
+```css
+
+/*Precisa para paginação ter espaço entre texto e botões, 
+pode colocar no vendor/filament/assets.blade.php, dentro da tag style*/
+nav[aria-label="Pagination Navigation"]
+> .sm\:flex-1.sm\:flex.sm\:items-center.sm\:justify-between
+> div:last-child {
+    margin-left: 2rem;
+}
+
+```
+
 ## Changelog
 
 Consulte [CHANGELOG](CHANGELOG.md) para obter mais informações sobre o que mudou recentemente.
