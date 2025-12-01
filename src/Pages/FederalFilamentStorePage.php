@@ -111,8 +111,9 @@ class FederalFilamentStorePage extends Page implements HasForms
     protected function getFormSchema(): array
     {
         return [
-            Grid::make(3)->schema([
-                TextInput::make('search')->label('Palavra-chave'),
+            Grid::make(1)->schema([
+                TextInput::make('search')
+                    ->label('Palavra-chave'),
                 Select::make('categories')
                     ->label('Categorias')
                     ->options([
