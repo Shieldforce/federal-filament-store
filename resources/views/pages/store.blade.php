@@ -1,11 +1,18 @@
 <x-filament::page class="!max-w-full !p-0">
 
+    {{-- REMOVE O MAX-WIDTH PADRÃO DO FILAMENT --}}
+    <style>
+        .fi-body, .fi-main {
+            max-width: 100% !important;
+        }
+    </style>
+
     <div class="w-full flex flex-col md:flex-row gap-6">
 
         {{-- SIDEBAR --}}
         <div class="w-full md:w-[260px] md:flex-none pl-6">
 
-            <x-filament::section class="md:max-w-[260px]">
+            <x-filament::section class="!max-w-[260px] w-full">
                 <h3 class="text-lg font-semibold mb-2">Filtros</h3>
 
                 <x-filament-panels::form wire:submit="filtrar">
