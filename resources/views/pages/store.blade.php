@@ -1,16 +1,16 @@
 <x-filament::page class="!max-w-full !p-0">
 
     {{-- REMOVE O MAX-WIDTH PADRÃO DO FILAMENT --}}
-    <style>
+    {{--<style>
         .fi-body, .fi-main {
             max-width: 100% !important;
         }
-    </style>
+    </style>--}}
 
     <div class="w-full flex flex-col md:flex-row gap-6">
 
         {{-- SIDEBAR --}}
-        <div class="w-full md:w-[260px] md:flex-none pl-6">
+        <div class="">
 
             <x-filament::section class="!max-w-[260px] w-full">
                 <h3 class="text-lg font-semibold mb-2">Filtros</h3>
@@ -32,7 +32,7 @@
         </div>
 
         {{-- PRODUTOS --}}
-        <div class="flex-1 pr-6">
+        <div class="">
 
             {{-- PAGINAÇÃO SUPERIOR --}}
             <div class="flex justify-between items-center mb-4">
