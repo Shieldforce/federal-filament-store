@@ -2,30 +2,6 @@
 
     <div class="w-full flex flex-col md:flex-row gap-6">
 
-        {{-- SIDEBAR --}}{{--
-        <div
-            class="md:w-[480px] lg:w-[520px] xl:w-[560px] md:flex-none pl-6 filtros-store-ec"
-        >
-
-            <x-filament::section class="!max-w-[480px] w-full">
-                --}}{{--<h3 class="text-lg font-semibold mb-2">Filtros</h3>--}}{{--
-
-                <x-filament-panels::form wire:submit="filtrar">
-                    {{ $this->form }}
-
-                    <x-filament::button
-                        type="submit"
-                        icon="heroicon-o-funnel"
-                        color="primary"
-                        class="w-full mt-4"
-                    >
-                        Aplicar filtros
-                    </x-filament::button>
-                </x-filament-panels::form>
-            </x-filament::section>
-
-        </div>--}}
-
         {{-- SIDEBAR --}}
         <div
             class="md:w-[480px] lg:w-[520px] xl:w-[560px] md:flex-none pl-6 filtros-store-ec"

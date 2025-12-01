@@ -12,19 +12,18 @@ use Filament\Forms\Contracts\HasForms;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Auth;
 use Livewire\WithPagination;
-use Shieldforce\FederalFilamentStore\FederalFilamentStorePlugin;
 
 class FederalFilamentStorePage extends Page implements HasForms
 {
     use InteractsWithForms;
     use WithPagination;
 
-    protected FederalFilamentStorePlugin $plugin;
     protected static string $view = 'federal-filament-store::pages.store';
     protected static ?string $label = 'Loja de Produtos';
     protected static ?string $navigationLabel = 'Loja de Produtos';
     protected static ?string $title = 'Loja de Produtos';
     public array $result = [];
+    public array $categories = [];
     protected int $perPage = 6;
 
     public function getLayout(): string
@@ -51,10 +50,8 @@ class FederalFilamentStorePage extends Page implements HasForms
         return config()->get('federal-filament-store.sidebar_group');
     }
 
-    public function mount(FederalFilamentStorePlugin $plugin): void
+    public function mount(): void
     {
-        $this->plugin = $plugin;
-
         if (!Auth::check()) {
             filament()
                 ->getCurrentPanel()
@@ -62,6 +59,9 @@ class FederalFilamentStorePage extends Page implements HasForms
                 ->topbar(false)*/
             ;
         }
+
+        $this->result = config('federal-filament-store.products_callback');
+        $this->categories = config('federal-filament-store.categories_callback');
 
         $this->filtrar();
     }
@@ -117,15 +117,15 @@ class FederalFilamentStorePage extends Page implements HasForms
                 Select::make('categories')
                     ->label('Categorias')
                     ->options([
-                        ''          => 'Todos',
+                        '' => 'Todos',
                         'emergency' => 'EMERGENCY',
-                        'alert'     => 'ALERT',
-                        'critical'  => 'CRITICAL',
-                        'error'     => 'ERROR',
-                        'warning'   => 'WARNING',
-                        'notice'    => 'NOTICE',
-                        'info'      => 'INFO',
-                        'debug'     => 'DEBUG',
+                        'alert' => 'ALERT',
+                        'critical' => 'CRITICAL',
+                        'error' => 'ERROR',
+                        'warning' => 'WARNING',
+                        'notice' => 'NOTICE',
+                        'info' => 'INFO',
+                        'debug' => 'DEBUG',
                     ]),
                 DatePicker::make('data')->label('Data')->format('Y-m-d'),
             ]),
