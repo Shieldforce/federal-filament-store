@@ -1,11 +1,9 @@
 <x-filament::page class="!max-w-full px-0">
 
-    <div class="w-full grid grid-cols-1
-                md:grid-cols-[280px_minmax(0,900px)]
-                gap-6 items-start mx-auto">
+    <div class="w-full grid grid-cols-1 md:grid-cols-[280px_1fr] gap-6">
 
-        {{-- SIDEBAR DE FILTROS — ESQUERDA --}}
-        <div class="space-y-6 pl-4 filtros">
+        {{-- SIDEBAR DE FILTROS — SEMPRE À ESQUERDA --}}
+        <div class="space-y-6 pl-4 filtros order-1 md:order-1 w-full md:w-[280px]">
 
             <x-filament::section>
                 <h3 class="text-lg font-semibold mb-2">Filtros</h3>
@@ -23,11 +21,13 @@
                     </x-filament::button>
                 </x-filament-panels::form>
             </x-filament::section>
+
         </div>
 
-        {{-- LISTA DE PRODUTOS — DIREITA --}}
-        <div class="produtos pr-2">
+        {{-- LISTA DE PRODUTOS — SEMPRE À DIREITA --}}
+        <div class="produtos pr-2 order-2 md:order-2">
 
+            {{-- PAGINAÇÃO SUPERIOR --}}
             <div class="flex justify-between items-center mb-4">
                 <div></div>
                 <div>
@@ -35,8 +35,10 @@
                 </div>
             </div>
 
+            {{-- GRID DE PRODUTOS --}}
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
                 @forelse ($this->paginatedProducts as $product)
+
                     <div class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl shadow-sm overflow-hidden hover:shadow-lg transition group">
                         <div class="relative overflow-hidden">
                             <img
@@ -73,6 +75,7 @@
                 @endforelse
             </div>
 
+            {{-- PAGINAÇÃO INFERIOR --}}
             <div class="flex justify-between items-center mt-6">
                 <div></div>
                 <div>
