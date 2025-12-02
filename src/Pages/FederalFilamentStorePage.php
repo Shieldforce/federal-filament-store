@@ -82,6 +82,8 @@ class FederalFilamentStorePage extends Page implements HasForms
             $this->rangePriceMount();
         }
 
+        dd($this->productsCategories);
+
         $this->resetPage();
     }
 
