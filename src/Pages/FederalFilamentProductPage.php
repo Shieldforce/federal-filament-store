@@ -34,7 +34,7 @@ class FederalFilamentProductPage extends Page implements HasForms
 
     public static function getSlug(): string
     {
-        return 'external-ffs-product';
+        return 'external-ffs-product/{uuid}';
     }
 
     public static function shouldRegisterNavigation(): bool
