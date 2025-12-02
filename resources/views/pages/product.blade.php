@@ -2,14 +2,14 @@
     <div class="w-full flex flex-col md:flex-row gap-6">
 
         {{-- SIDEBAR --}}
-        <div class="md:w-[600px] lg:w-[650px] xl:w-[700px] md:flex-none pl-6 filtros-store-ec">
-            <x-filament::section class="!max-w-[600px] w-full !rounded-none">
+        <div class="md:w-[560px] lg:w-[560px] xl:w-[560px] md:flex-none pl-6 filtros-store-ec">
+            <x-filament::section class="!max-w-[560px] w-full !rounded-none">
                 {{ $this->form }}
             </x-filament::section>
         </div>
 
-        <div class="flex-2 pr-4">
-            <div class="gap-4">
+        <div class="flex-1 pr-6">
+            <div class="gap-6">
                 <div
                     x-data="{
                         selected: 0,
