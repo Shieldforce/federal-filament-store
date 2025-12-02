@@ -75,6 +75,7 @@ class FederalFilamentStorePage extends Page implements HasForms
 
     public function updated($property)
     {
+        $this->filtrar();
         $this->resetPage();
     }
 
@@ -83,6 +84,15 @@ class FederalFilamentStorePage extends Page implements HasForms
         //session()->push('cart.items', $id);
 
         dd("teste");
+    }
+
+    public function filtrar()
+    {
+        $list = $this->getData();
+
+        dd($list);
+
+        //$this->result = $list;
     }
 
     protected function getData(): array
@@ -112,19 +122,6 @@ class FederalFilamentStorePage extends Page implements HasForms
         $page = $this->getPage();
         $offset = ($page - 1) * $this->perPage;
         $items = array_slice($filtered, $offset, $this->perPage);
-
-        if(!empty($this->search)) {
-            dd([
-                $items,
-                count($filtered),
-                $this->perPage,
-                $page,
-                [
-                    'path' => request()->url(),
-                    'query' => request()->query(),
-                ]
-            ]);
-        }
 
         return new LengthAwarePaginator(
             $items,
