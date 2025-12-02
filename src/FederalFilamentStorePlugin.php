@@ -42,18 +42,24 @@ class FederalFilamentStorePlugin implements Plugin
                     ->label('Produtos')
                     ->url("/admin/ffs-store")
                     ->sort(998)
-                    ->icon('heroicon-o-shopping-bag')/*
-                    ->group("Loja")*/,
+                    ->icon('heroicon-o-shopping-bag'),
                 NavigationItem::make('cart')
+                    ->label('')
                     ->visible()
                     ->label('Carrinho')
                     ->url("/admin/ffs-cart")
-                    ->icon('heroicon-o-shopping-cart')
+                    ->icon('
+                        <svg xmlns="http://www.w3.org/2000/svg"
+                            fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                            class="w-7 h-7">  <!-- tamanho do ícone -->
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13l-1.6 8M7 13l-3-6m16 6l1.6 8M5 21h14" />
+                        </svg>
+                    ')
                     ->sort(999)
                     ->badge(function () {
                         return session()->get('cart_count', 0);
-                    }, 'danger')/*
-                    ->group("Loja")*/,
+                    }, 'danger'),
             ])
             ->pages([
                 \Shieldforce\FederalFilamentStore\Pages\FederalFilamentStorePage::class,
