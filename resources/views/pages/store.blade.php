@@ -4,16 +4,18 @@
         {{-- SIDEBAR --}}
         <div class="md:w-[480px] lg:w-[520px] xl:w-[560px] md:flex-none pl-6 filtros-store-ec">
             <x-filament::section class="!max-w-[480px] w-full !rounded-none" style="border-radius: 0 !important;">
-                <x-filament::button
-                    icon="heroicon-o-arrow-path"
-                    color="gray"
-                    wire:click="clearFilters"
-                    size="sm"
-                >
-                    Limpar
-                </x-filament::button>
-
                 {{ $this->form }}
+
+                <div class="flex justify-end mb-3">
+                    <x-filament::button
+                        color="gray"
+                        icon="heroicon-o-x-circle"
+                        wire:click="clearFilters"
+                        size="sm"
+                    >
+                        Limpar filtros
+                    </x-filament::button>
+                </div>
             </x-filament::section>
         </div>
 
