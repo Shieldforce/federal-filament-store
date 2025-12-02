@@ -48,7 +48,7 @@ class FederalFilamentStorePlugin implements Plugin
                     ->label('Carrinho')
                     ->url("/admin/ffs-cart")
                     ->icon('heroicon-o-shopping-cart')
-                    ->badgeTooltip('Itens do carrinho')
+                    ->badgeTooltip('<div>Itens do carrinho</div>')
                     ->sort(999)
                     ->badge(function () {
                         return session()->get('cart_count', 0);
