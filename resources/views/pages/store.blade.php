@@ -13,7 +13,7 @@
 
             {{-- PAGINAÇÃO SUPERIOR --}}
             <div class="flex justify-between items-center mb-4">
-                <div>2</div>
+                <div style="height: 50px;"></div>
                 <div>{{ $this->paginatedProducts->links() }}</div>
             </div>
 
@@ -84,7 +84,7 @@
 
             {{-- PAGINAÇÃO INFERIOR --}}
             <div class="flex justify-between items-center mt-6">
-                <div>2</div>
+                <div style="height: 50px;"></div>
                 <div>{{ $this->paginatedProducts->links() }}</div>
             </div>
 
