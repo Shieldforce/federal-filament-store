@@ -75,7 +75,7 @@ class FederalFilamentStorePage extends Page implements HasForms
         $this->categories = config('federal-filament-store.categories_callback');
         $this->productsCategories = $this->arrayCategoriesExtract();
 
-        dd($this->productsCategories);
+        //dd($this->productsCategories);
     }
 
     public function arrayCategoriesExtract()
