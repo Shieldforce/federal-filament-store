@@ -147,14 +147,14 @@ class FederalFilamentStorePage extends Page implements HasForms
         return [
             Grid::make(1)->schema([
 
-                TextInput::make('filters.search')
+                TextInput::make('search')
                     ->label('Palavra-chave'),
 
-                Select::make('filters.categories')
+                Select::make('categories')
                     ->label('Categorias')
                     ->options($categories),
 
-                DatePicker::make('filters.data')
+                DatePicker::make('data')
                     ->label('Data')
                     ->format('Y-m-d'),
 
