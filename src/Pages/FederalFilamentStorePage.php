@@ -129,7 +129,7 @@ class FederalFilamentStorePage extends Page implements HasForms
         return $return[$this->price_range] ?? ['min' => 0, 'max' => 9999999999];
     }
 
-    public function addToCart($uuid)
+    public function eyeProduct($uuid)
     {
         redirect("/admin/ffs-product/$uuid");
     }
