@@ -39,7 +39,7 @@ class FederalFilamentStorePlugin implements Plugin
             ->navigationItems([
                 NavigationItem::make('loja')
                     ->visible()
-                    ->label('Produtos')
+                    ->label('Loja')
                     ->url("/admin/ffs-store")
                     ->sort(998)
                     ->icon('heroicon-o-shopping-bag'),
