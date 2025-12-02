@@ -19,7 +19,7 @@
                 <div
                     x-data="{
                         selected: 0,
-                        images: {{ ...$this->images ?? [] }}
+                        images: {{ $this->images ?? '[]' }}
                     }"
                     class="relative w-full"
                 >
