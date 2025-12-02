@@ -22,12 +22,17 @@ class FederalFilamentStorePage extends Page implements HasForms
     protected static ?string $label = 'Loja de Produtos';
     protected static ?string $navigationLabel = 'Loja de Produtos';
     protected static ?string $title = 'Loja de Produtos';
-
     public array $result = [];
     public array $categories = [];
     public string $search = '';
     public ?string $selectedCategory = null;
     public ?string $data = null;
+    protected $queryString = [
+        'search' => ['except' => ''],
+        'selectedCategory' => ['except' => null],
+        'data' => ['except' => null],
+        'page' => ['except' => 1], // controla a página atual
+    ];
 
     protected int $perPage = 6;
 
@@ -53,7 +58,11 @@ class FederalFilamentStorePage extends Page implements HasForms
     {
         // Aplica os filtros
         $filtered = collect($this->result)
-            ->when($this->search, fn($q) => $q->filter(fn($item) => str_contains(strtolower($item['name']), strtolower($this->search)) || str_contains(strtolower($item['code']), strtolower($this->search))))
+            ->when(
+                $this->search,
+                fn($q) => $q->filter(fn($item) => str_contains(strtolower($item['name']), strtolower($this->search))
+                    || str_contains(strtolower($item['code']), strtolower($this->search)))
+            )
             ->when($this->selectedCategory, fn($q) => $q->where('category_id', $this->selectedCategory))
             ->when($this->data, fn($q) => $q->filter(fn($item) => isset($item['created_at']) && $item['created_at'] === $this->data))
             ->values()
@@ -68,7 +77,10 @@ class FederalFilamentStorePage extends Page implements HasForms
             count($filtered),
             $this->perPage,
             $page,
-            ['path' => request()->url()]
+            [
+                'path' => request()->url(),
+                'query' => request()->query(),
+            ]
         );
     }
 
