@@ -38,14 +38,14 @@ class FederalFilamentStorePage extends Page implements HasForms
         'page'             => ['except' => 1],
     ];
 
-    /*public function getLayout(): string
+    public function getLayout(): string
     {
         if (request()->query('external') === '1') {
             return 'federal-filament-store::layouts.external';
         }
 
         return parent::getLayout();
-    }*/
+    }
 
     public static function getSlug(): string
     {
@@ -65,9 +65,9 @@ class FederalFilamentStorePage extends Page implements HasForms
     public function mount(): void
     {
         if (!Auth::check()) {
-            /*filament()
+            filament()
                 ->getCurrentPanel()
-                ->topNavigation()
+                ->topNavigation()/*
                 ->topbar(false)*/
             ;
         }

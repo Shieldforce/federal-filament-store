@@ -50,8 +50,8 @@ class FederalFilamentStorePlugin implements Plugin
                     ->icon('heroicon-o-shopping-cart')
                     ->badge(function () {
                         return session()->get('cart_count', 0);
-                    }, 'danger')
-                    ->group("Loja"),
+                    }, 'danger')/*
+                    ->group("Loja")*/,
             ])
             ->pages([
                 \Shieldforce\FederalFilamentStore\Pages\FederalFilamentStorePage::class,
