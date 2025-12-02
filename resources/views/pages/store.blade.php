@@ -3,7 +3,7 @@
 
         {{-- SIDEBAR --}}
         <div class="md:w-[480px] lg:w-[520px] xl:w-[560px] md:flex-none pl-6 filtros-store-ec">
-            <x-filament::section class="!max-w-[480px] w-full !rounded-none">
+            <x-filament::section class="!max-w-[480px] w-full !rounded-none" style="border-radius: 0 !important;">
                 {{ $this->form }}
             </x-filament::section>
         </div>
