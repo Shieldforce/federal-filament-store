@@ -175,7 +175,7 @@ class FederalFilamentStorePage extends Page implements HasForms
     protected function getFormSchema(): array
     {
         $categoryOptions = [];
-        dd($this->productsCategories);
+        //dd($this->productsCategories);
 
         foreach ($this->productsCategories as $category) {
 
