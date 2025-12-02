@@ -73,7 +73,7 @@ class FederalFilamentStorePage extends Page implements HasForms
 
         $this->result = config('federal-filament-store.products_callback');
         $this->categories = config('federal-filament-store.categories_callback');
-        $this->productsCategories = array_column($this->result, 'categories');
+        $this->productsCategories = array_values(array_column($this->result, 'categories'));
     }
 
     public function updated($property)
@@ -81,8 +81,6 @@ class FederalFilamentStorePage extends Page implements HasForms
         if ($property == 'price_range') {
             $this->rangePriceMount();
         }
-
-        dd($this->productsCategories);
 
         $this->resetPage();
     }
