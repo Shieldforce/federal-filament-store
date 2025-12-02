@@ -46,7 +46,6 @@ class FederalFilamentStorePlugin implements Plugin
                 NavigationItem::make('cart')
                     ->label('')
                     ->visible()
-                    ->label('Carrinho')
                     ->url("/admin/ffs-cart")
                     ->icon('heroicon-o-shopping-cart')
                     ->badgeTooltip('fsdffsdfsfddff')
