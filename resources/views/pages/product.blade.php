@@ -2,8 +2,8 @@
     <div class="w-full flex flex-col md:flex-row gap-6">
 
         {{-- SIDEBAR --}}
-        <div class="md:w-[480px] lg:w-[520px] xl:w-[560px] md:flex-none pl-6 filtros-store-ec">
-            <x-filament::section class="!max-w-[480px] w-full !rounded-none">
+        <div class="md:w-[600px] lg:w-[650px] xl:w-[700px] md:flex-none pl-6 filtros-store-ec">
+            <x-filament::section class="!max-w-[600px] w-full !rounded-none">
                 {{ $this->form }}
             </x-filament::section>
         </div>
