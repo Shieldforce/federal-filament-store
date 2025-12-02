@@ -11,7 +11,7 @@
                         color="danger"
                         icon="heroicon-o-x-circle"
                         wire:click="clearFilters"
-                        size="sm"
+                        size="md"
                     >
                         Limpar filtros
                     </x-filament::button>
