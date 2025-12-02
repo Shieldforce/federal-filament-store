@@ -65,7 +65,7 @@ class FederalFilamentProductPage extends Page implements HasForms
         });
 
 
-        dd($this->product);
+        dd($this->product, $this->result);
     }
 
     public function updated($property)
