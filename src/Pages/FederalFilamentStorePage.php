@@ -22,9 +22,12 @@ class FederalFilamentStorePage extends Page implements HasForms
     protected static ?string $label = 'Loja de Produtos';
     protected static ?string $navigationLabel = 'Loja de Produtos';
     protected static ?string $title = 'Loja de Produtos';
+    protected int $perPage = 6;
     public array $result = [];
     public array $categories = [];
-    protected int $perPage = 6;
+    public string $search = '';
+    public ?string $selectedCategory = null;
+    public ?string $data = null;
     protected $queryString = [
         'search' => ['except' => ''],
         'selectedCategory' => ['except' => null],
@@ -72,50 +75,37 @@ class FederalFilamentStorePage extends Page implements HasForms
 
     public function updated($property)
     {
-        $this->filtrar();
+        // Reseta a paginação ao alterar filtros
+        $this->resetPage();
     }
 
     public function addToCart($id)
     {
-        //session()->push('cart.items', $id);
-
-        dd("teste");
-    }
-
-    public function filtrar()
-    {
-        $filters = $this->form->getState();
-
-        dd($filters);
-
-        $filtered = collect($this->result)
-            ->when($filters['search'], fn($q) => $q->filter(fn($item) =>
-                str_contains(strtolower($item['name']), strtolower($filters['search'])) ||
-                str_contains(strtolower($item['code']), strtolower($filters['search']))
-            ))
-            //->when($filters['selectedCategory'], fn($q) => $q->where('category_id', $filters['selectedCategory']))
-            //->when($filters['data'], fn($q) => $q->filter(fn($item) => $item['created_at'] === $filters['data']))
-            ->values()
-            ->toArray();
-
-        $this->result = $filtered;
-        $this->resetPage();
-    }
-
-    protected function getData(): array
-    {
-        return config('federal-filament-store.products_callback');
+        // Aqui você pode implementar a lógica do carrinho
+        dd("Produto adicionado ao carrinho: {$id}");
     }
 
     public function getPaginatedProductsProperty()
     {
+        // Aplica os filtros
+        $filtered = collect($this->result)
+            ->when(
+                $this->search,
+                fn($q) => $q->filter(fn($item) => str_contains(strtolower($item['name']), strtolower($this->search))
+                    || str_contains(strtolower($item['code']), strtolower($this->search)))
+            )
+            ->when($this->selectedCategory, fn($q) => $q->where('category_id', $this->selectedCategory))
+            ->when($this->data, fn($q) => $q->filter(fn($item) => isset($item['created_at']) && $item['created_at'] === $this->data))
+            ->values()
+            ->toArray();
+
         $page = $this->getPage();
         $offset = ($page - 1) * $this->perPage;
-        $items = array_slice($this->result, $offset, $this->perPage);
+        $items = array_slice($filtered, $offset, $this->perPage);
 
         return new LengthAwarePaginator(
             $items,
-            count($this->result),
+            count($filtered),
             $this->perPage,
             $page,
             [
@@ -150,5 +140,4 @@ class FederalFilamentStorePage extends Page implements HasForms
             ]),
         ];
     }
-
 }
