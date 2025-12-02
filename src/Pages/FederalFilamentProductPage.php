@@ -2,6 +2,7 @@
 
 namespace Shieldforce\FederalFilamentStore\Pages;
 
+use Filament\Facades\Filament;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Pages\Page;
 use Filament\Forms\Contracts\HasForms;
@@ -14,10 +15,13 @@ class FederalFilamentProductPage extends Page implements HasForms
     use InteractsWithForms;
     use WithPagination;
 
-    protected static string  $view               = 'federal-filament-store::pages.product';
-    protected static ?string $label              = 'Produto';
-    protected static ?string $navigationLabel    = 'Produto';
-    protected static ?string $title              = 'Produto';
+    protected static string  $view            = 'federal-filament-store::pages.product';
+    protected static ?string $label           = 'Produto';
+    protected static ?string $navigationLabel = 'Produto';
+    protected static ?string $title           = 'Produto';
+    public array             $result             = [];
+    public array             $categories         = [];
+    public array             $product;
 
     public function getLayout(): string
     {
@@ -52,6 +56,13 @@ class FederalFilamentProductPage extends Page implements HasForms
                 ->topbar(false)*/
             ;
         }
+
+        $this->result = config('federal-filament-store.products_callback');
+        $this->categories = config('federal-filament-store.categories_callback');
+
+        $this->product = array_filter($this->result, function ($product) {
+            return $product['uuid'] == request()->get('uuid');
+        })[0];
     }
 
     public function updated($property)
