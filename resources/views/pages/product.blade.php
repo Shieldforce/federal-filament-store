@@ -33,6 +33,8 @@
                         alt=""
                     />
 
+                    {!! $this->product['description'] ?? '' !!}
+
                     {{-- BOTÃO ESQUERDA --}}
                     <button
                         @click="selected = selected > 0 ? selected - 1 : images.length - 1"

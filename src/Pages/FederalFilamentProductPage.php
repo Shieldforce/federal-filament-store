@@ -62,11 +62,14 @@ class FederalFilamentProductPage extends Page implements HasForms
         $this->result = config('federal-filament-store.products_callback');
         $this->categories = config('federal-filament-store.categories_callback');
         $this->uuid = explode("/", $_SERVER["REQUEST_URI"])[3] ?? null;
-        $this->product = array_filter(
+
+        $productFilter = array_filter(
             $this->result, function ($product) {
-            return $product['uuid'] == $this->uuid;
-        }
+                return $product['uuid'] == $this->uuid;
+            }
         );
+
+        $this->product = $productFilter[0] ?? null;
     }
 
     public function updated($property)
