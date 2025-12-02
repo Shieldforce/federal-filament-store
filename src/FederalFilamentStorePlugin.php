@@ -44,11 +44,11 @@ class FederalFilamentStorePlugin implements Plugin
                     ->sort(998)
                     ->icon('heroicon-o-shopping-bag'),
                 NavigationItem::make('cart')
-                    ->label('')
                     ->visible()
+                    ->label('Carrinho')
                     ->url("/admin/ffs-cart")
                     ->icon('heroicon-o-shopping-cart')
-                    ->badgeTooltip('fsdffsdfsfddff')
+                    ->badgeTooltip('Itens do carrinho')
                     ->sort(999)
                     ->badge(function () {
                         return session()->get('cart_count', 0);
