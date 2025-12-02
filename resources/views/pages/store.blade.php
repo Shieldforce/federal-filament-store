@@ -56,7 +56,7 @@
                 @empty
                     <div
                         class="col-span-full flex items-center p-6 bg-white dark:bg-gray-800 border
-                                border-gray-200 dark:border-gray-700 rounded-2xl shadow-md mt-6"
+                                border-gray-200 dark:border-gray-700 rounded-2xl shadow-md"
                         {{--style="margin-top: 38px !important;"--}}
                     >
 
