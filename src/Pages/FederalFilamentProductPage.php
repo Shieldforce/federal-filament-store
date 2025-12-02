@@ -2,59 +2,62 @@
 
 namespace Shieldforce\FederalFilamentStore\Pages;
 
-use Filament\Pages\Page;
 use Filament\Forms\Concerns\InteractsWithForms;
+use Filament\Pages\Page;
 use Filament\Forms\Contracts\HasForms;
+use Illuminate\Support\Facades\Auth;
 use Livewire\WithPagination;
-use Shieldforce\FederalFilamentStore\Services\Permissions\CanPageTrait;
 
 class FederalFilamentProductPage extends Page implements HasForms
 {
-    use CanPageTrait;
+
     use InteractsWithForms;
     use WithPagination;
 
-    protected static string $view = 'federal-filament-store::pages.product';
-    protected static ?string $navigationIcon = 'heroicon-o-list-bullet';
-    protected static ?string $navigationGroup = 'Loja';
-    protected static ?string $label = 'Produto';
-    protected static ?string $navigationLabel = 'Produto';
-    protected static ?string $slug = 'ffs-product';
-    protected static ?string $title = 'Produto';
-    protected array $result = [];
-    public static bool $shouldRegisterNavigation = false;
+    protected static string  $view               = 'federal-filament-store::pages.product';
+    protected static ?string $label              = 'Produto';
+    protected static ?string $navigationLabel    = 'Produto';
+    protected static ?string $title              = 'Produto';
 
-    // 🔓 Permite acessar SEM autenticação
-    public static function canAccess(): bool
+    public function getLayout(): string
     {
-        return true;
+        if (request()->query('external') === '1') {
+            return 'federal-filament-store::layouts.external';
+        }
+
+        return parent::getLayout();
     }
 
-    // 📌 Exibir no menu APENAS se estiver logado
+    public static function getSlug(): string
+    {
+        return 'external-ffs-product';
+    }
+
     public static function shouldRegisterNavigation(): bool
     {
         return false;
     }
 
+    public static function getNavigationGroup(): ?string
+    {
+        return config()->get('federal-filament-store.sidebar_group');
+    }
+
     public function mount(): void
     {
-        $this->filtrar();
+        if (!Auth::check()) {
+            filament()
+                ->getCurrentPanel()
+                ->topNavigation()/*
+                ->topbar(false)*/
+            ;
+        }
     }
 
-    public function updated()
+    public function updated($property)
     {
-        $this->resetPage();
-        $this->filtrar();
+
     }
 
-    public function filtrar()
-    {
-        $data = $this->getData();
-        $this->result = array_values($data);
-    }
-
-    protected function getData(): array
-    {
-        return [];
-    }
 }
+

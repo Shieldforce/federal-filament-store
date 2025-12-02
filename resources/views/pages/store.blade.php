@@ -61,7 +61,7 @@
                                     icon="heroicon-o-shopping-cart"
                                     size="sm"
                                 >
-                                    Adicionar
+                                    Ver detalhes
                                 </x-filament::button>
                             </div>
                         </div>

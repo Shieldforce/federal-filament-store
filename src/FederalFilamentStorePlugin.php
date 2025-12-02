@@ -8,6 +8,7 @@ use Filament\Panel;
 use Illuminate\Support\Facades\Route;
 use Shieldforce\FederalFilamentStore\Middleware\SetStoreMiddleware;
 use Shieldforce\FederalFilamentStore\Pages\FederalFilamentCartPage;
+use Shieldforce\FederalFilamentStore\Pages\FederalFilamentProductPage;
 use Shieldforce\FederalFilamentStore\Pages\FederalFilamentStorePage;
 
 class FederalFilamentStorePlugin implements Plugin
@@ -25,6 +26,10 @@ class FederalFilamentStorePlugin implements Plugin
             ->routes(function () {
                 Route::get('/ffs-store', FederalFilamentStorePage::class)
                     ->name('ffs-store.store.external')
+                    ->defaults('external', 1);
+
+                Route::get('/ffs-product/{product?}', FederalFilamentProductPage::class)
+                    ->name('ffs-product.product.external')
                     ->defaults('external', 1);
 
                 Route::get('/ffs-cart', FederalFilamentCartPage::class)
