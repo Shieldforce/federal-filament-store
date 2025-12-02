@@ -27,6 +27,7 @@
 
                     {{-- IMAGEM --}}
                     <img
+                        style="width: 100%;height: 300px;"
                         class="h-64 w-full object-cover object-center rounded-xl shadow-lg"
                         :src="images[selected]"
                         alt=""
