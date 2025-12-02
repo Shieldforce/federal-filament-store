@@ -13,7 +13,7 @@
 
             {{-- PAGINAÇÃO SUPERIOR --}}
             <div class="flex justify-between items-center mb-4">
-                <div></div>
+                <div>2</div>
                 <div>{{ $this->paginatedProducts->links() }}</div>
             </div>
 
@@ -69,7 +69,7 @@
                             />
                         </div>
 
-                        <div class="flex flex-col justify-center">
+                        <div class="flex flex-col justify-center ml-5">
                             <h3 class="text-gray-600 dark:text-gray-300 text-lg font-semibold mb-1">
                                 Nenhum produto encontrado
                             </h3>
@@ -84,7 +84,7 @@
 
             {{-- PAGINAÇÃO INFERIOR --}}
             <div class="flex justify-between items-center mt-6">
-                <div></div>
+                <div>2</div>
                 <div>{{ $this->paginatedProducts->links() }}</div>
             </div>
 

@@ -86,8 +86,6 @@ class FederalFilamentStorePage extends Page implements HasForms
 
     public function getPaginatedProductsProperty()
     {
-        $filters = $this->form->getState();
-
         $filtered = collect($this->result)
             ->when(
                 $this->search,
@@ -106,7 +104,7 @@ class FederalFilamentStorePage extends Page implements HasForms
             ->toArray();
 
         if(!empty($this->search) || !empty($this->selectedCategory) || !empty($this->data)) {
-            $this->perPage = 1;
+            //
         }
 
         $page = $this->getPage();
