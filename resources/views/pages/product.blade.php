@@ -75,9 +75,9 @@
                     {{-- QUANTIDADE --}}
                     <div>
                         <x-filament::input.wrapper>
-                            <x-filament::input.label>
+                            <x-filament::input>
                                 Quantidade
-                            </x-filament::input.label>
+                            </x-filament::input>
 
                             <x-filament::input
                                 type="number"
@@ -91,9 +91,9 @@
                     {{-- COR --}}
                     <div>
                         <x-filament::input.wrapper>
-                            <x-filament::input.label>
+                            <x-filament::input>
                                 Cor
-                            </x-filament::input.label>
+                            </x-filament::input>
 
                             <select
                                 wire:model="color"
