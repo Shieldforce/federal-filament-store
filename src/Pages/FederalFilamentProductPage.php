@@ -3,6 +3,7 @@
 namespace Shieldforce\FederalFilamentStore\Pages;
 
 use Filament\Facades\Filament;
+use Filament\Forms\Components\Grid;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Pages\Page;
 use Filament\Forms\Contracts\HasForms;
@@ -71,6 +72,17 @@ class FederalFilamentProductPage extends Page implements HasForms
     public function updated($property)
     {
 
+    }
+
+    protected function getFormSchema(): array
+    {
+        return [
+            Grid::make(1)->schema(
+                [
+
+                ]
+            ),
+        ];
     }
 
 }
