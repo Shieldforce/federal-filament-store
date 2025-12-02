@@ -7,6 +7,7 @@ use Filament\Forms\Components\Grid;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Pages\Page;
 use Filament\Forms\Contracts\HasForms;
+use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Support\Facades\Auth;
 use Livewire\WithPagination;
 
@@ -24,6 +25,11 @@ class FederalFilamentProductPage extends Page implements HasForms
     public array             $categories      = [];
     public array             $product;
     public                   $uuid;
+
+    public function getTitle(): string|Htmlable
+    {
+        return $this->product['name'] ?? parent::getTitle();
+    }
 
     public function getLayout(): string
     {
