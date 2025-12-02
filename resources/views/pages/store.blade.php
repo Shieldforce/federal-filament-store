@@ -57,7 +57,7 @@
                     <div
                         class="col-span-full flex items-center p-6 bg-white dark:bg-gray-800 border
                                 border-gray-200 dark:border-gray-700 rounded-2xl shadow-md mt-6"
-                        style="margin-top: 38px !important;"
+                        {{--style="margin-top: 38px !important;"--}}
                     >
 
                         <div class="flex-shrink-0 mr-6">
