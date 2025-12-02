@@ -72,6 +72,8 @@ class FederalFilamentStorePage extends Page implements HasForms
 
         $this->result = config('federal-filament-store.products_callback');
         $this->categories = config('federal-filament-store.categories_callback');
+
+        dd($this->result);
     }
 
     public function updated($property)
