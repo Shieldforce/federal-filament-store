@@ -25,9 +25,6 @@ class FederalFilamentStorePage extends Page implements HasForms
     public array $result = [];
     public array $categories = [];
     protected int $perPage = 6;
-    public string $search = '';
-    public ?string $selectedCategory = null;
-    public ?string $data = null;
     protected $queryString = [
         'search' => ['except' => ''],
         'selectedCategory' => ['except' => null],
@@ -76,7 +73,6 @@ class FederalFilamentStorePage extends Page implements HasForms
     public function updated($property)
     {
         $this->filtrar();
-        $this->resetPage();
     }
 
     public function addToCart($id)
@@ -88,11 +84,20 @@ class FederalFilamentStorePage extends Page implements HasForms
 
     public function filtrar()
     {
-        $list = $this->form->getState();
+        $filters = $this->form->getState();
 
-        dd($list);
+        $filtered = collect($this->result)
+            ->when($filters['search'], fn($q) => $q->filter(fn($item) =>
+                str_contains(strtolower($item['name']), strtolower($filters['search'])) ||
+                str_contains(strtolower($item['code']), strtolower($filters['search']))
+            ))
+            ->when($filters['selectedCategory'], fn($q) => $q->where('category_id', $filters['selectedCategory']))
+            ->when($filters['data'], fn($q) => $q->filter(fn($item) => $item['created_at'] === $filters['data']))
+            ->values()
+            ->toArray();
 
-        //$this->result = $list;
+        $this->result = $filtered;
+        $this->resetPage();
     }
 
     protected function getData(): array
@@ -102,30 +107,13 @@ class FederalFilamentStorePage extends Page implements HasForms
 
     public function getPaginatedProductsProperty()
     {
-        $filtered = collect($this->result)
-            ->when(
-                $this->search,
-                fn($q) => $q->filter(fn($item) => str_contains(strtolower($item['name']), strtolower($this->search))
-                    || str_contains(strtolower($item['code']), strtolower($this->search)))
-            )
-            ->when(
-                $this->selectedCategory,
-                fn($q) => $q->where('category_id', $this->selectedCategory)
-            )
-            ->when(
-                $this->data,
-                fn($q) => $q->filter(fn($item) => isset($item['created_at']) && $item['created_at'] === $this->data)
-            )
-            ->values()
-            ->toArray();
-
         $page = $this->getPage();
         $offset = ($page - 1) * $this->perPage;
-        $items = array_slice($filtered, $offset, $this->perPage);
+        $items = array_slice($this->result, $offset, $this->perPage);
 
         return new LengthAwarePaginator(
             $items,
-            count($filtered),
+            count($this->result),
             $this->perPage,
             $page,
             [
