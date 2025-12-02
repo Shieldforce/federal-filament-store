@@ -40,14 +40,14 @@
             </h1>
 
             {{-- DESCRIÇÃO CURTA --}}
-            @if($product->short_description)
+            @if(isset($product->short_description))
                 <p class="text-gray-600 dark:text-gray-400 text-lg leading-relaxed">
                     {{ $product->short_description }}
                 </p>
             @endif
 
             {{-- DESCRIÇÃO LONGA --}}
-            @if($product->long_description)
+            @if(isset($product->long_description))
                 <div class="prose dark:prose-invert max-w-full text-gray-700 dark:text-gray-300">
                     {!! nl2br(e($product->long_description)) !!}
                 </div>
