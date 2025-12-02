@@ -67,6 +67,8 @@
                         </template>
                     </div>
 
+                    <br>
+                    <br>
                     <hr>
 
                     {!! $this->product['description'] ?? '' !!}
