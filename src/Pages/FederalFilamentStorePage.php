@@ -25,7 +25,15 @@ class FederalFilamentStorePage extends Page implements HasForms
     public array $result = [];
     public array $categories = [];
     protected int $perPage = 6;
-    public array $filters = [];
+    public string $search = '';
+    public ?string $selectedCategory = null;
+    public ?string $data = null;
+    protected $queryString = [
+        'search' => ['except' => ''],
+        'selectedCategory' => ['except' => null],
+        'data' => ['except' => null],
+        'page' => ['except' => 1], // controla a página atual
+    ];
 
     public function getLayout(): string
     {
@@ -97,12 +105,18 @@ class FederalFilamentStorePage extends Page implements HasForms
         // Aplica os filtros
         $filtered = collect($this->result)
             ->when(
-                $this->filters['search'],
-                fn($q) => $q->filter(fn($item) => str_contains(strtolower($item['name']), strtolower($this->filters['search']))
-                    || str_contains(strtolower($item['code']), strtolower($this->filters['search'])))
+                $this->search,
+                fn($q) => $q->filter(fn($item) => str_contains(strtolower($item['name']), strtolower($this->search))
+                    || str_contains(strtolower($item['code']), strtolower($this->search)))
             )
-            /*->when($this->selectedCategory, fn($q) => $q->where('category_id', $this->selectedCategory))
-            ->when($this->data, fn($q) => $q->filter(fn($item) => isset($item['created_at']) && $item['created_at'] === $this->data))*/
+            ->when(
+                $this->selectedCategory,
+                fn($q) => $q->where('category_id', $this->selectedCategory)
+            )
+            ->when(
+                $this->data,
+                fn($q) => $q->filter(fn($item) => isset($item['created_at']) && $item['created_at'] === $this->data)
+            )
             ->values()
             ->toArray();
 
@@ -117,7 +131,7 @@ class FederalFilamentStorePage extends Page implements HasForms
             $page,
             [
                 'path' => request()->url(),
-                //'query' => request()->query(),
+                'query' => request()->query(),
             ]
         );
     }
