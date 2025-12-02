@@ -24,34 +24,72 @@ class FederalFilamentStorePage extends Page implements HasForms
     protected static ?string $title = 'Loja de Produtos';
     public array $result = [];
     public array $categories = [];
-    public string $search = '';
-    public ?string $selectedCategory = null;
-    public ?string $data = null;
-    protected $queryString = [
-        'search' => ['except' => ''],
-        'selectedCategory' => ['except' => null],
-        'data' => ['except' => null],
-        'page' => ['except' => 1], // controla a página atual
-    ];
-
     protected int $perPage = 6;
+    public array $filters = [];
+
+    public function getLayout(): string
+    {
+        if (request()->query('external') === '1') {
+            return 'federal-filament-store::layouts.external';
+        }
+
+        return parent::getLayout();
+    }
+
+    public static function getSlug(): string
+    {
+        return 'external-ffs-store';
+    }
+
+    public static function shouldRegisterNavigation(): bool
+    {
+        return false;
+    }
+
+    public static function getNavigationGroup(): ?string
+    {
+        return config()->get('federal-filament-store.sidebar_group');
+    }
 
     public function mount(): void
     {
+        if (!Auth::check()) {
+            filament()
+                ->getCurrentPanel()
+                ->topNavigation()/*
+                ->topbar(false)*/
+            ;
+        }
+
         $this->result = config('federal-filament-store.products_callback');
         $this->categories = config('federal-filament-store.categories_callback');
+
+        $this->filtrar();
     }
 
-    public function updated($property)
+    public function updated()
     {
-        // Reseta a paginação ao alterar filtros
         $this->resetPage();
+        $this->filtrar();
     }
 
     public function addToCart($id)
     {
-        // Aqui você pode implementar a lógica do carrinho
-        dd("Produto adicionado ao carrinho: {$id}");
+        //session()->push('cart.items', $id);
+
+        dd("teste");
+    }
+
+    public function filtrar()
+    {
+        $list = $this->getData();
+
+        $this->result = $list;
+    }
+
+    protected function getData(): array
+    {
+        return config('federal-filament-store.products_callback');
     }
 
     public function getPaginatedProductsProperty()
@@ -59,12 +97,12 @@ class FederalFilamentStorePage extends Page implements HasForms
         // Aplica os filtros
         $filtered = collect($this->result)
             ->when(
-                $this->search,
-                fn($q) => $q->filter(fn($item) => str_contains(strtolower($item['name']), strtolower($this->search))
-                    || str_contains(strtolower($item['code']), strtolower($this->search)))
+                $this->filters['search'],
+                fn($q) => $q->filter(fn($item) => str_contains(strtolower($item['name']), strtolower($this->filters['search']))
+                    || str_contains(strtolower($item['code']), strtolower($this->filters['search'])))
             )
-            ->when($this->selectedCategory, fn($q) => $q->where('category_id', $this->selectedCategory))
-            ->when($this->data, fn($q) => $q->filter(fn($item) => isset($item['created_at']) && $item['created_at'] === $this->data))
+            /*->when($this->selectedCategory, fn($q) => $q->where('category_id', $this->selectedCategory))
+            ->when($this->data, fn($q) => $q->filter(fn($item) => isset($item['created_at']) && $item['created_at'] === $this->data))*/
             ->values()
             ->toArray();
 
@@ -79,34 +117,35 @@ class FederalFilamentStorePage extends Page implements HasForms
             $page,
             [
                 'path' => request()->url(),
-                'query' => request()->query(),
+                //'query' => request()->query(),
             ]
         );
     }
 
     protected function getFormSchema(): array
     {
-        $categoryOptions = [];
+        $categories = [];
+
         foreach ($this->categories as $category) {
-            $categoryOptions[$category['id']] = $category['name'];
+            $categories[$category['id']] = $category['name'];
         }
 
         return [
             Grid::make(1)->schema([
-                TextInput::make('search')
-                    ->label('Palavra-chave')
-                    ->reactive(),
 
-                Select::make('selectedCategory')
+                TextInput::make('filters.search')
+                    ->label('Palavra-chave'),
+
+                Select::make('filters.categories')
                     ->label('Categorias')
-                    ->options($categoryOptions)
-                    ->reactive(),
+                    ->options($categories),
 
-                DatePicker::make('data')
+                DatePicker::make('filters.data')
                     ->label('Data')
-                    ->format('Y-m-d')
-                    ->reactive(),
+                    ->format('Y-m-d'),
+
             ]),
         ];
     }
+
 }
