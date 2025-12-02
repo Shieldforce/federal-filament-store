@@ -131,7 +131,7 @@ class FederalFilamentStorePage extends Page implements HasForms
 
     public function addToCart($id)
     {
-        redirect(route('ffs-product.product.external', ["product" => $id]));
+        redirect("/ffs-product/$id");
     }
 
     public function clearFilters()
