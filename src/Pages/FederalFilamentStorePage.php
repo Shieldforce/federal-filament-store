@@ -88,7 +88,7 @@ class FederalFilamentStorePage extends Page implements HasForms
 
     public function filtrar()
     {
-        $list = $this->getData();
+        $list = $this->form->getState();
 
         dd($list);
 
