@@ -25,12 +25,12 @@ class FederalFilamentStorePage extends Page implements HasForms
     public array $result = [];
     public array $categories = [];
     protected int $perPage = 6;
-    protected $queryString = [
+    /*protected $queryString = [
         'search' => ['except' => ''],
         'selectedCategory' => ['except' => null],
         'data' => ['except' => null],
         'page' => ['except' => 1], // controla a página atual
-    ];
+    ];*/
 
     public function getLayout(): string
     {
