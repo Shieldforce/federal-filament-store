@@ -200,12 +200,22 @@ class FederalFilamentStorePage extends Page implements HasForms
                 [
                     TextInput::make('search')
                         ->label('Palavra-chave')
-                        ->reactive(),
+                        ->reactive()
+                        ->extraAttributes(
+                            [
+                                'class' => 'text-sm h-8 px-2'
+                            ]
+                        ),
 
                     Select::make('selectedCategory')
                         ->label('Escolha uma categoria')
                         ->options($categoryOptions)
-                        ->reactive(),
+                        ->reactive()
+                        ->extraAttributes(
+                            [
+                                'class' => 'text-sm h-8 px-2'
+                            ]
+                        ),
 
                     Select::make('price_range')
                         ->label('Média de Preço')
@@ -221,7 +231,12 @@ class FederalFilamentStorePage extends Page implements HasForms
                         )
                         ->reactive()
                         ->default(1)
-                        ->preload(),
+                        ->preload()
+                        ->extraAttributes(
+                            [
+                                'class' => 'text-sm h-8 px-2'
+                            ]
+                        ),
                 ]
             ),
         ];
