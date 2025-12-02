@@ -2,15 +2,12 @@
 
 namespace Shieldforce\FederalFilamentStore\Pages;
 
-use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Pages\Page;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
-use Filament\Tables\Columns\Summarizers\Average;
-use Filament\Tables\Columns\TextColumn;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Auth;
 use Livewire\WithPagination;
@@ -138,9 +135,6 @@ class FederalFilamentStorePage extends Page implements HasForms
                     ->label('Escolha uma categoria')
                     ->options($categoryOptions)
                     ->reactive(),
-
-                TextColumn::make('rating')
-                    ->summarize(Average::make()->numeric()),
 
                 Grid::make(2)->schema([
                     TextInput::make('price_min')
