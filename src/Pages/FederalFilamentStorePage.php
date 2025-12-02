@@ -81,23 +81,33 @@ class FederalFilamentStorePage extends Page implements HasForms
 
     public function addToCart($id)
     {
-        // Aqui você pode implementar a lógica do carrinho
         dd("Produto adicionado ao carrinho: {$id}");
     }
 
     public function getPaginatedProductsProperty()
     {
-        // Aplica os filtros
+        $filters = $this->form->getState();
+
         $filtered = collect($this->result)
             ->when(
                 $this->search,
                 fn($q) => $q->filter(fn($item) => str_contains(strtolower($item['name']), strtolower($this->search))
                     || str_contains(strtolower($item['code']), strtolower($this->search)))
             )
-            ->when($this->selectedCategory, fn($q) => $q->where('category_id', $this->selectedCategory))
-            ->when($this->data, fn($q) => $q->filter(fn($item) => isset($item['created_at']) && $item['created_at'] === $this->data))
+            ->when(
+                $this->selectedCategory,
+                fn($q) => $q->where('category_id', $this->selectedCategory)
+            )
+            ->when(
+                $this->data,
+                fn($q) => $q->filter(fn($item) => isset($item['created_at']) && $item['created_at'] === $this->data)
+            )
             ->values()
             ->toArray();
+
+        if(!empty($this->search) || !empty($this->selectedCategory) || !empty($this->data)) {
+            $this->perPage = 1;
+        }
 
         $page = $this->getPage();
         $offset = ($page - 1) * $this->perPage;
