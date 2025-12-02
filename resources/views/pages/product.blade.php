@@ -8,8 +8,8 @@
             </x-filament::section>
         </div>
 
-        <div class="flex-1 pr-6">
-            <div class="gap-6">
+        <div class="flex-2 pr-4">
+            <div class="gap-4">
                 <div
                     x-data="{
                         selected: 0,
