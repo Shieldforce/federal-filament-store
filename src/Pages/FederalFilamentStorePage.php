@@ -86,6 +86,8 @@ class FederalFilamentStorePage extends Page implements HasForms
     {
         $filters = $this->form->getState();
 
+        dd($filters);
+
         $filtered = collect($this->result)
             ->when($filters['search'], fn($q) => $q->filter(fn($item) =>
                 str_contains(strtolower($item['name']), strtolower($filters['search'])) ||
