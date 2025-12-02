@@ -137,7 +137,7 @@ class FederalFilamentStorePage extends Page implements HasForms
 
     public function clearFilters()
     {
-        $this->search = null;
+        $this->search = '';
         $this->price_range = null;
         $this->selectedCategory = null;
     }
