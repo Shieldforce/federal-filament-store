@@ -17,19 +17,20 @@ class FederalFilamentStorePage extends Page implements HasForms
     use InteractsWithForms;
     use WithPagination;
 
-    protected static string  $view             = 'federal-filament-store::pages.store';
-    protected static ?string $label            = 'Loja de Produtos';
-    protected static ?string $navigationLabel  = 'Loja de Produtos';
-    protected static ?string $title            = 'Loja de Produtos';
-    protected int            $perPage          = 6;
-    public array             $result           = [];
-    public array             $categories       = [];
-    public string            $search           = '';
-    public ?string           $selectedCategory = null;
-    public ?string           $price_range      = null;
-    public ?string           $price_range_min  = null;
-    public ?string           $price_range_max  = null;
-    protected                $queryString      = [
+    protected static string  $view               = 'federal-filament-store::pages.store';
+    protected static ?string $label              = 'Loja de Produtos';
+    protected static ?string $navigationLabel    = 'Loja de Produtos';
+    protected static ?string $title              = 'Loja de Produtos';
+    protected int            $perPage            = 6;
+    public array             $result             = [];
+    public array             $categories         = [];
+    public array             $productsCategories = [];
+    public string            $search             = '';
+    public ?string           $selectedCategory   = null;
+    public ?string           $price_range        = null;
+    public ?string           $price_range_min    = null;
+    public ?string           $price_range_max    = null;
+    protected                $queryString        = [
         'search'           => ['except' => ''],
         'selectedCategory' => ['except' => null],
         'price_range'      => ['except' => null],
@@ -72,8 +73,7 @@ class FederalFilamentStorePage extends Page implements HasForms
 
         $this->result = config('federal-filament-store.products_callback');
         $this->categories = config('federal-filament-store.categories_callback');
-
-        dd($this->result);
+        $this->productsCategories = array_column($this->categories, 'categories');
     }
 
     public function updated($property)
@@ -155,7 +155,7 @@ class FederalFilamentStorePage extends Page implements HasForms
     protected function getFormSchema(): array
     {
         $categoryOptions = [];
-        foreach ($this->categories as $category) {
+        foreach ($this->productsCategories as $category) {
             $categoryOptions[$category['id']] = $category['name'];
         }
 
