@@ -143,7 +143,11 @@ class FederalFilamentStorePage extends Page implements HasForms
             )
             ->when(
                 $this->selectedCategory,
-                fn($q) => $q->where('category_id', $this->selectedCategory)
+                function($q) {
+                    $q->whereHas('categories', function ($q) {
+                        $q->where('id', $this->selectedCategory);
+                    });
+                }
             )
             ->when(
                 $this->price_range,
@@ -175,10 +179,7 @@ class FederalFilamentStorePage extends Page implements HasForms
     protected function getFormSchema(): array
     {
         $categoryOptions = [];
-        //dd($this->productsCategories);
-
         foreach ($this->productsCategories as $category) {
-
             $categoryOptions[$category['id']] = $category['name'];
         }
 
