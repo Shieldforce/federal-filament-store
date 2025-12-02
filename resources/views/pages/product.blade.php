@@ -26,9 +26,16 @@
                 >
 
                     {{-- IMAGEM --}}
-                    <img
+                    {{--<img
                         class="h-64 w-full object-cover object-center rounded-xl shadow-lg"
                         :src="images[selected]"
+                        alt=""
+                    />--}}
+
+                    <img
+                        class="w-full h-[300px] object-cover object-center rounded-none"
+                        :src="images[selected]"
+                        alt=""
                     />
 
                     {{-- BOTÃO ESQUERDA --}}
@@ -57,9 +64,9 @@
                             <button
                                 @click="selected = index"
                                 :class="{
-                    'bg-white': selected === index,
-                    'bg-gray-400': selected !== index
-                }"
+                                    'bg-white': selected === index,
+                                    'bg-gray-400': selected !== index
+                                }"
                                 class="h-3 w-3 rounded-full ring-2 ring-white"
                             ></button>
                         </template>
