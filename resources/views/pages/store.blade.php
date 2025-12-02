@@ -6,7 +6,7 @@
             <x-filament::section class="!max-w-[480px] w-full !rounded-none" style="border-radius: 0 !important;">
                 {{ $this->form }}
 
-                <div class="flex justify-end mb-3">
+                <div class="flex justify-start mb-3 mt-3">
                     <x-filament::button
                         color="gray"
                         icon="heroicon-o-x-circle"
