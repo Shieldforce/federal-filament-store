@@ -22,6 +22,7 @@ class FederalFilamentStorePage extends Page implements HasForms
     protected static ?string $navigationLabel    = 'Loja de Produtos';
     protected static ?string $title              = 'Loja de Produtos';
     protected int            $perPage            = 6;
+    protected int            $page               = 1;
     public array             $result             = [];
     public array             $categories         = [];
     public array             $productsCategories = [];
@@ -74,8 +75,6 @@ class FederalFilamentStorePage extends Page implements HasForms
         $this->result = config('federal-filament-store.products_callback');
         $this->categories = config('federal-filament-store.categories_callback');
         $this->productsCategories = $this->arrayCategoriesExtract();
-
-        //dd($this->productsCategories);
     }
 
     public function arrayCategoriesExtract()
