@@ -19,9 +19,10 @@ class FederalFilamentProductPage extends Page implements HasForms
     protected static ?string $label           = 'Produto';
     protected static ?string $navigationLabel = 'Produto';
     protected static ?string $title           = 'Produto';
-    public array             $result             = [];
-    public array             $categories         = [];
+    public array             $result          = [];
+    public array             $categories      = [];
     public array             $product;
+    public                   $uuid;
 
     public function getLayout(): string
     {
@@ -59,14 +60,12 @@ class FederalFilamentProductPage extends Page implements HasForms
 
         $this->result = config('federal-filament-store.products_callback');
         $this->categories = config('federal-filament-store.categories_callback');
-
-        $this->product = array_filter($this->result, function ($product) {
-            return $product['uuid'] == request()->get('uuid');
-        });
-
-
-
-        dd($this->product, $this->result, request()->get('uuid'), request()->query('uuid'), $_SERVER);
+        $this->uuid = explode("/", $_SERVER["REQUEST_URI"])[3] ?? null;
+        $this->product = array_filter(
+            $this->result, function ($product) {
+            return $product['uuid'] == $this->uuid;
+        }
+        );
     }
 
     public function updated($property)
