@@ -17,21 +17,23 @@ class FederalFilamentStorePage extends Page implements HasForms
     use InteractsWithForms;
     use WithPagination;
 
-    protected static string $view = 'federal-filament-store::pages.store';
-    protected static ?string $label = 'Loja de Produtos';
-    protected static ?string $navigationLabel = 'Loja de Produtos';
-    protected static ?string $title = 'Loja de Produtos';
-    protected int $perPage = 6;
-    public array $result = [];
-    public array $categories = [];
-    public string $search = '';
-    public ?string $selectedCategory = null;
-    public ?string $data = null;
-    protected $queryString = [
-        'search' => ['except' => ''],
+    protected static string  $view             = 'federal-filament-store::pages.store';
+    protected static ?string $label            = 'Loja de Produtos';
+    protected static ?string $navigationLabel  = 'Loja de Produtos';
+    protected static ?string $title            = 'Loja de Produtos';
+    protected int            $perPage          = 6;
+    public array             $result           = [];
+    public array             $categories       = [];
+    public string            $search           = '';
+    public ?string           $selectedCategory = null;
+    public ?string           $price_range      = null;
+    public ?string           $price_range_min  = null;
+    public ?string           $price_range_max  = null;
+    protected                $queryString      = [
+        'search'           => ['except' => ''],
         'selectedCategory' => ['except' => null],
-        'data' => ['except' => null],
-        'page' => ['except' => 1], // controla a página atual
+        'price_range'      => ['except' => null],
+        'page'             => ['except' => 1],
     ];
 
     public function getLayout(): string
@@ -74,7 +76,8 @@ class FederalFilamentStorePage extends Page implements HasForms
 
     public function updated($property)
     {
-        // Reseta a paginação ao alterar filtros
+        dd($this->price_range);
+
         $this->resetPage();
     }
 
@@ -88,16 +91,22 @@ class FederalFilamentStorePage extends Page implements HasForms
         $filtered = collect($this->result)
             ->when(
                 $this->search,
-                fn($q) => $q->filter(fn($item) => str_contains(strtolower($item['name']), strtolower($this->search))
-                    || str_contains(strtolower($item['code']), strtolower($this->search)))
+                fn($q) => $q->filter(
+                    fn($item) => str_contains(strtolower($item['name']), strtolower($this->search))
+                        || str_contains(strtolower($item['code']), strtolower($this->search))
+                )
             )
             ->when(
                 $this->selectedCategory,
                 fn($q) => $q->where('category_id', $this->selectedCategory)
             )
             ->when(
-                $this->data,
-                fn($q) => $q->filter(fn($item) => isset($item['created_at']) && $item['created_at'] === $this->data)
+                $this->price_range,
+                fn($q) => $q->filter(
+                    fn($item) => isset($item['price'])
+                        && $item['price'] >= $this->price_range_min
+                        && $item['price'] <= $this->price_range_max
+                )
             )
             ->values()
             ->toArray();
@@ -112,7 +121,7 @@ class FederalFilamentStorePage extends Page implements HasForms
             $this->perPage,
             $page,
             [
-                'path' => request()->url(),
+                'path'  => request()->url(),
                 'query' => request()->query(),
             ]
         );
@@ -126,28 +135,33 @@ class FederalFilamentStorePage extends Page implements HasForms
         }
 
         return [
-            Grid::make(1)->schema([
-                TextInput::make('search')
-                    ->label('Palavra-chave')
-                    ->reactive(),
-
-                Select::make('selectedCategory')
-                    ->label('Escolha uma categoria')
-                    ->options($categoryOptions)
-                    ->reactive(),
-
-                Grid::make(2)->schema([
-                    TextInput::make('price_min')
-                        ->label('Preço mínimo')
-                        ->numeric()
+            Grid::make(1)->schema(
+                [
+                    TextInput::make('search')
+                        ->label('Palavra-chave')
                         ->reactive(),
 
-                    TextInput::make('price_max')
-                        ->label('Preço máximo')
-                        ->numeric()
+                    Select::make('selectedCategory')
+                        ->label('Escolha uma categoria')
+                        ->options($categoryOptions)
                         ->reactive(),
-                ]),
-            ]),
+
+                    Select::make('price_range')
+                        ->label('Média de Preço')
+                        ->options(
+                            [
+                                "R$ 1,00 - R$ 100,00",
+                                "R$ 101,00 - R$ 500,00",
+                                "R$ 501,00 - R$ 1000,00",
+                                "R$ 1001,00 - R$ 5.000,00",
+                                "Maior que 5.000,00",
+                            ]
+                        )
+                        ->reactive()
+                        ->default("R$ 1,00 - R$ 100,00")
+                        ->preload(),
+                ]
+            ),
         ];
     }
 }
