@@ -113,7 +113,7 @@ class FederalFilamentStorePage extends Page implements HasForms
         $offset = ($page - 1) * $this->perPage;
         $items = array_slice($filtered, $offset, $this->perPage);
 
-        if(isset($this->search)) {
+        if(!empty($this->search)) {
             dd([
                 $items,
                 count($filtered),
