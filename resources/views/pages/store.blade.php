@@ -1,27 +1,10 @@
 <x-filament::page class="!max-w-full !p-0">
-
     <div class="w-full flex flex-col md:flex-row gap-6">
 
         {{-- SIDEBAR --}}
-        <div
-            class="md:w-[480px] lg:w-[520px] xl:w-[560px] md:flex-none pl-6 filtros-store-ec"
-            style="border-radius: 0 !important;"
-        >
-            <x-filament::section class="!max-w-[480px] w-full !rounded-none" style="border-radius: 0 !important;">
-                {{--<h3 class="text-lg font-semibold mb-2">Filtros</h3>--}}
-
-                <x-filament-panels::form wire:submit="filtrar">
-                    {{ $this->form }}
-
-                    <x-filament::button
-                        type="submit"
-                        icon="heroicon-o-funnel"
-                        color="primary"
-                        class="w-full mt-4"
-                    >
-                        Aplicar filtros
-                    </x-filament::button>
-                </x-filament-panels::form>
+        <div class="md:w-[480px] lg:w-[520px] xl:w-[560px] md:flex-none pl-6 filtros-store-ec">
+            <x-filament::section class="!max-w-[480px] w-full !rounded-none">
+                {{ $this->form }}
             </x-filament::section>
         </div>
 
@@ -31,15 +14,12 @@
             {{-- PAGINAÇÃO SUPERIOR --}}
             <div class="flex justify-between items-center mb-4">
                 <div></div>
-                <div>
-                    {{ $this->paginatedProducts->links() }}
-                </div>
+                <div>{{ $this->paginatedProducts->links() }}</div>
             </div>
 
             {{-- GRID DE PRODUTOS --}}
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
                 @forelse($this->paginatedProducts as $product)
-
                     <div class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700
                                 rounded-2xl shadow-sm overflow-hidden hover:shadow-lg transition group">
 
@@ -47,16 +27,14 @@
                             <img
                                 height="170"
                                 style="height: 170px !important;"
-                                src="{{ isset($product['image'])
-                                        ? asset("storage/{$product['image']}")
-                                        : asset('vendor/federal-filament-store/files/not-products-image.png') }}"
+                                src="{{ $product['image'] ? asset("storage/{$product['image']}") : asset('vendor/federal-filament-store/files/not-products-image.png') }}"
                                 class="w-full h-48 object-cover transition-transform duration-300 group-hover:scale-105"
                             />
                         </div>
 
                         <div class="p-4 flex flex-col gap-3">
-                            <h3 class="font-semibold text-lg">{{ substr($product['name'], 0, 17) }}...</h3>
-                            <p class="text-gray-500 text-sm">{{ $product['code'] ? substr($product['code'], 0, 17)."..." : '' }}</p>
+                            <h3 class="font-semibold text-lg">{{ Str::limit($product['name'], 17) }}</h3>
+                            <p class="text-gray-500 text-sm">{{ $product['code'] ? Str::limit($product['code'], 17) : '' }}</p>
 
                             <div class="flex items-center justify-between mt-auto pt-2">
                                 <span class="text-xl font-bold text-primary-600">
@@ -75,29 +53,19 @@
                         </div>
 
                     </div>
-
                 @empty
-                    <div
-                        class="
-                            col-span-full
-                            flex items-center p-6 bg-white dark:bg-gray-800 border
-                            border-gray-200 dark:border-gray-700 rounded-2xl shadow-md
-                        "
-                        style="margin-top: 38px !important;"
-                    >
+                    <div class="col-span-full flex items-center p-6 bg-white dark:bg-gray-800 border
+                                border-gray-200 dark:border-gray-700 rounded-2xl shadow-md mt-6">
 
-                        <!-- Imagem/Ícone ilustrativo -->
                         <div class="flex-shrink-0 mr-6">
                             <img
                                 width="150"
                                 src="{{ asset('vendor/federal-filament-store/files/not-products-image.png') }}"
                                 alt="Nenhum produto encontrado"
                                 class="w-24 h-24 object-contain"
-                                style="margin-right: 30px;"
                             />
                         </div>
 
-                        <!-- Texto -->
                         <div class="flex flex-col justify-center">
                             <h3 class="text-gray-600 dark:text-gray-300 text-lg font-semibold mb-1">
                                 Nenhum produto encontrado
@@ -114,13 +82,9 @@
             {{-- PAGINAÇÃO INFERIOR --}}
             <div class="flex justify-between items-center mt-6">
                 <div></div>
-                <div>
-                    {{ $this->paginatedProducts->links() }}
-                </div>
+                <div>{{ $this->paginatedProducts->links() }}</div>
             </div>
 
         </div>
-
     </div>
-
 </x-filament::page>
