@@ -69,7 +69,7 @@
                             />
                         </div>
 
-                        <div class="flex flex-col justify-center ml-5">
+                        <div class="flex flex-col justify-center ml-5" style="margin-left: 30px !important;">
                             <h3 class="text-gray-600 dark:text-gray-300 text-lg font-semibold mb-1">
                                 Nenhum produto encontrado
                             </h3>
