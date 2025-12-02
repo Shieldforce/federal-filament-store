@@ -6,9 +6,9 @@
             <x-filament::section class="!max-w-[480px] w-full !rounded-none" style="border-radius: 0 !important;">
                 {{ $this->form }}
 
-                <div class="flex justify-start mb-3 mt-3">
+                <div class="flex justify-start mb-3 mt-5">
                     <x-filament::button
-                        color="gray"
+                        color="red"
                         icon="heroicon-o-x-circle"
                         wire:click="clearFilters"
                         size="sm"
