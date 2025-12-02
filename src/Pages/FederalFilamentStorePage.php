@@ -71,14 +71,11 @@ class FederalFilamentStorePage extends Page implements HasForms
 
         $this->result = config('federal-filament-store.products_callback');
         $this->categories = config('federal-filament-store.categories_callback');
-
-        //$this->filtrar();
     }
 
     public function updated($property)
     {
         $this->resetPage();
-        //$this->filtrar();
     }
 
     public function addToCart($id)
@@ -87,13 +84,6 @@ class FederalFilamentStorePage extends Page implements HasForms
 
         dd("teste");
     }
-
-    /*public function filtrar()
-    {
-        $list = $this->getData();
-
-        $this->result = $list;
-    }*/
 
     protected function getData(): array
     {
@@ -122,6 +112,19 @@ class FederalFilamentStorePage extends Page implements HasForms
         $page = $this->getPage();
         $offset = ($page - 1) * $this->perPage;
         $items = array_slice($filtered, $offset, $this->perPage);
+
+        if(isset($this->search)) {
+            dd([
+                $items,
+                count($filtered),
+                $this->perPage,
+                $page,
+                [
+                    'path' => request()->url(),
+                    'query' => request()->query(),
+                ]
+            ]);
+        }
 
         return new LengthAwarePaginator(
             $items,
