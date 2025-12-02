@@ -71,6 +71,7 @@
                     <br>
                     <hr>
                     <br>
+                    <br>
 
                     {!! $this->product['description'] ?? '' !!}
 
