@@ -75,7 +75,7 @@ class FederalFilamentStorePage extends Page implements HasForms
         $this->filtrar();
     }
 
-    public function updated()
+    public function updated($property)
     {
         $this->resetPage();
         $this->filtrar();
@@ -102,7 +102,6 @@ class FederalFilamentStorePage extends Page implements HasForms
 
     public function getPaginatedProductsProperty()
     {
-        // Aplica os filtros
         $filtered = collect($this->result)
             ->when(
                 $this->search,
@@ -138,26 +137,26 @@ class FederalFilamentStorePage extends Page implements HasForms
 
     protected function getFormSchema(): array
     {
-        $categories = [];
-
+        $categoryOptions = [];
         foreach ($this->categories as $category) {
-            $categories[$category['id']] = $category['name'];
+            $categoryOptions[$category['id']] = $category['name'];
         }
 
         return [
             Grid::make(1)->schema([
-
                 TextInput::make('search')
-                    ->label('Palavra-chave'),
+                    ->label('Palavra-chave')
+                    ->reactive(),
 
-                Select::make('categories')
+                Select::make('selectedCategory')
                     ->label('Categorias')
-                    ->options($categories),
+                    ->options($categoryOptions)
+                    ->reactive(),
 
                 DatePicker::make('data')
                     ->label('Data')
-                    ->format('Y-m-d'),
-
+                    ->format('Y-m-d')
+                    ->reactive(),
             ]),
         ];
     }
