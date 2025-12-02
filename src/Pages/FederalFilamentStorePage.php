@@ -9,6 +9,8 @@ use Filament\Forms\Components\TextInput;
 use Filament\Pages\Page;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
+use Filament\Tables\Columns\Summarizers\Average;
+use Filament\Tables\Columns\TextColumn;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Auth;
 use Livewire\WithPagination;
@@ -103,10 +105,6 @@ class FederalFilamentStorePage extends Page implements HasForms
             ->values()
             ->toArray();
 
-        if(!empty($this->search) || !empty($this->selectedCategory) || !empty($this->data)) {
-            //
-        }
-
         $page = $this->getPage();
         $offset = ($page - 1) * $this->perPage;
         $items = array_slice($filtered, $offset, $this->perPage);
@@ -137,14 +135,24 @@ class FederalFilamentStorePage extends Page implements HasForms
                     ->reactive(),
 
                 Select::make('selectedCategory')
-                    ->label('Categorias')
+                    ->label('Escolha uma categoria')
                     ->options($categoryOptions)
                     ->reactive(),
 
-                DatePicker::make('data')
-                    ->label('Data')
-                    ->format('Y-m-d')
-                    ->reactive(),
+                TextColumn::make('rating')
+                    ->summarize(Average::make()->numeric()),
+
+                Grid::make(2)->schema([
+                    TextInput::make('price_min')
+                        ->label('Preço mínimo')
+                        ->numeric()
+                        ->reactive(),
+
+                    TextInput::make('price_max')
+                        ->label('Preço máximo')
+                        ->numeric()
+                        ->reactive(),
+                ]),
             ]),
         ];
     }
