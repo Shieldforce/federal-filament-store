@@ -88,10 +88,14 @@ class FederalFilamentStorePage extends Page implements HasForms
             }
         }
 
-        $unique = array_values(array_reduce($productsCategories, function ($carry, $item) {
-            $carry[$item['id']] = $item;
-            return $carry;
-        }, []));
+        $unique = array_values(
+            array_reduce(
+                $productsCategories, function ($carry, $item) {
+                $carry[$item['id']] = $item;
+                return $carry;
+            },  []
+            )
+        );
 
         return $unique;
     }
@@ -133,7 +137,9 @@ class FederalFilamentStorePage extends Page implements HasForms
 
     public function clearFilters()
     {
-        $this->resetPage();
+        $this->search = null;
+        $this->price_range = null;
+        $this->selectedCategory = null;
     }
 
     public function getPaginatedProductsProperty()
@@ -148,10 +154,12 @@ class FederalFilamentStorePage extends Page implements HasForms
             )
             ->when(
                 $this->selectedCategory,
-                fn($q) => $q->filter(function ($item) {
-                    return collect($item['categories'] ?? [])
-                        ->contains(fn($cat) => $cat['id'] == $this->selectedCategory);
-                })
+                fn($q) => $q->filter(
+                    function ($item) {
+                        return collect($item['categories'] ?? [])
+                            ->contains(fn($cat) => $cat['id'] == $this->selectedCategory);
+                    }
+                )
             )
             ->when(
                 $this->price_range,
