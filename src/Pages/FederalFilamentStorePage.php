@@ -158,6 +158,7 @@ class FederalFilamentStorePage extends Page implements HasForms
     {
         $categoryOptions = [];
         foreach ($this->productsCategories as $category) {
+            dd($category);
             $categoryOptions[$category['id']] = $category['name'];
         }
 
