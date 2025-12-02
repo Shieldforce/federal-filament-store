@@ -41,6 +41,7 @@ class FederalFilamentStorePlugin implements Plugin
                     ->visible()
                     ->label('Produtos')
                     ->url("/admin/ffs-store")
+                    ->sort(998)
                     ->icon('heroicon-o-shopping-bag')/*
                     ->group("Loja")*/,
                 NavigationItem::make('cart')
@@ -48,6 +49,7 @@ class FederalFilamentStorePlugin implements Plugin
                     ->label('Carrinho')
                     ->url("/admin/ffs-cart")
                     ->icon('heroicon-o-shopping-cart')
+                    ->sort(999)
                     ->badge(function () {
                         return session()->get('cart_count', 0);
                     }, 'danger')/*
