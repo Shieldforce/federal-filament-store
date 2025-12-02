@@ -4,6 +4,12 @@
         {{-- SIDEBAR --}}
         <div class="md:w-[480px] lg:w-[520px] xl:w-[560px] md:flex-none pl-6 config-product-ec">
             <x-filament::section class="!max-w-[480px] w-full !rounded-none">
+                <h1>
+                    {{ isset($this->product['price'])
+                    ? number_format($this->product['price'], 2, ',', '.') :
+                    null }}
+                </h1>
+
                 {{ $this->form }}
             </x-filament::section>
         </div>
