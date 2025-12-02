@@ -131,6 +131,11 @@ class FederalFilamentStorePage extends Page implements HasForms
         dd("Produto adicionado ao carrinho: {$id}");
     }
 
+    public function clearFilters()
+    {
+        $this->resetPage();
+    }
+
     public function getPaginatedProductsProperty()
     {
         $filtered = collect($this->result)

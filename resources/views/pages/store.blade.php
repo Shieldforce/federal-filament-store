@@ -8,7 +8,7 @@
 
                 <div class="flex justify-start mb-3 mt-5">
                     <x-filament::button
-                        color="red"
+                        color="danger"
                         icon="heroicon-o-x-circle"
                         wire:click="clearFilters"
                         size="sm"
