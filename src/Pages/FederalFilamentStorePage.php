@@ -90,7 +90,7 @@ class FederalFilamentStorePage extends Page implements HasForms
         $unique = array_values(
             array_reduce(
                 $productsCategories, function ($carry, $item) {
-                $carry[$item['id']] = $item;
+                $carry[$item['uuid']] = $item;
                 return $carry;
             },  []
             )
