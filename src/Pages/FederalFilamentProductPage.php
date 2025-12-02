@@ -65,7 +65,7 @@ class FederalFilamentProductPage extends Page implements HasForms
         });
 
 
-        dd($this->product, $this->result);
+        dd($this->product, $this->result, request()->get('uuid'), request()->query('uuid'));
     }
 
     public function updated($property)
