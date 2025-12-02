@@ -3,7 +3,7 @@
 
         {{-- SIDEBAR --}}
         <div class="md:w-[480px] lg:w-[520px] xl:w-[560px] md:flex-none pl-6 filtros-store-ec">
-            <x-filament::section class="!max-w-[480px] w-full !rounded-none" style="border-radius: 0 !important;">
+            <x-filament::section class="!max-w-[480px] w-full !rounded-none">
                 {{ $this->form }}
 
                 <div class="flex mb-3" style="margin-top: 20px !important;">
@@ -31,8 +31,11 @@
             {{-- GRID DE PRODUTOS --}}
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
                 @forelse($this->paginatedProducts as $product)
-                    <div class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700
-                                rounded-2xl shadow-sm overflow-hidden hover:shadow-lg transition group">
+                    <div
+                        class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700
+                                rounded-2xl shadow-sm overflow-hidden hover:shadow-lg transition group"
+                        style="border-radius: 10px !important;"
+                    >
 
                         <div class="relative overflow-hidden">
                             <img
