@@ -76,9 +76,21 @@ class FederalFilamentStorePage extends Page implements HasForms
 
     public function updated($property)
     {
-        dd($this->price_range);
-
+        dd($property);
+        $this->rangePriceMount();
         $this->resetPage();
+    }
+
+    public function rangePriceMount()
+    {
+        $this->price_range;
+
+        $this->price_range_min = $this->search;
+        $this->price_range_max = $this->search;
+
+        return [
+
+        ];
     }
 
     public function addToCart($id)
@@ -150,15 +162,16 @@ class FederalFilamentStorePage extends Page implements HasForms
                         ->label('Média de Preço')
                         ->options(
                             [
-                                "R$ 1,00 - R$ 100,00",
-                                "R$ 101,00 - R$ 500,00",
-                                "R$ 501,00 - R$ 1000,00",
-                                "R$ 1001,00 - R$ 5.000,00",
-                                "Maior que 5.000,00",
+                                1 => "Qualquer Preço",
+                                2 => "R$ 1,00 - R$ 100,00",
+                                3 => "R$ 101,00 - R$ 500,00",
+                                4 => "R$ 501,00 - R$ 1000,00",
+                                5 => "R$ 1001,00 - R$ 5.000,00",
+                                6 => "Maior que 5.000,00",
                             ]
                         )
                         ->reactive()
-                        ->default("R$ 1,00 - R$ 100,00")
+                        ->default(1)
                         ->preload(),
                 ]
             ),
