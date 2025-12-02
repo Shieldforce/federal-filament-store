@@ -51,7 +51,7 @@
                             <p class="text-gray-500 text-sm">{{ $product['code'] ? Str::limit($product['code'], 17) : '' }}</p>
 
                             <div class="flex items-center justify-between mt-auto pt-2">
-                                <span class="text-base font-bold text-info-600">
+                                <span class="text-base font-bold text-success">
                                     R$ {{ number_format($product['price'], 2, ',', '.') }}
                                 </span>
 
