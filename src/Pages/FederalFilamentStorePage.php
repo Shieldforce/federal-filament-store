@@ -88,7 +88,12 @@ class FederalFilamentStorePage extends Page implements HasForms
             }
         }
 
-        return array_filter($productsCategories);
+        $unique = array_values(array_reduce($productsCategories, function ($carry, $item) {
+            $carry[$item['id']] = $item;
+            return $carry;
+        }, []));
+
+        return $unique;
     }
 
     public function updated($property)
