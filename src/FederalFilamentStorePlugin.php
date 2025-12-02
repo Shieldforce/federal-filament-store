@@ -28,7 +28,7 @@ class FederalFilamentStorePlugin implements Plugin
                     ->name('ffs-store.store.external')
                     ->defaults('external', 1);
 
-                Route::get('/ffs-product/{product?}', FederalFilamentProductPage::class)
+                Route::get('/ffs-product/{uuid?}', FederalFilamentProductPage::class)
                     ->name('ffs-product.product.external')
                     ->defaults('external', 1);
 

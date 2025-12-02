@@ -129,9 +129,9 @@ class FederalFilamentStorePage extends Page implements HasForms
         return $return[$this->price_range] ?? ['min' => 0, 'max' => 9999999999];
     }
 
-    public function addToCart($id)
+    public function addToCart($uuid)
     {
-        redirect("/admin/ffs-product/$id");
+        redirect("/admin/ffs-product/$uuid");
     }
 
     public function clearFilters()
@@ -156,7 +156,7 @@ class FederalFilamentStorePage extends Page implements HasForms
                 fn($q) => $q->filter(
                     function ($item) {
                         return collect($item['categories'] ?? [])
-                            ->contains(fn($cat) => $cat['id'] == $this->selectedCategory);
+                            ->contains(fn($cat) => $cat['uuid'] == $this->selectedCategory);
                     }
                 )
             )
@@ -191,7 +191,7 @@ class FederalFilamentStorePage extends Page implements HasForms
     {
         $categoryOptions = [];
         foreach ($this->productsCategories as $category) {
-            $categoryOptions[$category['id']] = $category['name'];
+            $categoryOptions[$category['uuid']] = $category['name'];
         }
 
         return [

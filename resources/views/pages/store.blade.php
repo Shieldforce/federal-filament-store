@@ -56,7 +56,7 @@
                                 </span>
 
                                 <x-filament::button
-                                    wire:click="addToCart({{ $product['id'] }})"
+                                    wire:click="addToCart({{ $product['uuid'] }})"
                                     color="primary"
                                     icon="heroicon-o-shopping-cart"
                                     size="sm"
