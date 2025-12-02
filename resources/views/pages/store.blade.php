@@ -55,14 +55,14 @@
                                     R$ {{ number_format($product['price'], 2, ',', '.') }}
                                 </span>
 
-                                {{--<x-filament::button
-                                    wire:click="addToCart({{ $product['uuid'] }})"
+                                <x-filament::button
+                                    wire:click="addToCart('{{ $product['uuid'] }}')"
                                     color="primary"
                                     icon="heroicon-o-shopping-cart"
                                     size="sm"
                                 >
                                     Ver detalhes
-                                </x-filament::button>--}}
+                                </x-filament::button>
                             </div>
                         </div>
 
