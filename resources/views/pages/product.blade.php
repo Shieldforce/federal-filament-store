@@ -111,9 +111,9 @@
                     {{-- UPLOAD DE IMAGEM --}}
                     <div>
                         <x-filament::input.wrapper>
-                            <x-filament::input.label>
+                            <x-filament::input>
                                 Enviar Imagem (opcional)
-                            </x-filament::input.label>
+                            </x-filament::input>
 
                             <input
                                 type="file"
