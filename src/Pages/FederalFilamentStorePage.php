@@ -93,8 +93,8 @@ class FederalFilamentStorePage extends Page implements HasForms
                 str_contains(strtolower($item['name']), strtolower($filters['search'])) ||
                 str_contains(strtolower($item['code']), strtolower($filters['search']))
             ))
-            ->when($filters['selectedCategory'], fn($q) => $q->where('category_id', $filters['selectedCategory']))
-            ->when($filters['data'], fn($q) => $q->filter(fn($item) => $item['created_at'] === $filters['data']))
+            //->when($filters['selectedCategory'], fn($q) => $q->where('category_id', $filters['selectedCategory']))
+            //->when($filters['data'], fn($q) => $q->filter(fn($item) => $item['created_at'] === $filters['data']))
             ->values()
             ->toArray();
 
