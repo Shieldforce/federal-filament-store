@@ -25,7 +25,7 @@ class FederalFilamentStorePage extends Page implements HasForms
     public array             $result             = [];
     public array             $categories         = [];
     public array             $productsCategories = [];
-    public ?string           $search             = null;
+    public string            $search             = '';
     public ?string           $selectedCategory   = null;
     public ?string           $price_range        = null;
     public ?string           $price_range_min    = null;

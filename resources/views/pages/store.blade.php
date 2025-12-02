@@ -6,13 +6,12 @@
             <x-filament::section class="!max-w-[480px] w-full !rounded-none" style="border-radius: 0 !important;">
                 {{ $this->form }}
 
-                <div class="flex justify-start mb-3" style="margin-top: 20px !important;">
+                <div class="flex mb-3" style="margin-top: 20px !important;">
                     <x-filament::button
                         color="danger"
                         icon="heroicon-o-x-circle"
                         wire:click="clearFilters"
                         size="sm"
-                        :extra-attributes="['class' => 'w-full flex justify-center']"
                     >
                         Limpar filtros
                     </x-filament::button>
