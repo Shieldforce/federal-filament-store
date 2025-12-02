@@ -131,7 +131,11 @@ class FederalFilamentStorePage extends Page implements HasForms
 
     public function addToCart($uuid)
     {
-        redirect("/admin/ffs-product/$uuid");
+        $url = $_SERVER;
+
+        dd($url);
+
+        redirect(env("APP_URL"). "/admin/ffs-product/$uuid");
     }
 
     public function clearFilters()
