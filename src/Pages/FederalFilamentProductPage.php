@@ -34,7 +34,7 @@ class FederalFilamentProductPage extends Page implements HasForms
 
     public static function getSlug(): string
     {
-        return 'external-ffs-product/{uuid}';
+        return 'external-ffs-product';
     }
 
     public static function shouldRegisterNavigation(): bool
@@ -65,7 +65,8 @@ class FederalFilamentProductPage extends Page implements HasForms
         });
 
 
-        dd($this->product, $this->result, request()->get('uuid'), request()->query('uuid'));
+
+        dd($this->product, $this->result, request()->get('uuid'), request()->query('uuid'), $_SERVER);
     }
 
     public function updated($property)
