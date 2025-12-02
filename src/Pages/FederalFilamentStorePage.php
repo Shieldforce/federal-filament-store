@@ -143,11 +143,10 @@ class FederalFilamentStorePage extends Page implements HasForms
             )
             ->when(
                 $this->selectedCategory,
-                function($q) {
-                    $q->whereHas('categories', function ($q) {
-                        $q->where('id', $this->selectedCategory);
-                    });
-                }
+                fn($q) => $q->filter(function ($item) {
+                    return collect($item['categories'] ?? [])
+                        ->contains(fn($cat) => $cat['id'] == $this->selectedCategory);
+                })
             )
             ->when(
                 $this->price_range,
