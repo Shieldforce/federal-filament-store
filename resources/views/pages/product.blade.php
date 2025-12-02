@@ -9,7 +9,7 @@
         </div>
 
         <div class="flex-1 pr-6">
-            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+            <div class="gap-6">
                 <div
                     x-data="{
                         selected: 0,
@@ -26,14 +26,8 @@
                 >
 
                     {{-- IMAGEM --}}
-                    {{--<img
-                        class="h-64 w-full object-cover object-center rounded-xl shadow-lg"
-                        :src="images[selected]"
-                        alt=""
-                    />--}}
-
                     <img
-                        class="w-full h-[300px] object-cover object-center rounded-none"
+                        class="h-64 w-full object-cover object-center rounded-xl shadow-lg"
                         :src="images[selected]"
                         alt=""
                     />
