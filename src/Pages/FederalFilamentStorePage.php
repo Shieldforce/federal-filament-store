@@ -76,21 +76,32 @@ class FederalFilamentStorePage extends Page implements HasForms
 
     public function updated($property)
     {
-        dd($property);
-        $this->rangePriceMount();
+        if ($property == 'price_range') {
+            $this->rangePriceMount();
+        }
+
         $this->resetPage();
     }
 
     public function rangePriceMount()
     {
-        $this->price_range;
+        $values = $this->rangePriceValue();
+        $this->price_range_min = $values['min'] ?? null;
+        $this->price_range_max = $values['max'] ?? null;
+    }
 
-        $this->price_range_min = $this->search;
-        $this->price_range_max = $this->search;
-
-        return [
-
+    public function rangePriceValue()
+    {
+        $return = [
+            1 => ['min' => 0, 'max' => 9999999999],
+            2 => ['min' => 1.00, 'max' => 100.00],
+            3 => ['min' => 101.00, 'max' => 500.00],
+            4 => ['min' => 501.00, 'max' => 1000.00],
+            5 => ['min' => 1001.00, 'max' => 5000.00],
+            6 => ['min' => 5000.00, 'max' => 9999999999],
         ];
+
+        return $return[$this->price_range] ?? ['min' => 0, 'max' => 9999999999];
     }
 
     public function addToCart($id)
