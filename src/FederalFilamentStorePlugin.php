@@ -48,6 +48,9 @@ class FederalFilamentStorePlugin implements Plugin
                     ->label('Carrinho')
                     ->url("/admin/ffs-cart")
                     ->icon('heroicon-o-shopping-cart')
+                    ->badge(function () {
+                        return session()->get('cart_count', 0);
+                    }, 'danger')
                     ->group("Loja"),
             ])
             ->pages([
