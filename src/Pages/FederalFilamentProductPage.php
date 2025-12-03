@@ -244,7 +244,7 @@ class FederalFilamentProductPage extends Page implements HasForms
 
         $exists = false;
 
-        $cart = json_decode($cartModel->items ?? [], true);
+        $cart = $cartModel->items ?? [];
 
         foreach ($cart as &$item) {
             if ($item['uuid'] === $this->product['uuid']) {
@@ -263,7 +263,7 @@ class FederalFilamentProductPage extends Page implements HasForms
             ];
         }
 
-        $cartModel->update(["items" => $cart]);
+        $cartModel->update(["items" => json_encode($cart)]);
     }
 }
 
