@@ -193,7 +193,7 @@ class FederalFilamentProductPage extends Page implements HasForms
             )
             ->send();
 
-        $this->dispatch('redirect-after-delay', ['url' => '/admin/ffs-store', 'delay' => 30000]);
+        //$this->dispatch('redirect-after-delay', ['url' => '/admin/ffs-store', 'delay' => 30000]);
     }
 
     public function finish()
