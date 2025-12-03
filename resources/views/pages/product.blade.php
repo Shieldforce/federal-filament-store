@@ -128,5 +128,11 @@
             const badge = document.querySelector('.fi-topbar-item a[href="/admin/ffs-cart"] .fi-badge .truncate');
             if(badge) badge.textContent = count;
         }
+
+        window.addEventListener('redirect-after-delay', event => {
+            setTimeout(() => {
+                window.location.href = event.detail.url;
+            }, event.detail.delay);
+        });
     </script>
 @endpush

@@ -208,11 +208,14 @@ class FederalFilamentProductPage extends Page implements HasForms
             ->title('Item adicionado ao carrinho!')
             ->body("Redirecionando para Loja em 30 segundos....")
             ->seconds(30)
+            ->actions(
+                [
+                    'Ir para a Loja', fn() => redirect('/admin/ffs-store')
+                ]
+            )
             ->send();
 
-        sleep(30);
-
-        return redirect("/admin/ffs-store");
+        $this->dispatch('redirect-after-delay', ['url' => '/admin/ffs-store', 'delay' => 30000]);
     }
 
     public function finish()
