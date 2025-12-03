@@ -2,11 +2,11 @@
 
 namespace Shieldforce\FederalFilamentStore\Pages;
 
-use Closure;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Concerns\InteractsWithForms;
+use Filament\Forms\Get;
 use Filament\Notifications\Notification;
 use Filament\Pages\Page;
 use Filament\Forms\Contracts\HasForms;
@@ -126,8 +126,8 @@ class FederalFilamentProductPage extends Page implements HasForms
                         ->label('Imagens Necessárias')
                         ->rules(
                             [
-                                function (Closure $get) {
-                                    $amount = (int)$get('amount');
+                                function (Get $get) {
+                                    $amount = (int) $get('amount');
                                     return "size:$amount";
                                 },
                             ]
