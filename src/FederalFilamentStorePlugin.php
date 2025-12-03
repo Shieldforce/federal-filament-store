@@ -5,6 +5,7 @@ namespace Shieldforce\FederalFilamentStore;
 use Filament\Contracts\Plugin;
 use Filament\Navigation\NavigationItem;
 use Filament\Panel;
+use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Route;
 use Ramsey\Uuid\Uuid;
 use Shieldforce\FederalFilamentStore\Enums\StatusCartEnum;
@@ -87,7 +88,7 @@ class FederalFilamentStorePlugin implements Plugin
                                     ['status' => StatusCartEnum::comprando->value]
                                 );
 
-                                request()->cookie('cart_uuid', $cartModel->uuid);
+                                Cookie::queue('cart_uuid', $cartModel->uuid, 60 * 24 * 30);
 
                                 return collect(json_decode($cartModel->items, true))->sum('amount');
 
