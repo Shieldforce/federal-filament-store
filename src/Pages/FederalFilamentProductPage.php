@@ -85,6 +85,8 @@ class FederalFilamentProductPage extends Page implements HasForms
         foreach ($this->product['images'] ?? [] as $image) {
             $this->images[] = env("APP_URL") . "/storage/" . $image['path'];
         }
+
+        $this->amount = 1;
     }
 
     public function updated($property)
