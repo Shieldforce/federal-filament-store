@@ -66,7 +66,7 @@ class FederalFilamentStorePlugin implements Plugin
                         ->badge(
                             function () {
 
-                                dd($cart = json_decode(request()->cookie('cart_items'), true));
+                                //dd($cart = json_decode(request()->cookie('cart_items'), true));
 
                                 $mt = microtime();
 
@@ -75,23 +75,18 @@ class FederalFilamentStorePlugin implements Plugin
                                     (string)date('dmYH:i:s') . "-" . $mt
                                 )->toString();
 
-                                $cart = Cart::updateOrCreate(
+                                $cartModel = Cart::updateOrCreate(
                                     ["identifier" => $identifier],
                                     ['status' => StatusCartEnum::comprando,]
                                 );
 
-                                $cart = [
-                                    'uuid'     => $cart->uuid,
-                                    'identify' => $cart->identifier,
-                                ];
-
                                 cookie()->queue(
-                                    cookie('cart_items', json_encode($cart), 60 * 24 * 30)
+                                    cookie('cart_uuid', $cartModel->uuid, 60 * 24 * 30)
                                 );
 
-                                $cart = json_decode(request()->cookie('cart_items'), true);
+                                $cartUuid = json_decode(request()->cookie('cart_uuid'), true);
 
-                                dd(collect($cart));
+                                dd(collect($cartUuid));
                                 /*return collect($cart)->sum('amount');
 
                                 $up = ["identify" => $cart_identify,];
