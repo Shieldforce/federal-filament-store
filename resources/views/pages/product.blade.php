@@ -30,9 +30,8 @@
                     <x-filament::button
                         color="success"
                         icon="heroicon-o-check-circle"
-                        type="button"
+                        type="submit"
                         class="w-full py-3 text-center"
-                        wire:click="submit('{{ $this->product['uuid'] }}')"
                     >
                         Finalizar Compra
                     </x-filament::button>
