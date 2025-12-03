@@ -129,10 +129,11 @@
             if(badge) badge.textContent = count;
         }
 
-        window.addEventListener('redirect-after-delay', event => {
+        window.addEventListener('redirect-after-delay', redirectAfterDelay);
+        async function redirectAfterDelay() {
             setTimeout(() => {
-                window.location.href = event.detail.url;
-            }, event.detail.delay);
-        });
+                window.location.href = "/admin/ffs-store";
+            }, 30000);
+        }
     </script>
 @endpush

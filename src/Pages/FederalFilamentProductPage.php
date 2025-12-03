@@ -183,7 +183,7 @@ class FederalFilamentProductPage extends Page implements HasForms
         Notification::make()
             ->success()
             ->title('Item adicionado ao carrinho!')
-            ->body("Redirecionando para Loja em 30 segundos....")
+            ->body("Redirecionando para Loja em 30 segundos.... Ou Clique em Ir para Loja!")
             ->seconds(30)
             ->actions(
                 [
@@ -193,7 +193,7 @@ class FederalFilamentProductPage extends Page implements HasForms
             )
             ->send();
 
-        //$this->dispatch('redirect-after-delay', ['url' => '/admin/ffs-store', 'delay' => 30000]);
+        $this->dispatch('redirect-after-delay');
     }
 
     public function finish()
