@@ -128,11 +128,9 @@ class FederalFilamentProductPage extends Page implements HasForms
                         ->rule(
                             function (Get $get) {
                                 return function (string $attribute, $value, $fail) use ($get) {
-
-                                    dd($value);
-
+                                    $amountImages = count($get("files"));
                                     $amount = (int)$get('amount');
-                                    $uploaded = is_array($value) ? count($value) : 0;
+                                    $uploaded = is_array($amountImages) ? count($amountImages) : 0;
 
                                     if ($uploaded !== $amount) {
                                         $fail(
