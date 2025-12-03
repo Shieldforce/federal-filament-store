@@ -178,16 +178,13 @@ class FederalFilamentProductPage extends Page implements HasForms
     public function addCart()
     {
         $data = $this->form->getState();
-
         $cart = json_decode(request()->cookie('cart_items', '[]'), true);
-
-        // Verifica se o item já está no carrinho
         $exists = false;
 
         foreach ($cart as &$item) {
             if ($item['uuid'] === $this->product['uuid']) {
                 // Atualiza apenas a quantidade
-                $item['amount'] += (int) $this->amount;
+                $item['amount'] += (int)$this->amount;
                 $exists = true;
                 break;
             }
@@ -197,35 +194,34 @@ class FederalFilamentProductPage extends Page implements HasForms
             $cart[] = [
                 'uuid'   => $this->product['uuid'],
                 'name'   => $this->product['name'],
-                'amount' => (int) $this->amount,
+                'amount' => (int)$this->amount,
                 'price'  => $this->product['price'],
             ];
         }
 
-        // Atualiza o cookie por 30 dias
         cookie()->queue(
             cookie('cart_items', json_encode($cart), 60 * 24 * 30)
         );
 
-        // Atualiza o badge do carrinho (evento JS)
-        $this->dispatch('$refresh');
-
         Notification::make()
             ->success()
             ->title('Item adicionado ao carrinho!')
+            ->body("Redirecionando para Loja em 30 segundos....")
+            ->seconds(30)
             ->send();
+
+        sleep(30);
+
+        return redirect("/admin/ffs-store");
     }
 
     public function finish()
     {
         $data = $this->form->getState();
 
-        // Limpa o carrinho
         cookie()->queue(
             cookie()->forget('cart_items')
         );
-
-        $this->dispatch('$refresh');
 
         Notification::make()
             ->success()
