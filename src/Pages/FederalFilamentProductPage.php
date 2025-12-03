@@ -27,6 +27,7 @@ class FederalFilamentProductPage extends Page implements HasForms
     public array             $images          = [];
     public array             $product;
     public                   $uuid;
+    public int               $amount;
 
     public function getTitle(): string|Htmlable
     {
@@ -99,7 +100,9 @@ class FederalFilamentProductPage extends Page implements HasForms
                     TextInput::make('amount')
                         ->label('Quantidade')
                         ->numeric()
-                        ->required(),
+                        ->required()
+                        ->default(1)
+                        ->minValue(1),
                 ]
             ),
         ];
