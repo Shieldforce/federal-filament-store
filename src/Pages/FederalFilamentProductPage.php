@@ -179,7 +179,7 @@ class FederalFilamentProductPage extends Page implements HasForms
 
     public function addCart()
     {
-        $data = $this->form->getState();
+        // $data = $this->form->getState();
 
         Notification::make()
             ->success()
@@ -254,12 +254,15 @@ class FederalFilamentProductPage extends Page implements HasForms
             }
         }
 
+        dd($this->files);
+
         if (!$exists) {
             $cart[] = [
                 'uuid'   => $this->product['uuid'],
                 'name'   => $this->product['name'],
                 'amount' => (int)$this->amount,
                 'price'  => $this->product['price'],
+                'images' => [],
             ];
         }
 
