@@ -75,7 +75,6 @@ class FederalFilamentStorePlugin implements Plugin
                                     ->first();
 
                                 if (isset($cartModel->id)) {
-                                    dd("teste");
                                     return collect(json_decode($cartModel->items, true))
                                         ->sum('amount');
                                 }
@@ -89,6 +88,8 @@ class FederalFilamentStorePlugin implements Plugin
                                     value: $tokenSession,
                                     minutes: $minutes
                                 );
+
+                                Cookie::queue($tt);
 
                                 $identifier = $tt->getValue();
 
