@@ -73,4 +73,9 @@ class FederalFilamentCartPage extends Page implements HasForms
         return [];
     }
 
+    public static function getNavigationBadge(): ?string
+    {
+        return 99999;
+    }
+
 }
