@@ -12,34 +12,35 @@
 
                 <form wire:submit="submit">
                     {{ $this->form }}
+
+
+                    <br>
+                    <hr>
+                    <div class="flex flex-col mt-4 gap-4 w-full">
+
+                        {{-- ADICIONAR AO CARRINHO --}}
+                        <x-filament::button
+                            color="primary"
+                            icon="heroicon-o-shopping-cart"
+                            class="w-full py-3 text-center"
+                            wire:click="addCart('{{ $this->product['uuid'] }}')"
+                            type="button"
+                        >
+                            Adicionar
+                        </x-filament::button>
+
+                        {{-- FINALIZAR COMPRA --}}
+                        <x-filament::button
+                            color="success"
+                            icon="heroicon-o-check-circle"
+                            type="submit"
+                            class="w-full py-3 text-center"
+                        >
+                            Finalizar Compra
+                        </x-filament::button>
+
+                    </div>
                 </form>
-
-                <br>
-                <hr>
-                <div class="flex flex-col mt-4 gap-4 w-full">
-
-                    {{-- ADICIONAR AO CARRINHO --}}
-                    <x-filament::button
-                        color="primary"
-                        icon="heroicon-o-shopping-cart"
-                        class="w-full py-3 text-center"
-                        wire:click="addCart('{{ $this->product['uuid'] }}')"
-                        type="button"
-                    >
-                        Adicionar
-                    </x-filament::button>
-
-                    {{-- FINALIZAR COMPRA --}}
-                    <x-filament::button
-                        color="success"
-                        icon="heroicon-o-check-circle"
-                        type="submit"
-                        class="w-full py-3 text-center"
-                    >
-                        Finalizar Compra
-                    </x-filament::button>
-
-                </div>
             </x-filament::section>
         </div>
 

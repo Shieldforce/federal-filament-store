@@ -3,16 +3,13 @@
 namespace Shieldforce\FederalFilamentStore\Pages;
 
 use Closure;
-use Filament\Facades\Filament;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\TextInput;
-use Filament\Forms\Components\ViewField;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Pages\Page;
 use Filament\Forms\Contracts\HasForms;
 use Illuminate\Contracts\Support\Htmlable;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 use Livewire\WithPagination;
 
@@ -29,6 +26,7 @@ class FederalFilamentProductPage extends Page implements HasForms
     public array             $result          = [];
     public array             $categories      = [];
     public array             $images          = [];
+    public array             $files           = [];
     public array             $product;
     public                   $uuid;
     public int               $amount;
