@@ -6,6 +6,8 @@ use Filament\Contracts\Plugin;
 use Filament\Navigation\NavigationItem;
 use Filament\Panel;
 use Illuminate\Support\Facades\Route;
+use Ramsey\Uuid\Uuid;
+use Shieldforce\FederalFilamentStore\Enums\StatusCartEnum;
 use Shieldforce\FederalFilamentStore\Middleware\SetStoreMiddleware;
 use Shieldforce\FederalFilamentStore\Models\Cart;
 use Shieldforce\FederalFilamentStore\Pages\FederalFilamentCartPage;
@@ -24,69 +26,100 @@ class FederalFilamentStorePlugin implements Plugin
     public function register(Panel $panel): void
     {
         $panel
-            ->routes(function () {
-                Route::get('/ffs-store', FederalFilamentStorePage::class)
-                    ->name('ffs-store.store.external')
-                    ->defaults('external', 1);
+            ->routes(
+                function () {
+                    Route::get('/ffs-store', FederalFilamentStorePage::class)
+                        ->name('ffs-store.store.external')
+                        ->defaults('external', 1);
 
-                Route::get('/ffs-product/{uuid?}', FederalFilamentProductPage::class)
-                    ->name('ffs-product.product.external')
-                    ->defaults('external', 1);
+                    Route::get('/ffs-product/{uuid?}', FederalFilamentProductPage::class)
+                        ->name('ffs-product.product.external')
+                        ->defaults('external', 1);
 
-                Route::get('/ffs-cart', FederalFilamentCartPage::class)
-                    ->name('ffs-cart.cart.external')
-                    ->defaults('external', 1);
+                    Route::get('/ffs-cart', FederalFilamentCartPage::class)
+                        ->name('ffs-cart.cart.external')
+                        ->defaults('external', 1);
 
-                Route::get('/cart-count', function () {
-                    $cart = json_decode(request()->cookie('cart_items', '[]'), true);
-                    return response()->json(collect($cart)->sum('amount'));
-                });
-            })
-            ->navigationItems([
-                NavigationItem::make('loja')
-                    ->visible()
-                    ->label('Loja')
-                    ->url("/admin/ffs-store")
-                    ->sort(998)
-                    ->icon('heroicon-o-shopping-bag'),
-                NavigationItem::make('cart')
-                    ->visible()
-                    ->label('Carrinho')
-                    ->url("/admin/ffs-cart")
-                    ->icon('heroicon-o-shopping-cart')
-                    ->badgeTooltip('Itens do carrinho')
-                    ->sort(999)
-                    ->badge(function () {
+                    Route::get(
+                        '/cart-count', function () {
+                        $cart = json_decode(request()->cookie('cart_items', '[]'), true);
+                        return response()->json(collect($cart)->sum('amount'));
+                    }
+                    );
+                }
+            )
+            ->navigationItems(
+                [
+                    NavigationItem::make('loja')
+                        ->visible()
+                        ->label('Loja')
+                        ->url("/admin/ffs-store")
+                        ->sort(998)
+                        ->icon('heroicon-o-shopping-bag'),
+                    NavigationItem::make('cart')
+                        ->visible()
+                        ->label('Carrinho')
+                        ->url("/admin/ffs-cart")
+                        ->icon('heroicon-o-shopping-cart')
+                        ->badgeTooltip('Itens do carrinho')
+                        ->sort(999)
+                        ->badge(
+                            function () {
 
-                        $cart = json_decode(request()->cookie('cart_items', "{'teste':'teste'}"), true);
+                                $mt = microtime();
 
-                        dd(collect($cart));
-                        /*return collect($cart)->sum('amount');
+                                $identifier = Uuid::uuid3(
+                                    Uuid::NAMESPACE_DNS,
+                                    (string)date('dmYH:i:s') . "-" . $mt
+                                )->toString();
 
-                        $up = ["identify" => $cart_identify,];
-                        if(auth()->check()) {
-                            $up = [
-                                "identify" => $cart_identify,
-                                'user_id' => auth()->id(),
-                            ];
-                        }
+                                $cart = Cart::updateOrCreate(
+                                    ["identifier" => $identifier],
+                                    ['status' => StatusCartEnum::comprando,]
+                                );
 
-                        $cart = Cart::updateOrCreate(
-                            $up, [
-                            'status',
-                        ]);
+                                $cart = [
+                                    'uuid'     => $cart->uuid,
+                                    'identify' => $cart->identifier,
+                                ];
 
-                        $cart_identify = request()->cookie('cart_identify', $cart->uuid);
+                                cookie()->queue(
+                                    cookie('cart_items', json_encode($cart), 60 * 24 * 30)
+                                );
 
-                        return collect($cart->items)->sum('amount');*/
+                                $cart = json_decode(request()->cookie('cart_items'), true);
 
-                    }, 'danger'),
-            ])
-            ->pages([
-                \Shieldforce\FederalFilamentStore\Pages\FederalFilamentStorePage::class,
-                \Shieldforce\FederalFilamentStore\Pages\FederalFilamentProductPage::class,
-                \Shieldforce\FederalFilamentStore\Pages\FederalFilamentCartPage::class,
-            ]);
+                                dd(collect($cart));
+                                /*return collect($cart)->sum('amount');
+
+                                $up = ["identify" => $cart_identify,];
+                                if(auth()->check()) {
+                                    $up = [
+                                        "identify" => $cart_identify,
+                                        'user_id' => auth()->id(),
+                                    ];
+                                }
+
+                                $cart = Cart::updateOrCreate(
+                                    $up, [
+                                    'status',
+                                ]);
+
+                                $cart_identify = request()->cookie('cart_identify', $cart->uuid);
+
+                                return collect($cart->items)->sum('amount');*/
+
+                            }, 'danger'
+                        ),
+                ]
+            )
+            ->pages(
+                [
+                    \Shieldforce\FederalFilamentStore\Pages\FederalFilamentStorePage::class,
+                    \Shieldforce\FederalFilamentStore\Pages\FederalFilamentProductPage::class,
+                    \Shieldforce\FederalFilamentStore\Pages\FederalFilamentCartPage::class,
+                ]
+            );
     }
 
     public function boot(Panel $panel): void
@@ -109,8 +142,7 @@ class FederalFilamentStorePlugin implements Plugin
 
     public function setLabelGroupSidebar(
         string $labelGroupSidebar
-    ): static
-    {
+    ): static {
         $this->labelGroupSidebar = $labelGroupSidebar;
         return $this;
     }
