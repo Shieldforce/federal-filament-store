@@ -12,23 +12,28 @@
 
                 {{ $this->form }}
 
-                <div class="flex mt-4 gap-4 w-full">
+                <div class="flex flex-col mt-4 gap-4 w-full">
+
+                    {{-- FINALIZAR COMPRA --}}
                     <x-filament::button
                         color="primary"
                         icon="heroicon-o-check-circle"
                         type="submit"
-                        class="flex-1 py-3 text-center"
+                        class="w-full py-3 text-center"
                     >
                         Finalizar Compra
                     </x-filament::button>
 
+                    {{-- ADICIONAR AO CARRINHO --}}
                     <x-filament::button
                         color="primary"
                         icon="heroicon-o-shopping-cart"
-                        class="flex-1 py-3 text-center"
+                        class="w-full py-3 text-center"
+                        x-on:click="addCart('{{ $product['id'] }}')"
                     >
                         Adicionar
                     </x-filament::button>
+
                 </div>
             </x-filament::section>
         </div>
