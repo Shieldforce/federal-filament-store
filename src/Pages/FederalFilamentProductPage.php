@@ -237,7 +237,7 @@ class FederalFilamentProductPage extends Page implements HasForms
 
     public function cartUpdate()
     {
-        $cart = json_decode(request()->cookie('cart_items', '[]'), true);
+        /*$cart = json_decode(request()->cookie('cart_items', '[]'), true);
         $exists = false;
 
         foreach ($cart as &$item) {
@@ -260,7 +260,7 @@ class FederalFilamentProductPage extends Page implements HasForms
 
         cookie()->queue(
             cookie('cart_items', json_encode($cart), 60 * 24 * 30)
-        );
+        );*/
     }
 }
 

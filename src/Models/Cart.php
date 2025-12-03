@@ -14,6 +14,11 @@ class Cart extends Model
         'uuid',
         'status',
         'user_id',
+        'items',
+    ];
+
+    protected $casts = [
+        'items' => 'array',
     ];
 
     // hook de inicialização

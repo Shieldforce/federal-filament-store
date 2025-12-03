@@ -21,6 +21,8 @@ return new class extends Migration {
 
             $table->uuid('uuid')->nullable();
 
+            $table->json('items')->nullable();
+
             $table->integer('status')
                 ->default(StatusCartEnum::comprando->value);
 
