@@ -27,7 +27,7 @@
 
                     {{-- FINALIZAR COMPRA --}}
                     <x-filament::button
-                        color="primary"
+                        color="success"
                         icon="heroicon-o-check-circle"
                         type="submit"
                         class="w-full py-3 text-center"
