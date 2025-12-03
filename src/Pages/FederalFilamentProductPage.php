@@ -179,30 +179,6 @@ class FederalFilamentProductPage extends Page implements HasForms
     public function addCart()
     {
         $data = $this->form->getState();
-        $cart = json_decode(request()->cookie('cart_items', '[]'), true);
-        $exists = false;
-
-        foreach ($cart as &$item) {
-            if ($item['uuid'] === $this->product['uuid']) {
-                // Atualiza apenas a quantidade
-                $item['amount'] += (int)$this->amount;
-                $exists = true;
-                break;
-            }
-        }
-
-        if (!$exists) {
-            $cart[] = [
-                'uuid'   => $this->product['uuid'],
-                'name'   => $this->product['name'],
-                'amount' => (int)$this->amount,
-                'price'  => $this->product['price'],
-            ];
-        }
-
-        cookie()->queue(
-            cookie('cart_items', json_encode($cart), 60 * 24 * 30)
-        );
 
         Notification::make()
             ->success()
@@ -238,6 +214,8 @@ class FederalFilamentProductPage extends Page implements HasForms
     {
         $this->validate();
 
+        $this->cartUpdate();
+
         $this->dispatch('cart-updated');
 
         if ($this->action === 'addCart') {
@@ -247,6 +225,34 @@ class FederalFilamentProductPage extends Page implements HasForms
         if ($this->action === 'finish') {
             $this->finish();
         }
+    }
+
+    public function cartUpdate()
+    {
+        $cart = json_decode(request()->cookie('cart_items', '[]'), true);
+        $exists = false;
+
+        foreach ($cart as &$item) {
+            if ($item['uuid'] === $this->product['uuid']) {
+                // Atualiza apenas a quantidade
+                $item['amount'] += (int)$this->amount;
+                $exists = true;
+                break;
+            }
+        }
+
+        if (!$exists) {
+            $cart[] = [
+                'uuid'   => $this->product['uuid'],
+                'name'   => $this->product['name'],
+                'amount' => (int)$this->amount,
+                'price'  => $this->product['price'],
+            ];
+        }
+
+        cookie()->queue(
+            cookie('cart_items', json_encode($cart), 60 * 24 * 30)
+        );
     }
 }
 
