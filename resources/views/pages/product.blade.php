@@ -11,18 +11,9 @@
                 </h1>
 
                 {{ $this->form }}
-
+                <br>
+                <hr>
                 <div class="flex flex-col mt-4 gap-4 w-full">
-
-                    {{-- FINALIZAR COMPRA --}}
-                    <x-filament::button
-                        color="primary"
-                        icon="heroicon-o-check-circle"
-                        type="submit"
-                        class="w-full py-3 text-center"
-                    >
-                        Finalizar Compra
-                    </x-filament::button>
 
                     {{-- ADICIONAR AO CARRINHO --}}
                     <x-filament::button
@@ -32,6 +23,16 @@
                         x-on:click="addCart('{{ $this->product['uuid'] }}')"
                     >
                         Adicionar
+                    </x-filament::button>
+
+                    {{-- FINALIZAR COMPRA --}}
+                    <x-filament::button
+                        color="primary"
+                        icon="heroicon-o-check-circle"
+                        type="submit"
+                        class="w-full py-3 text-center"
+                    >
+                        Finalizar Compra
                     </x-filament::button>
 
                 </div>
