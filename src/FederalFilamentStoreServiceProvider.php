@@ -151,7 +151,7 @@ class FederalFilamentStoreServiceProvider extends PackageServiceProvider
     protected function getMigrations(): array
     {
         return [
-
+            '2025_11_18_180133_create_carts_ffs_table'
         ];
     }
 
