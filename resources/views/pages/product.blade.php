@@ -20,7 +20,7 @@
                         color="primary"
                         icon="heroicon-o-shopping-cart"
                         class="w-full py-3 text-center"
-                        x-on:click="addCart('{{ $this->product['uuid'] }}')"
+                        wire:click="addCart('{{ $this->product['uuid'] }}')"
                     >
                         Adicionar
                     </x-filament::button>
