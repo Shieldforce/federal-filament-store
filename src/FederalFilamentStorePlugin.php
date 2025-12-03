@@ -93,16 +93,6 @@ class FederalFilamentStorePlugin implements Plugin
 
                                 $identifier = $tt->getValue();
 
-                                $cartModel = Cart::where("identifier", $identifier)
-                                    ->whereNotNull("identifier")
-                                    ->where("status", "!=", StatusCartEnum::finalizado->value)
-                                    ->first();
-
-                                if (isset($cartModel->id)) {
-                                    return collect(json_decode($cartModel->items, true))
-                                        ->sum('amount');
-                                }
-
                                 $cartModel = Cart::updateOrCreate(
                                     ["identifier" => $identifier],
                                     ['status' => StatusCartEnum::comprando->value]
