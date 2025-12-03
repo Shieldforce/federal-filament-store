@@ -118,3 +118,15 @@
     </div>
 
 </x-filament::page>
+
+@push('scripts')
+    <script>
+        setInterval(async () => {
+            const res = await fetch('/api/cart-count');
+            const count = await res.json();
+
+            const badge = document.querySelector('.fi-badge[title="Itens do carrinho"]');
+            if(badge) badge.textContent = count;
+        }, 3000);
+    </script>
+@endpush

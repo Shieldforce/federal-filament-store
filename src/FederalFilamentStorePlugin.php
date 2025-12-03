@@ -35,6 +35,11 @@ class FederalFilamentStorePlugin implements Plugin
                 Route::get('/ffs-cart', FederalFilamentCartPage::class)
                     ->name('ffs-cart.cart.external')
                     ->defaults('external', 1);
+
+                Route::get('/api/cart-count', function () {
+                    $cart = json_decode(request()->cookie('cart_items', '[]'), true);
+                    return response()->json(collect($cart)->sum('amount'));
+                });
             })
             ->navigationItems([
                 NavigationItem::make('loja')
