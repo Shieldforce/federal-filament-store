@@ -72,25 +72,12 @@ class FederalFilamentStorePlugin implements Plugin
                                     ->first();
 
                                 if (isset($cartModel->id)) {
-                                    $items = json_decode($cartModel->items, true);
-                                    return collect($items)->sum('amount');
+                                    return collect(
+                                        json_decode($cartModel->items, true)
+                                    )->sum('amount');
                                 }
 
-                                $mt = microtime();
-
-                                $identifier = Uuid::uuid3(
-                                    Uuid::NAMESPACE_DNS,
-                                    (string)date('dmYH:i:s') . "-" . $mt
-                                )->toString();
-
-                                $cartModel = Cart::updateOrCreate(
-                                    ["identifier" => $identifier],
-                                    ['status' => StatusCartEnum::comprando->value]
-                                );
-
-                                Cookie::queue('cart_identifier', $cartModel->identify, 60 * 24 * 30);
-
-                                return collect(json_decode($cartModel->items, true))->sum('amount');
+                                return 0;
 
                             }, 'danger'
                         ),
@@ -107,6 +94,20 @@ class FederalFilamentStorePlugin implements Plugin
 
     public function boot(Panel $panel): void
     {
+        $mt = microtime();
+
+        $identifier = Uuid::uuid3(
+            Uuid::NAMESPACE_DNS,
+            (string)date('dmYH:i:s') . "-" . $mt
+        )->toString();
+
+        $cartModel = Cart::updateOrCreate(
+            ["identifier" => $identifier],
+            ['status' => StatusCartEnum::comprando->value]
+        );
+
+        Cookie::queue('cart_identifier', $cartModel->identify, 60 * 24 * 30);
+
         config()->set('federal-filament-store.sidebar_group', $this->labelGroupSidebar);
     }
 
