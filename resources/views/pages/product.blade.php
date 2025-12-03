@@ -59,10 +59,10 @@
                         images: @js($this->images),
                         interval: null,
                         init() {
-                            // Troca automática a cada 4 segundos
+                            // Troca automática a cada 10 segundos
                             this.interval = setInterval(() => {
                                 this.selected = this.selected < this.images.length - 1 ? this.selected + 1 : 0
-                            }, 4000);
+                            }, 10000);
                         }
                     }"
                     class="relative w-full"

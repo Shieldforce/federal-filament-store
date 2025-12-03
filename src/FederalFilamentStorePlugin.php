@@ -7,6 +7,7 @@ use Filament\Navigation\NavigationItem;
 use Filament\Panel;
 use Illuminate\Support\Facades\Route;
 use Shieldforce\FederalFilamentStore\Middleware\SetStoreMiddleware;
+use Shieldforce\FederalFilamentStore\Models\Cart;
 use Shieldforce\FederalFilamentStore\Pages\FederalFilamentCartPage;
 use Shieldforce\FederalFilamentStore\Pages\FederalFilamentProductPage;
 use Shieldforce\FederalFilamentStore\Pages\FederalFilamentStorePage;
@@ -56,8 +57,29 @@ class FederalFilamentStorePlugin implements Plugin
                     ->badgeTooltip('Itens do carrinho')
                     ->sort(999)
                     ->badge(function () {
-                        $cart = json_decode(request()->cookie('cart_items', '[]'), true);
-                        return collect($cart)->sum('amount');
+
+                        $cart = json_decode(request()->cookie('cart_items', "{'teste':'teste'}"), true);
+
+                        dd(collect($cart));
+                        /*return collect($cart)->sum('amount');
+
+                        $up = ["identify" => $cart_identify,];
+                        if(auth()->check()) {
+                            $up = [
+                                "identify" => $cart_identify,
+                                'user_id' => auth()->id(),
+                            ];
+                        }
+
+                        $cart = Cart::updateOrCreate(
+                            $up, [
+                            'status',
+                        ]);
+
+                        $cart_identify = request()->cookie('cart_identify', $cart->uuid);
+
+                        return collect($cart->items)->sum('amount');*/
+
                     }, 'danger'),
             ])
             ->pages([
