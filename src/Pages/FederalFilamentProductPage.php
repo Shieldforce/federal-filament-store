@@ -2,6 +2,7 @@
 
 namespace Shieldforce\FederalFilamentStore\Pages;
 
+use Closure;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\TextInput;
@@ -126,7 +127,7 @@ class FederalFilamentProductPage extends Page implements HasForms
                         ->label('Imagens Necessárias')
                         ->rule(
                             function (Get $get) {
-                                return function (string $attribute, $value, \Closure $fail) use ($get) {
+                                return function (string $attribute, $value, $fail) use ($get) {
 
                                     $amount = (int)$get('amount');
                                     $uploaded = is_array($value) ? count($value) : 0;
