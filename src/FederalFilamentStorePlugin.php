@@ -66,8 +66,8 @@ class FederalFilamentStorePlugin implements Plugin
                         ->badge(
                             function () {
 
-                                $cartModel = Cart::where("identify", request()->cookie('cart_identify'))
-                                    ->whereNotNull("identify")
+                                $cartModel = Cart::where("identifier", request()->cookie('cart_identifier'))
+                                    ->whereNotNull("identifier")
                                     ->where("status", "!=", StatusCartEnum::finalizado->value)
                                     ->first();
 
@@ -88,7 +88,7 @@ class FederalFilamentStorePlugin implements Plugin
                                     ['status' => StatusCartEnum::comprando->value]
                                 );
 
-                                Cookie::queue('cart_identify', $cartModel->identify, 60 * 24 * 30);
+                                Cookie::queue('cart_identifier', $cartModel->identify, 60 * 24 * 30);
 
                                 return collect(json_decode($cartModel->items, true))->sum('amount');
 
