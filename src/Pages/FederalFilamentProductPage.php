@@ -124,27 +124,26 @@ class FederalFilamentProductPage extends Page implements HasForms
                         ->openable()
                         ->previewable(true)
                         ->label('Imagens Necessárias')
-                        ->rules(
-                            [
-                                function (Get $get) {
-                                    $amount = (int) $get('amount');
-                                    $amountImagens = count($get("files"));
-                                    $msg = false;
+                        ->rule(
+                            function (Get $get) {
+                                return function (string $attribute, $value, \Closure $fail) use ($get) {
 
-                                    if($amountImagens != $amount) {
-                                        $msg = "Quantidade de imagens upadas é ";
-                                        $msg .= "{$amountImagens} e você precisa subir: {$amount}";
+                                    $amount = (int)$get('amount');
+                                    $uploaded = is_array($value) ? count($value) : 0;
+
+                                    if ($uploaded !== $amount) {
+                                        $fail(
+                                            "Você enviou {$uploaded} imagens, mas precisa enviar exatamente {$amount}."
+                                        );
                                     }
-
-                                    return $msg;
-                                },
-                            ]
+                                };
+                            }
                         ),
+
                 ]
             ),
         ];
     }
-
 
     public function addCart($uuid)
     {
