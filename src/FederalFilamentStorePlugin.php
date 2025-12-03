@@ -47,12 +47,7 @@ class FederalFilamentStorePlugin implements Plugin
                     ->label('Loja')
                     ->url("/admin/ffs-store")
                     ->sort(998)
-                    ->icon('heroicon-o-shopping-bag')
-                    ->isActiveWhen(fn () => request()->routeIs(
-                        'ffs-store.store.external',
-                        'ffs-product.product.external',
-                        'ffs-cart.cart.external'
-                    )),
+                    ->icon('heroicon-o-shopping-bag'),
                 NavigationItem::make('cart')
                     ->visible()
                     ->label('Carrinho')
