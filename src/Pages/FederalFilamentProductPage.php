@@ -32,6 +32,7 @@ class FederalFilamentProductPage extends Page implements HasForms
     public array             $files           = [];
     public string            $action          = '';
     public array             $product;
+    public float             $totalPrice;
     public                   $uuid;
     public int               $amount;
     public bool              $image_all;
@@ -99,7 +100,9 @@ class FederalFilamentProductPage extends Page implements HasForms
 
     public function updated($property)
     {
-
+        if ($property == 'amount') {
+            $this->totalPrice = $this->amount * $this->product['price'];
+        }
     }
 
     protected function getFormSchema(): array
@@ -173,11 +176,11 @@ class FederalFilamentProductPage extends Page implements HasForms
         $data = $this->form->getState();
         dd($data, "finish");
 
-        Notification::make()
+        /*Notification::make()
             ->success()
             ->title('jghjgh')
             ->seconds(5)
-            ->send();
+            ->send();*/
     }
 
     public function submit()
