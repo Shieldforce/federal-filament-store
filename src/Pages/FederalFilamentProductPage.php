@@ -129,7 +129,7 @@ class FederalFilamentProductPage extends Page implements HasForms
                             [
                                 function (Closure $get) {
                                     $amount = (int)$get('amount');
-                                    return "size:$amount"; // exige exatamente $amount arquivos
+                                    return "size:$amount";
                                 },
                             ]
                         ),
@@ -140,6 +140,11 @@ class FederalFilamentProductPage extends Page implements HasForms
 
 
     public function addCart($uuid)
+    {
+        dd($uuid);
+    }
+
+    public function submit($uuid)
     {
         dd($uuid);
     }

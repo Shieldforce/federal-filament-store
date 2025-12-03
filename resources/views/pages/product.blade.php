@@ -21,6 +21,7 @@
                         icon="heroicon-o-shopping-cart"
                         class="w-full py-3 text-center"
                         wire:click="addCart('{{ $this->product['uuid'] }}')"
+                        type="button"
                     >
                         Adicionar
                     </x-filament::button>
@@ -29,8 +30,9 @@
                     <x-filament::button
                         color="success"
                         icon="heroicon-o-check-circle"
-                        type="submit"
+                        type="button"
                         class="w-full py-3 text-center"
+                        wire:click="submit('{{ $this->product['uuid'] }}')"
                     >
                         Finalizar Compra
                     </x-filament::button>
