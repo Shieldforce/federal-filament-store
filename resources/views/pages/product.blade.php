@@ -12,9 +12,22 @@
 
                 {{ $this->form }}
 
-                <div class="flex mt-4 gap-4">
-                    <x-filament::button color="primary" icon="heroicon-o-funnel" type="submit" class="w-1/5">
+                <div class="flex mt-4 gap-4 w-full">
+                    <x-filament::button
+                        color="primary"
+                        icon="heroicon-o-check-circle"
+                        type="submit"
+                        class="flex-1 py-3 text-center"
+                    >
                         Finalizar Compra
+                    </x-filament::button>
+
+                    <x-filament::button
+                        color="primary"
+                        icon="heroicon-o-shopping-cart"
+                        class="flex-1 py-3 text-center"
+                    >
+                        Adicionar
                     </x-filament::button>
                 </div>
             </x-filament::section>
