@@ -81,7 +81,9 @@ class FederalFilamentStorePlugin implements Plugin
 
                                 $tokenSession = request()->session()->get('_token');
 
-                                Cookie::forever('ffs_identifier', $tokenSession);
+                                $tt = Cookie::forever('ffs_identifier', $tokenSession);
+
+                                dd($tt);
 
                                 $identifier = request()->cookie('ffs_identifier');
 
@@ -96,7 +98,7 @@ class FederalFilamentStorePlugin implements Plugin
                                 }
 
                                 $cartModel = Cart::updateOrCreate(
-                                    ["identifier" => $identifier ?? $tokenSession],
+                                    ["identifier" => $identifier],
                                     ['status' => StatusCartEnum::comprando->value]
                                 );
 
