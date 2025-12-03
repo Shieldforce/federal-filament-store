@@ -42,10 +42,10 @@ class FederalFilamentStorePlugin implements Plugin
 
                     Route::get(
                         '/cart-count', function () {
-                            $identifier = request()->cookie('ffs_identifier');
-                            $cartModel = Cart::where("identifier", $identifier)->first();
-                            return response()->json(collect(json_decode($cartModel->items, true))->sum('amount'));
-                        }
+                        $identifier = request()->cookie('ffs_identifier');
+                        $cartModel = Cart::where("identifier", $identifier)->first();
+                        return response()->json(collect(json_decode($cartModel->items, true))->sum('amount'));
+                    }
                     );
                 }
             )
@@ -67,9 +67,21 @@ class FederalFilamentStorePlugin implements Plugin
                         ->badge(
                             function () {
 
+                                $identifierVerify = request()->cookie('ffs_identifier');
+
+                                if ($identifierVerify) {
+                                    $cartModel = Cart::where("identifier", $identifierVerify)
+                                        ->whereNotNull("identifier")
+                                        ->where("status", "!=", StatusCartEnum::finalizado->value)
+                                        ->first();
+
+                                    return collect(json_decode($cartModel->items, true))
+                                        ->sum('amount');
+                                }
+
                                 $tokenSession = request()->session()->get('_token');
 
-                               Cookie::forever('ffs_identifier', $tokenSession);
+                                Cookie::forever('ffs_identifier', $tokenSession);
 
                                 $identifier = request()->cookie('ffs_identifier');
 
@@ -84,7 +96,7 @@ class FederalFilamentStorePlugin implements Plugin
                                 }
 
                                 $cartModel = Cart::updateOrCreate(
-                                    ["identifier" =>$identifier],
+                                    ["identifier" => $identifier],
                                     ['status' => StatusCartEnum::comprando->value]
                                 );
 
