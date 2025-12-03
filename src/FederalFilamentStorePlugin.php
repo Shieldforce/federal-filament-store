@@ -66,18 +66,33 @@ class FederalFilamentStorePlugin implements Plugin
                         ->badge(
                             function () {
 
-                                $cartModel = Cart::where("identifier", request()->cookie('cart_identifier'))
+                                $id = request()->cookie('cart_identifier');
+
+                                $cartModel = Cart::where("identifier", $id)
                                     ->whereNotNull("identifier")
                                     ->where("status", "!=", StatusCartEnum::finalizado->value)
                                     ->first();
 
                                 if (isset($cartModel->id)) {
-                                    return collect(
-                                        json_decode($cartModel->items, true)
-                                    )->sum('amount');
+                                    $items = json_decode($cartModel->items, true);
+                                    return collect($items)->sum('amount');
                                 }
 
-                                return 0;
+                                $mt = microtime();
+
+                                $identifier = Uuid::uuid3(
+                                    Uuid::NAMESPACE_DNS,
+                                    (string)date('dmYH:i:s') . "-" . $mt
+                                )->toString();
+
+                                $cartModel = Cart::updateOrCreate(
+                                    ["identifier" => $id ?? $identifier],
+                                    ['status' => StatusCartEnum::comprando->value]
+                                );
+
+                                Cookie::queue('cart_identifier', $cartModel->identify, 60 * 24 * 30);
+
+                                return collect(json_decode($cartModel->items, true))->sum('amount');
 
                             }, 'danger'
                         ),
@@ -94,20 +109,6 @@ class FederalFilamentStorePlugin implements Plugin
 
     public function boot(Panel $panel): void
     {
-        $mt = microtime();
-
-        $identifier = Uuid::uuid3(
-            Uuid::NAMESPACE_DNS,
-            (string)date('dmYH:i:s') . "-" . $mt
-        )->toString();
-
-        $cartModel = Cart::updateOrCreate(
-            ["identifier" => $identifier],
-            ['status' => StatusCartEnum::comprando->value]
-        );
-
-        Cookie::queue('cart_identifier', $cartModel->identify, 60 * 24 * 30);
-
         config()->set('federal-filament-store.sidebar_group', $this->labelGroupSidebar);
     }
 
