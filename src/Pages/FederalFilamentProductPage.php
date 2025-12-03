@@ -2,7 +2,9 @@
 
 namespace Shieldforce\FederalFilamentStore\Pages;
 
+use Closure;
 use Filament\Facades\Filament;
+use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\ViewField;
@@ -10,6 +12,7 @@ use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Pages\Page;
 use Filament\Forms\Contracts\HasForms;
 use Illuminate\Contracts\Support\Htmlable;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 use Livewire\WithPagination;
 
@@ -103,13 +106,43 @@ class FederalFilamentProductPage extends Page implements HasForms
                     TextInput::make('amount')
                         ->label('Quantidade')
                         ->numeric()
+                        ->reactive()
+                        ->live()
                         ->required()
                         ->default(1)
                         ->minValue(1),
+
+                    FileUpload::make('files')
+                        ->directory('files_products')
+                        ->columnSpanFull()
+                        ->required()
+                        ->multiple()
+                        ->reactive()
+                        ->live()
+                        ->image()
+                        ->imageEditor()
+                        ->imageEditorAspectRatios(['1:1'])
+                        ->openable()
+                        ->previewable(true)
+                        ->label('Imagens Necessárias')
+                        ->rules(
+                            [
+                                function (Closure $get) {
+                                    $amount = (int)$get('amount');
+                                    return "size:$amount"; // exige exatamente $amount arquivos
+                                },
+                            ]
+                        )
+                        ->validationAttributes(
+                            [
+                                'files' => 'imagens',
+                            ]
+                        ),
                 ]
             ),
         ];
     }
+
 
     public function addCart($uuid)
     {
