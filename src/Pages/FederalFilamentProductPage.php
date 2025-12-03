@@ -205,11 +205,11 @@ class FederalFilamentProductPage extends Page implements HasForms
 
     public function finish()
     {
-
+        $this->redirect("admin/ffs-cart");
 
         Notification::make()
             ->success()
-            ->title('Compra finalizada!')
+            ->title('Agora finalize sua compra no carrinho!')
             ->send();
     }
 
