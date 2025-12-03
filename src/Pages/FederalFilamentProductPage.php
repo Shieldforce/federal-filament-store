@@ -132,7 +132,8 @@ class FederalFilamentProductPage extends Page implements HasForms
                                     $msg = false;
 
                                     if($amountImagens != $amount) {
-                                        $msg = "Quantidade de imagens é {$amountImagens} e você precisa subir: {$amount}";
+                                        $msg = "Quantidade de imagens upadas é ";
+                                        $msg .= "{$amountImagens} e você precisa subir: {$amount}";
                                     }
 
                                     return $msg;
