@@ -130,11 +130,9 @@ class FederalFilamentProductPage extends Page implements HasForms
                                 return function (string $attribute, $value, $fail) use ($get) {
                                     $amountImages = count($get("files"));
                                     $amount = (int)$get('amount');
-                                    $uploaded = is_array($amountImages) ? count($amountImages) : 0;
-
-                                    if ($uploaded !== $amount) {
+                                    if ($amountImages !== $amount) {
                                         $fail(
-                                            "Você enviou {$uploaded} imagens, mas precisa enviar exatamente {$amount}."
+                                            "Você enviou {$amountImages} imagens, mas precisa enviar exatamente {$amount}."
                                         );
                                     }
                                 };
