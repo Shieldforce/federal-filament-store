@@ -188,7 +188,15 @@ class FederalFilamentProductPage extends Page implements HasForms
             ->actions(
                 [
                     Action::make('Ir para Loja')
-                        ->url('/admin/ffs-store')
+                        ->button()
+                        ->color('primary')
+                        ->icon('heroicon-o-shopping-bag')
+                        ->url('/admin/ffs-store'),
+                    Action::make('Ir para o Carrinho')
+                        ->button()
+                        ->color('primary')
+                        ->icon('heroicon-o-shopping-cart')
+                        ->url('/admin/ffs-cart'),
                 ]
             )
             ->send();
