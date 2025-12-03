@@ -74,8 +74,9 @@ class FederalFilamentStorePlugin implements Plugin
                                     ->first();
 
                                 if (isset($cartModel->id)) {
-                                    $items = json_decode($cartModel->items, true);
-                                    return collect($items)->sum('amount');
+                                    return collect(
+                                        json_decode($cartModel->items, true)
+                                    )->sum('amount');
                                 }
 
                                 $mt = microtime();
@@ -92,7 +93,9 @@ class FederalFilamentStorePlugin implements Plugin
 
                                 Cookie::queue('cart_identifier', $cartModel->identify, 60 * 24 * 30);
 
-                                return collect(json_decode($cartModel->items, true))->sum('amount');
+                                return collect(
+                                    json_decode($cartModel->items, true)
+                                )->sum('amount');
 
                             }, 'danger'
                         ),
