@@ -7,6 +7,7 @@ use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Concerns\InteractsWithForms;
+use Filament\Notifications\Notification;
 use Filament\Pages\Page;
 use Filament\Forms\Contracts\HasForms;
 use Illuminate\Contracts\Support\Htmlable;
@@ -142,9 +143,17 @@ class FederalFilamentProductPage extends Page implements HasForms
         dd($uuid);
     }
 
-    public function submit($uuid)
+    public function submit()
     {
-        dd($uuid);
+        $data = $this->form->getState(); // dados validados
+
+        dd($data);
+
+        Notification::make()
+            ->success()
+            ->title('jghjgh')
+            ->seconds(5)
+            ->send();
     }
 
 }
