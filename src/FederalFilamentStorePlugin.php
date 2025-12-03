@@ -96,7 +96,7 @@ class FederalFilamentStorePlugin implements Plugin
                                 }
 
                                 $cartModel = Cart::updateOrCreate(
-                                    ["identifier" => $identifier],
+                                    ["identifier" => $identifier ?? $tokenSession],
                                     ['status' => StatusCartEnum::comprando->value]
                                 );
 
