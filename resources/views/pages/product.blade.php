@@ -13,11 +13,12 @@
                 <hr>
                 <br>
                 <form wire:submit="submit">
-                    {{ $this->form }}
 
+                    {{ $this->form }}
 
                     <br>
                     <hr>
+
                     <div class="flex flex-col mt-4 gap-4 w-full">
 
                         {{-- ADICIONAR AO CARRINHO --}}
@@ -43,8 +44,11 @@
                         </x-filament::button>
 
                     </div>
+
                 </form>
+
             </x-filament::section>
+
         </div>
 
         <div class="flex-1 pr-6">
