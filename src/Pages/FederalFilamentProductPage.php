@@ -4,6 +4,7 @@ namespace Shieldforce\FederalFilamentStore\Pages;
 
 use Filament\Facades\Filament;
 use Filament\Forms\Components\Grid;
+use Filament\Forms\Components\TextInput;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Pages\Page;
 use Filament\Forms\Contracts\HasForms;
@@ -72,8 +73,8 @@ class FederalFilamentProductPage extends Page implements HasForms
 
         $productFilter = array_filter(
             $this->result, function ($product) {
-                return $product['uuid'] == $this->uuid;
-            }
+            return $product['uuid'] == $this->uuid;
+        }
         );
 
         $this->product = reset($productFilter) ?: [];
@@ -95,7 +96,10 @@ class FederalFilamentProductPage extends Page implements HasForms
         return [
             Grid::make(1)->schema(
                 [
-
+                    TextInput::make('amount')
+                        ->label('Quantidade')
+                        ->numeric()
+                        ->required(),
                 ]
             ),
         ];

@@ -11,6 +11,12 @@
                 </h1>
 
                 {{ $this->form }}
+
+                <div class="flex mt-4 gap-4">
+                    <x-filament::button color="primary" icon="heroicon-o-funnel" type="submit" class="w-1/5">
+                        Filtrar
+                    </x-filament::button>
+                </div>
             </x-filament::section>
         </div>
 
