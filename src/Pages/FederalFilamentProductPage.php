@@ -123,7 +123,7 @@ class FederalFilamentProductPage extends Page implements HasForms
                         ->imageEditor()
                         ->imageEditorAspectRatios(['1:1'])
                         ->openable()
-                        ->previewable(true)
+                        //->previewable(true)
                         ->label('Imagens Necessárias')
                         ->rule(
                             function (Get $get) {
