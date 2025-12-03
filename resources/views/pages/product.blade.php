@@ -5,12 +5,13 @@
         <div class="md:w-[480px] lg:w-[520px] xl:w-[560px] md:flex-none pl-6 config-product-ec">
             <x-filament::section class="!max-w-[480px] w-full !rounded-none">
                 <h1 style="font-size: 16pt;">
-                    {{ isset($this->totalPrice)
+                    Total do Produto: {{ isset($this->totalPrice)
                     ? "R$" . number_format($this->totalPrice, 2, ',', '.') :
                     null }}
                 </h1>
+                <br>
                 <hr>
-
+                <br>
                 <form wire:submit="submit">
                     {{ $this->form }}
 
