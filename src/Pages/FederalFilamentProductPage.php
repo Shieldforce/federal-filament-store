@@ -23,14 +23,7 @@ class FederalFilamentProductPage extends Page implements HasForms
     protected static ?string $title           = 'Produto';
     public array             $result          = [];
     public array             $categories      = [];
-    public array             $images          = [
-        'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=2070&q=80',
-        'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=2070&q=80',
-        'https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?auto=format&fit=crop&w=987&q=80',
-        'https://images.unsplash.com/photo-1486870591958-9b9d0d1dda99?auto=format&fit=crop&w=2070&q=80',
-        'https://images.unsplash.com/photo-1485160497022-3e09382fb310?auto=format&fit=crop&w=2070&q=80',
-        'https://images.unsplash.com/photo-1472791108553-c9405341e398?auto=format&fit=crop&w=2137&q=80',
-    ];
+    public array             $images          = [];
     public array             $product;
     public                   $uuid;
 
@@ -84,7 +77,8 @@ class FederalFilamentProductPage extends Page implements HasForms
         );
 
         $this->product = $productFilter[0] ?? null;
-        $this->images[] = $this->product['image'];
+        $this->images[] = env("APP_URL") ."/storage/". $this->product['image']
+            ?? 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=2070&q=80';
     }
 
     public function updated($property)
