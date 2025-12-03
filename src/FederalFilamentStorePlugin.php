@@ -81,13 +81,9 @@ class FederalFilamentStorePlugin implements Plugin
 
                                 $tokenSession = request()->session()->get('_token');
 
-                                // $tt = Cookie::forever('ffs_identifier', $tokenSession);
-
                                 $minutes = 60 * 24 * 30; // 30 dias
 
                                 $tt = Cookie::make('ffs_identifier', $tokenSession, $minutes);
-
-                                dd($tt);
 
                                 $identifier = $tt->getValue();
 
