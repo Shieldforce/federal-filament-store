@@ -67,25 +67,14 @@ class FederalFilamentStorePlugin implements Plugin
                         ->badge(
                             function () {
 
-                                $identifierVerify = request()->cookie('ffs_identifier');
-
-                                $cartModel = Cart::where("identifier", $identifierVerify)
-                                    ->whereNotNull("identifier")
-                                    ->where("status", "!=", StatusCartEnum::finalizado->value)
-                                    ->first();
-
-                                if (isset($cartModel->id)) {
-                                    return collect(json_decode($cartModel->items, true))
-                                        ->sum('amount');
-                                }
-
                                 $tokenSession = request()->session()->get('_token');
 
                                 $minutes = 60 * 24 * 30; // 30 dias
 
-                                $tt = Cookie::forever(
+                                $tt = Cookie::make(
                                     name: 'ffs_identifier',
                                     value: $tokenSession,
+                                    minutes: $minutes
                                 );
 
                                 $identifier = $tt->getValue();
