@@ -205,7 +205,7 @@ class FederalFilamentProductPage extends Page implements HasForms
 
     public function finish()
     {
-        $this->redirect("admin/ffs-cart");
+        $this->redirect("/admin/ffs-cart");
 
         Notification::make()
             ->success()
