@@ -237,6 +237,8 @@ class FederalFilamentProductPage extends Page implements HasForms
     {
         $this->validate();
 
+        $this->dispatch('cart-updated');
+
         if ($this->action === 'addCart') {
             $this->addCart();
         }

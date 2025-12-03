@@ -121,7 +121,7 @@
 
 @push('scripts')
     <script>
-        setInterval(async () => {
+        /*setInterval(async () => {
             // busca quantidade no backend
             const res = await fetch('/admin/cart-count');
             const count = await res.json();
@@ -132,6 +132,14 @@
             if(badge) {
                 badge.textContent = count;
             }
-        }, 3000);
+        }, 3000);*/
+
+        window.addEventListener('cart-updated', updateCartBadge);
+        async function updateCartBadge() {
+            const res = await fetch('/admin/cart-count');
+            const count = await res.json();
+            const badge = document.querySelector('.fi-topbar-item a[href="/admin/ffs-cart"] .fi-badge .truncate');
+            if(badge) badge.textContent = count;
+        }
     </script>
 @endpush
