@@ -79,31 +79,22 @@
                     {{-- BOTÃO ESQUERDA --}}
                     <button
                         @click="selected = selected > 0 ? selected - 1 : images.length - 1"
-                        class="absolute left-2 top-1/2 -translate-y-1/2
-           w-12 h-12 flex items-center justify-center
-           rounded-full bg-white/10 backdrop-blur-sm
-           hover:bg-white/20 transition
-           cursor-pointer"
+                        class="absolute inset-y-0 left-0 px-2 py-[25%] w-10 group hover:bg-gray-900/50 cursor-pointer"
                     >
-    <span class="text-white text-3xl">
-        &larr;
-    </span>
+                        <span class="group-hover:block text-white text-3xl">
+                            &larr;
+                        </span>
                     </button>
 
                     {{-- BOTÃO DIREITA --}}
                     <button
                         @click="selected = selected < images.length - 1 ? selected + 1 : 0"
-                        class="absolute right-2 top-1/2 -translate-y-1/2
-           w-12 h-12 flex items-center justify-center
-           rounded-full bg-white/10 backdrop-blur-sm
-           hover:bg-white/20 transition
-           cursor-pointer"
+                        class="absolute inset-y-0 right-0 px-2 py-[25%] w-10 group hover:bg-gray-900/50 cursor-pointer"
                     >
-    <span class="text-white text-3xl">
-        &rarr;
-    </span>
+                        <span class="group-hover:block text-white text-3xl">
+                            &rarr;
+                        </span>
                     </button>
-
 
                     {{-- ÍCONES INDICADORES --}}
                     <div class="absolute bottom-3 w-full flex justify-center gap-2">
