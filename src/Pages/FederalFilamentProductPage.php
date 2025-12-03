@@ -30,6 +30,7 @@ class FederalFilamentProductPage extends Page implements HasForms
     public array             $categories      = [];
     public array             $images          = [];
     public array             $files           = [];
+    public string            $action          = '';
     public array             $product;
     public                   $uuid;
     public int               $amount;
@@ -161,16 +162,16 @@ class FederalFilamentProductPage extends Page implements HasForms
         ];
     }
 
-    public function addCart($uuid)
+    public function addCart()
     {
-        dd($uuid);
+        $data = $this->form->getState();
+        dd($data, "addCart");
     }
 
-    public function submit()
+    public function finish()
     {
-        $data = $this->form->getState(); // dados validados
-
-        dd($data);
+        $data = $this->form->getState();
+        dd($data, "finish");
 
         Notification::make()
             ->success()
@@ -179,5 +180,17 @@ class FederalFilamentProductPage extends Page implements HasForms
             ->send();
     }
 
+    public function submit()
+    {
+        $this->validate();
+
+        if ($this->action === 'addCart') {
+            $this->addCart();
+        }
+
+        if ($this->action === 'finish') {
+            $this->finish();
+        }
+    }
 }
 

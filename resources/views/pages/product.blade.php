@@ -33,8 +33,9 @@
                         <x-filament::button
                             color="success"
                             icon="heroicon-o-check-circle"
-                            type="submit"
                             class="w-full py-3 text-center"
+                            type="submit"
+                            wire:click="$set('action', 'finish')"
                         >
                             Finalizar Compra
                         </x-filament::button>
