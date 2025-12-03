@@ -106,15 +106,6 @@ class FederalFilamentProductPage extends Page implements HasForms
                         ->required()
                         ->default(1)
                         ->minValue(1),
-
-                    ViewField::make('rating')
-                        ->view('forms.components.range-slider')
-                        ->viewData(
-                            [
-                                'min' => 1,
-                                'max' => 5,
-                            ]
-                        )
                 ]
             ),
         ];
