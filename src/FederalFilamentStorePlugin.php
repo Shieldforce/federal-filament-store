@@ -8,7 +8,6 @@ use Filament\Panel;
 use Illuminate\Support\Facades\Route;
 use Ramsey\Uuid\Uuid;
 use Shieldforce\FederalFilamentStore\Enums\StatusCartEnum;
-use Shieldforce\FederalFilamentStore\Middleware\SetStoreMiddleware;
 use Shieldforce\FederalFilamentStore\Models\Cart;
 use Shieldforce\FederalFilamentStore\Pages\FederalFilamentCartPage;
 use Shieldforce\FederalFilamentStore\Pages\FederalFilamentProductPage;
@@ -66,7 +65,15 @@ class FederalFilamentStorePlugin implements Plugin
                         ->badge(
                             function () {
 
-                                //dd($cart = json_decode(request()->cookie('cart_items'), true));
+                                $cartModel = Cart::where("uuid", request()->cookie('cart_uuid'))
+                                    ->whereNotNull("uuid")
+                                    ->where("status", "!=" ,StatusCartEnum::finalizado->value)
+                                    ->first();
+
+                                if (isset($cartModel->id)) {
+                                    $items = json_decode($cartModel->items, true);
+                                    return collect($items)->sum('amount');
+                                }
 
                                 $mt = microtime();
 
@@ -77,34 +84,12 @@ class FederalFilamentStorePlugin implements Plugin
 
                                 $cartModel = Cart::updateOrCreate(
                                     ["identifier" => $identifier],
-                                    ['status' => StatusCartEnum::comprando,]
+                                    ['status' => StatusCartEnum::comprando->value]
                                 );
 
-                                cookie()->queue(
-                                    cookie('cart_uuid', $cartModel->uuid, 60 * 24 * 30)
-                                );
+                                request()->cookie('cart_uuid', $cartModel->uuid);
 
-                                $cartUuid = json_decode(request()->cookie('cart_uuid'), true);
-
-                                dd(collect($cartUuid));
-                                /*return collect($cart)->sum('amount');
-
-                                $up = ["identify" => $cart_identify,];
-                                if(auth()->check()) {
-                                    $up = [
-                                        "identify" => $cart_identify,
-                                        'user_id' => auth()->id(),
-                                    ];
-                                }
-
-                                $cart = Cart::updateOrCreate(
-                                    $up, [
-                                    'status',
-                                ]);
-
-                                $cart_identify = request()->cookie('cart_identify', $cart->uuid);
-
-                                return collect($cart->items)->sum('amount');*/
+                                return collect(json_decode($cartModel->items, true))->sum('amount');
 
                             }, 'danger'
                         ),
