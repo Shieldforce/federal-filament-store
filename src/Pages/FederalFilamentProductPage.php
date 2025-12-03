@@ -36,6 +36,7 @@ class FederalFilamentProductPage extends Page implements HasForms
     public                   $uuid;
     public int               $amount;
     public bool              $image_all;
+    public bool              $publish_social_network;
 
     public function getTitle(): string|Htmlable
     {
@@ -122,6 +123,12 @@ class FederalFilamentProductPage extends Page implements HasForms
 
                     Toggle::make("image_all")
                         ->label("Usar a mesma imagem")
+                        ->default(false)
+                        ->reactive()
+                        ->live(),
+
+                    Toggle::make("publish_social_network")
+                        ->label("Podemos publicar nas redes sociais?")
                         ->default(false)
                         ->reactive()
                         ->live(),
