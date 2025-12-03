@@ -238,9 +238,9 @@ class FederalFilamentProductPage extends Page implements HasForms
 
     public function cartUpdate()
     {
-        $tokenSession = request()->session()->get('_token');
+        $identifier = request()->cookie('ffs_identifier');
 
-        $cartModel = Cart::where("identifier", $tokenSession)->first();
+        $cartModel = Cart::where("identifier", $identifier)->first();
 
         $exists = false;
 

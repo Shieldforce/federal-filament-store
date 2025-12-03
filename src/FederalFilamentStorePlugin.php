@@ -42,8 +42,8 @@ class FederalFilamentStorePlugin implements Plugin
 
                     Route::get(
                         '/cart-count', function () {
-                            $tokenSession = request()->session()->get('_token');
-                            $cartModel = Cart::where("identifier", $tokenSession)->first();
+                            $identifier = request()->cookie('ffs_identifier');
+                            $cartModel = Cart::where("identifier", $identifier)->first();
                             return response()->json(collect(json_decode($cartModel->items, true))->sum('amount'));
                         }
                     );
@@ -69,7 +69,11 @@ class FederalFilamentStorePlugin implements Plugin
 
                                 $tokenSession = request()->session()->get('_token');
 
-                                $cartModel = Cart::where("identifier", $tokenSession)
+                                Cookie::queue(Cookie::forever('ffs_identifier', $tokenSession));
+
+                                $identifier = request()->cookie('ffs_identifier');
+
+                                $cartModel = Cart::where("identifier", $identifier)
                                     ->whereNotNull("identifier")
                                     ->where("status", "!=", StatusCartEnum::finalizado->value)
                                     ->first();
@@ -80,7 +84,7 @@ class FederalFilamentStorePlugin implements Plugin
                                 }
 
                                 $cartModel = Cart::updateOrCreate(
-                                    ["identifier" => $id ?? $tokenSession],
+                                    ["identifier" =>$identifier],
                                     ['status' => StatusCartEnum::comprando->value]
                                 );
 
