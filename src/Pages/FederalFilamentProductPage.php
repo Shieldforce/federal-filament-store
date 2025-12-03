@@ -6,6 +6,7 @@ use Closure;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Toggle;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Get;
 use Filament\Notifications\Notification;
@@ -32,6 +33,7 @@ class FederalFilamentProductPage extends Page implements HasForms
     public array             $product;
     public                   $uuid;
     public int               $amount;
+    public bool              $image_all;
 
     public function getTitle(): string|Htmlable
     {
@@ -91,6 +93,7 @@ class FederalFilamentProductPage extends Page implements HasForms
         }
 
         $this->amount = 1;
+        $this->image_all = false;
     }
 
     public function updated($property)
@@ -112,6 +115,12 @@ class FederalFilamentProductPage extends Page implements HasForms
                         ->default(1)
                         ->minValue(1),
 
+                    Toggle::make("image_all")
+                        ->label("Usar a mesma imagem")
+                        ->default(false)
+                        ->reactive()
+                        ->live(),
+
                     FileUpload::make('files')
                         ->directory('files_products')
                         ->columnSpanFull()
@@ -128,9 +137,10 @@ class FederalFilamentProductPage extends Page implements HasForms
                         ->rule(
                             function (Get $get) {
                                 return function (string $attribute, $value, $fail) use ($get) {
+                                    $image_all = $get("image_all");
                                     $amountImages = count($get("files"));
                                     $amount = (int)$get('amount');
-                                    if ($amountImages !== $amount) {
+                                    if (!$image_all && $amountImages !== $amount) {
                                         $fail(
                                             "Você enviou {$amountImages} imagens, mas precisa enviar exatamente {$amount}."
                                         );
