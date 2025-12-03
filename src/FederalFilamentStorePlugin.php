@@ -66,38 +66,25 @@ class FederalFilamentStorePlugin implements Plugin
                         ->badge(
                             function () {
 
-                                logger(request()->session()->get('_token'));
+                                $tokenSession = request()->session()->get('_token');
 
-                                $id = request()->cookie('cart_identifier');
-
-                                $cartModel = Cart::where("identifier", $id)
+                                $cartModel = Cart::where("identifier", $tokenSession)
                                     ->whereNotNull("identifier")
                                     ->where("status", "!=", StatusCartEnum::finalizado->value)
                                     ->first();
 
                                 if (isset($cartModel->id)) {
-                                    return collect(
-                                        json_decode($cartModel->items, true)
-                                    )->sum('amount');
+                                    return collect(json_decode($cartModel->items, true))
+                                        ->sum('amount');
                                 }
 
-                                $mt = microtime();
-
-                                $identifier = Uuid::uuid3(
-                                    Uuid::NAMESPACE_DNS,
-                                    (string)date('dmYH:i:s') . "-" . $mt
-                                )->toString();
-
                                 $cartModel = Cart::updateOrCreate(
-                                    ["identifier" => $id ?? $identifier],
+                                    ["identifier" => $id ?? $tokenSession],
                                     ['status' => StatusCartEnum::comprando->value]
                                 );
 
-                                Cookie::queue('cart_identifier', $cartModel->identify, 60 * 24 * 30);
-
-                                return collect(
-                                    json_decode($cartModel->items, true)
-                                )->sum('amount');
+                                return collect(json_decode($cartModel->items, true))
+                                    ->sum('amount');
 
                             }, 'danger'
                         ),
