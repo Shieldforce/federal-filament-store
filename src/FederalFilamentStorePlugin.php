@@ -49,11 +49,11 @@ class FederalFilamentStorePlugin implements Plugin
                     ->url("/admin/ffs-cart")
                     ->icon('heroicon-o-shopping-cart')
                     ->badgeTooltip('Itens do carrinho')
-                    ->sort(999)/*
+                    ->sort(999)
                     ->badge(function () {
                         $cart = json_decode(request()->cookie('cart_items', '[]'), true);
                         return collect($cart)->sum('amount');
-                    }, 'danger')*/,
+                    }, 'danger'),
             ])
             ->pages([
                 \Shieldforce\FederalFilamentStore\Pages\FederalFilamentStorePage::class,
