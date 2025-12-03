@@ -127,6 +127,8 @@ class FederalFilamentProductPage extends Page implements HasForms
                         ->rules(
                             [
                                 function (Get $get) {
+                                dd($get("files"));
+
                                     $amount = (int) $get('amount');
                                     return "size:$amount";
                                 },
