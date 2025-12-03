@@ -66,6 +66,8 @@ class FederalFilamentStorePlugin implements Plugin
                         ->badge(
                             function () {
 
+                                dd($cart = json_decode(request()->cookie('cart_items'), true));
+
                                 $mt = microtime();
 
                                 $identifier = Uuid::uuid3(
