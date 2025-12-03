@@ -98,6 +98,8 @@ class FederalFilamentProductPage extends Page implements HasForms
         $this->amount = 1;
         $this->image_all = false;
         $this->totalPrice = $this->amount * $this->product['price'];
+
+
     }
 
     public function updated($property)
@@ -176,19 +178,59 @@ class FederalFilamentProductPage extends Page implements HasForms
     public function addCart()
     {
         $data = $this->form->getState();
-        dd($data, "addCart");
+
+        $cart = json_decode(request()->cookie('cart_items', '[]'), true);
+
+        // Verifica se o item já está no carrinho
+        $exists = false;
+
+        foreach ($cart as &$item) {
+            if ($item['uuid'] === $this->product['uuid']) {
+                // Atualiza apenas a quantidade
+                $item['amount'] += (int) $this->amount;
+                $exists = true;
+                break;
+            }
+        }
+
+        if (!$exists) {
+            $cart[] = [
+                'uuid'   => $this->product['uuid'],
+                'name'   => $this->product['name'],
+                'amount' => (int) $this->amount,
+                'price'  => $this->product['price'],
+            ];
+        }
+
+        // Atualiza o cookie por 30 dias
+        cookie()->queue(
+            cookie('cart_items', json_encode($cart), 60 * 24 * 30)
+        );
+
+        // Atualiza o badge do carrinho (evento JS)
+        $this->dispatch('$refresh');
+
+        Notification::make()
+            ->success()
+            ->title('Item adicionado ao carrinho!')
+            ->send();
     }
 
     public function finish()
     {
         $data = $this->form->getState();
-        dd($data, "finish");
 
-        /*Notification::make()
+        // Limpa o carrinho
+        cookie()->queue(
+            cookie()->forget('cart_items')
+        );
+
+        $this->dispatch('$refresh');
+
+        Notification::make()
             ->success()
-            ->title('jghjgh')
-            ->seconds(5)
-            ->send();*/
+            ->title('Compra finalizada!')
+            ->send();
     }
 
     public function submit()

@@ -51,7 +51,8 @@ class FederalFilamentStorePlugin implements Plugin
                     ->badgeTooltip('Itens do carrinho')
                     ->sort(999)
                     ->badge(function () {
-                        return session()->get('cart_count', 0);
+                        $cart = json_decode(request()->cookie('cart_items', '[]'), true);
+                        return collect($cart)->sum('amount');
                     }, 'danger'),
             ])
             ->pages([
