@@ -69,7 +69,7 @@ class FederalFilamentStorePlugin implements Plugin
 
                                 $tokenSession = request()->session()->get('_token');
 
-                                Cookie::queue(Cookie::forever('ffs_identifier', $tokenSession));
+                               Cookie::forever('ffs_identifier', $tokenSession);
 
                                 $identifier = request()->cookie('ffs_identifier');
 
