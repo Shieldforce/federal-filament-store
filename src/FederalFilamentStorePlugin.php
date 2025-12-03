@@ -66,10 +66,12 @@ class FederalFilamentStorePlugin implements Plugin
                         ->badge(
                             function () {
 
-                                $cartModel = Cart::where("uuid", Cookie::get('cart_uuid'))
+                                $cartModel = Cart::where("uuid", request()->cookie('cart_uuid'))
                                     ->whereNotNull("uuid")
-                                    ->where("status", "!=" , StatusCartEnum::finalizado->value)
+                                    ->where("status", "!=" ,StatusCartEnum::finalizado->value)
                                     ->first();
+
+                                logger($cartModel->toArray());
 
                                 if (isset($cartModel->id)) {
                                     $items = json_decode($cartModel->items, true);
