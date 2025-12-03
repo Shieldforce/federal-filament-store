@@ -179,8 +179,6 @@ class FederalFilamentProductPage extends Page implements HasForms
 
     public function addCart()
     {
-        // $data = $this->form->getState();
-
         Notification::make()
             ->success()
             ->title('Item adicionado ao carrinho!')
@@ -207,11 +205,7 @@ class FederalFilamentProductPage extends Page implements HasForms
 
     public function finish()
     {
-        $data = $this->form->getState();
 
-        cookie()->queue(
-            cookie()->forget('cart_items')
-        );
 
         Notification::make()
             ->success()
@@ -254,7 +248,9 @@ class FederalFilamentProductPage extends Page implements HasForms
             }
         }
 
-        dd($this->files);
+        $data = $this->form->getState();
+
+        dd($data);
 
         if (!$exists) {
             $cart[] = [
