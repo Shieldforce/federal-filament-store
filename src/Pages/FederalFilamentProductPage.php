@@ -16,6 +16,7 @@ use Filament\Forms\Contracts\HasForms;
 use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Support\Facades\Auth;
 use Livewire\WithPagination;
+use Shieldforce\FederalFilamentStore\Models\Cart;
 
 class FederalFilamentProductPage extends Page implements HasForms
 {
@@ -237,12 +238,14 @@ class FederalFilamentProductPage extends Page implements HasForms
 
     public function cartUpdate()
     {
-        /*$cart = json_decode(request()->cookie('cart_items', '[]'), true);
+        $tokenSession = request()->session()->get('_token');
+
+        $cartModel = Cart::where("identifier", $tokenSession)->first();
+
         $exists = false;
 
-        foreach ($cart as &$item) {
+        foreach (json_decode($cartModel->items) as &$item) {
             if ($item['uuid'] === $this->product['uuid']) {
-                // Atualiza apenas a quantidade
                 $item['amount'] += (int)$this->amount;
                 $exists = true;
                 break;
@@ -258,9 +261,7 @@ class FederalFilamentProductPage extends Page implements HasForms
             ];
         }
 
-        cookie()->queue(
-            cookie('cart_items', json_encode($cart), 60 * 24 * 30)
-        );*/
+        $cartModel->update(["items" => json_encode($cart)]);
     }
 }
 

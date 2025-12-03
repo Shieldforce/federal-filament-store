@@ -42,9 +42,10 @@ class FederalFilamentStorePlugin implements Plugin
 
                     Route::get(
                         '/cart-count', function () {
-                        $cart = json_decode(request()->cookie('cart_items', '[]'), true);
-                        return response()->json(collect($cart)->sum('amount'));
-                    }
+                            $tokenSession = request()->session()->get('_token');
+                            $cartModel = Cart::where("identifier", $tokenSession)->first();
+                            return response()->json(collect(json_decode($cartModel->items, true))->sum('amount'));
+                        }
                     );
                 }
             )
