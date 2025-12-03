@@ -242,6 +242,8 @@ class FederalFilamentProductPage extends Page implements HasForms
 
         $cartModel = Cart::where("identifier", $tokenSession)->first();
 
+        dd($cartModel->items);
+
         $exists = false;
 
         foreach (json_decode($cartModel->items) as &$item) {
