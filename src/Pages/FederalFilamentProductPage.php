@@ -212,7 +212,7 @@ class FederalFilamentProductPage extends Page implements HasForms
             ->actions(
                 [
                     Action::make('Ir para Loja')
-                        ->url('/admin/ffs-store') // redireciona imediatamente
+                        ->url('/admin/ffs-store')
                 ]
             )
             ->send();
