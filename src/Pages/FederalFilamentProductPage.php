@@ -132,11 +132,6 @@ class FederalFilamentProductPage extends Page implements HasForms
                                     return "size:$amount"; // exige exatamente $amount arquivos
                                 },
                             ]
-                        )
-                        ->validationAttributes(
-                            [
-                                'files' => 'imagens',
-                            ]
                         ),
                 ]
             ),
