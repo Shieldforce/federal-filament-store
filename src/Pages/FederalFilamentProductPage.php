@@ -140,6 +140,13 @@ class FederalFilamentProductPage extends Page implements HasForms
                                     $image_all = $get("image_all");
                                     $amountImages = count($get("files"));
                                     $amount = (int)$get('amount');
+
+                                    if ($image_all) {
+                                        $fail(
+                                            "Você enviou {$amountImages} imagens, mas precisa enviar exatamente 1."
+                                        );
+                                    }
+
                                     if (!$image_all && $amountImages !== $amount) {
                                         $fail(
                                             "Você enviou {$amountImages} imagens, mas precisa enviar exatamente {$amount}."
