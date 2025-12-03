@@ -66,7 +66,7 @@ class FederalFilamentStorePlugin implements Plugin
                         ->badge(
                             function () {
 
-                                logger(request()->session()->all());
+                                logger(request()->session()->get('_token'));
 
                                 $id = request()->cookie('cart_identifier');
 
