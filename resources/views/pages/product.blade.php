@@ -81,7 +81,7 @@
                         @click="selected = selected > 0 ? selected - 1 : images.length - 1"
                         class="absolute inset-y-0 left-0 px-2 py-[25%] w-10 group hover:bg-gray-900/50 cursor-pointer"
                     >
-                        <span class="group-hover:block text-white text-2xl">
+                        <span class="group-hover:block text-white text-2xl" style="font-size: 18pt !important;">
                             &larr;
                         </span>
                     </button>
@@ -91,7 +91,7 @@
                         @click="selected = selected < images.length - 1 ? selected + 1 : 0"
                         class="absolute inset-y-0 right-0 px-2 py-[25%] w-10 group hover:bg-gray-900/50 cursor-pointer"
                     >
-                        <span class="group-hover:block text-white text-2xl">
+                        <span class="group-hover:block text-white text-2xl" style="font-size: 18pt !important;">
                             &rarr;
                         </span>
                     </button>
