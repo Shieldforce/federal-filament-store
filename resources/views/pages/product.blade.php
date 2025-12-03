@@ -79,32 +79,31 @@
                     {{-- BOTÃO ESQUERDA --}}
                     <button
                         @click="selected = selected > 0 ? selected - 1 : images.length - 1"
-                        class="
-                            absolute top-1/2 -translate-y-1/2 left-4
-                            w-12 h-12 flex items-center justify-center
-                            bg-black/40 hover:bg-black/70
-                            rounded-full text-white text-3xl
-                            shadow-xl backdrop-blur
-                            transition transform hover:scale-110 cursor-pointer
-                        "
+                        class="absolute left-2 top-1/2 -translate-y-1/2
+           w-12 h-12 flex items-center justify-center
+           rounded-full bg-white/10 backdrop-blur-sm
+           hover:bg-white/20 transition
+           cursor-pointer"
                     >
-                        &larr;
+    <span class="text-white text-3xl">
+        &larr;
+    </span>
                     </button>
 
                     {{-- BOTÃO DIREITA --}}
                     <button
                         @click="selected = selected < images.length - 1 ? selected + 1 : 0"
-                        class="
-                            absolute top-1/2 -translate-y-1/2 right-4
-                            w-12 h-12 flex items-center justify-center
-                            bg-black/40 hover:bg-black/70
-                            rounded-full text-white text-3xl
-                            shadow-xl backdrop-blur
-                            transition transform hover:scale-110 cursor-pointer
-                        "
+                        class="absolute right-2 top-1/2 -translate-y-1/2
+           w-12 h-12 flex items-center justify-center
+           rounded-full bg-white/10 backdrop-blur-sm
+           hover:bg-white/20 transition
+           cursor-pointer"
                     >
-                        &rarr;
+    <span class="text-white text-3xl">
+        &rarr;
+    </span>
                     </button>
+
 
                     {{-- ÍCONES INDICADORES --}}
                     <div class="absolute bottom-3 w-full flex justify-center gap-2">
