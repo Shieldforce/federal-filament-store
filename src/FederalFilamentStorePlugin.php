@@ -66,6 +66,8 @@ class FederalFilamentStorePlugin implements Plugin
                         ->badge(
                             function () {
 
+                                logger(request()->session()->all());
+
                                 $id = request()->cookie('cart_identifier');
 
                                 $cartModel = Cart::where("identifier", $id)
@@ -85,8 +87,6 @@ class FederalFilamentStorePlugin implements Plugin
                                     Uuid::NAMESPACE_DNS,
                                     (string)date('dmYH:i:s') . "-" . $mt
                                 )->toString();
-
-                                logger(request()->session()->all());
 
                                 $cartModel = Cart::updateOrCreate(
                                     ["identifier" => $id ?? $identifier],
