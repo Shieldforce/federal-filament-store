@@ -128,10 +128,14 @@ class FederalFilamentProductPage extends Page implements HasForms
                             [
                                 function (Get $get) {
                                     $amount = (int) $get('amount');
+                                    $amountImagens = count($get("files"));
+                                    $msg = false;
 
-                                    dd(count($get("files")), $amount);
+                                    if($amountImagens != $amount) {
+                                        $msg = "Quantidade de imagens é {$amountImagens} e você precisa subir: {$amount}";
+                                    }
 
-                                    return "size:$amount";
+                                    return $msg;
                                 },
                             ]
                         ),
