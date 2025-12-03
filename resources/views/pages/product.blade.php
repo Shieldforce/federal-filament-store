@@ -137,11 +137,10 @@
         }
 
         document.addEventListener('DOMContentLoaded', () => {
-
             const cartLi = document.querySelector('.fi-topbar-item a[href="/admin/ffs-cart"]');
             if(cartLi) {
                 cartLi.addEventListener('click', (e) => {
-                    e.preventDefault(); // impede redirecionamento
+                    event.preventDefault(); // impede redirecionamento
                     /*fetch('/api/cart-items')
                         .then(res => res.json())
                         .then(cart => {
@@ -163,7 +162,6 @@
                     alert('dffsdf')
                 });
             }
-
         });
     </script>
 @endpush
