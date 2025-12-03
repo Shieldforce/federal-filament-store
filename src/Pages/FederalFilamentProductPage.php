@@ -129,6 +129,8 @@ class FederalFilamentProductPage extends Page implements HasForms
                             function (Get $get) {
                                 return function (string $attribute, $value, $fail) use ($get) {
 
+                                    dd($value);
+
                                     $amount = (int)$get('amount');
                                     $uploaded = is_array($value) ? count($value) : 0;
 
