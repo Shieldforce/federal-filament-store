@@ -77,8 +77,8 @@ class FederalFilamentProductPage extends Page implements HasForms
         );
 
         $this->product = $productFilter[0] ?? null;
-        $this->images[] = env("APP_URL") ."/storage/". $this->product['image']
-            ?? 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=2070&q=80';
+        $this->images[] = isset($this->product['image']) ? env("APP_URL") ."/storage/". $this->product['image']
+            : 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=2070&q=80';
     }
 
     public function updated($property)
