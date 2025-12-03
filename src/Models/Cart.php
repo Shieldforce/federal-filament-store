@@ -7,6 +7,8 @@ use Ramsey\Uuid\Uuid;
 
 class Cart extends Model
 {
+    protected $table = 'ffs_carts';
+
     protected $fillable = [
         'identifier',
         'uuid',
