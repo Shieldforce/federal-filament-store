@@ -83,7 +83,10 @@ class FederalFilamentStorePlugin implements Plugin
 
                                 $minutes = 60 * 24 * 30; // 30 dias
 
-                                $tt = Cookie::make('ffs_identifier', $tokenSession, $minutes);
+                                $tt = Cookie::forever(
+                                    name: 'ffs_identifier',
+                                    value: $tokenSession,
+                                );
 
                                 $identifier = $tt->getValue();
 
