@@ -136,34 +136,34 @@
             }, 30000);
         }
 
+        document.addEventListener('DOMContentLoaded', () => {
 
-        const cartLi = document.querySelector('.fi-topbar-item a[href="/admin/ffs-cart"]');
-        if(cartLi) {
-            cartLi.addEventListener('click', (e) => {
-                e.preventDefault(); // impede redirecionamento
-                /*fetch('/api/cart-items')
-                    .then(res => res.json())
-                    .then(cart => {
-                        const ul = document.getElementById('cartItemsList');
-                        ul.innerHTML = ''; // limpa lista
-                        if(cart.length === 0){
-                            ul.innerHTML = '<li class="text-gray-500">Carrinho vazio</li>';
-                        } else {
-                            cart.forEach(item => {
-                                const li = document.createElement('li');
-                                li.className = 'flex justify-between';
-                                li.innerHTML = `<span>${item.name}</span><span>${item.amount}</span>`;
-                                ul.appendChild(li);
-                            });
-                        }
-                        Filament.modal.show('cartModal');
-                });*/
+            const cartLi = document.querySelector('.fi-topbar-item a[href="/admin/ffs-cart"]');
+            if(cartLi) {
+                cartLi.addEventListener('click', (e) => {
+                    e.preventDefault(); // impede redirecionamento
+                    /*fetch('/api/cart-items')
+                        .then(res => res.json())
+                        .then(cart => {
+                            const ul = document.getElementById('cartItemsList');
+                            ul.innerHTML = ''; // limpa lista
+                            if(cart.length === 0){
+                                ul.innerHTML = '<li class="text-gray-500">Carrinho vazio</li>';
+                            } else {
+                                cart.forEach(item => {
+                                    const li = document.createElement('li');
+                                    li.className = 'flex justify-between';
+                                    li.innerHTML = `<span>${item.name}</span><span>${item.amount}</span>`;
+                                    ul.appendChild(li);
+                                });
+                            }
+                            Filament.modal.show('cartModal');
+                    });*/
 
-                alert('dffsdf')
-            });
-        }
+                    alert('dffsdf')
+                });
+            }
 
-
-
+        });
     </script>
 @endpush
