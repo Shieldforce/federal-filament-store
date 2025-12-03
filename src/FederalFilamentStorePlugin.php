@@ -69,23 +69,25 @@ class FederalFilamentStorePlugin implements Plugin
 
                                 $identifierVerify = request()->cookie('ffs_identifier');
 
-                                if ($identifierVerify) {
-                                    $cartModel = Cart::where("identifier", $identifierVerify)
-                                        ->whereNotNull("identifier")
-                                        ->where("status", "!=", StatusCartEnum::finalizado->value)
-                                        ->first();
+                                $cartModel = Cart::where("identifier", $identifierVerify)
+                                    ->whereNotNull("identifier")
+                                    ->where("status", "!=", StatusCartEnum::finalizado->value)
+                                    ->first();
 
+                                if (isset($cartModel->id)) {
                                     return collect(json_decode($cartModel->items, true))
                                         ->sum('amount');
                                 }
 
                                 $tokenSession = request()->session()->get('_token');
 
-                                $tt = Cookie::forever('ffs_identifier', $tokenSession);
+                                // $tt = Cookie::forever('ffs_identifier', $tokenSession);
 
-                                dd($tt);
+                                $minutes = 60 * 24 * 30; // 30 dias
 
-                                $identifier = request()->cookie('ffs_identifier');
+                                $tt = Cookie::make('ffs_identifier', $tokenSession, $minutes);
+
+                                $identifier = $tt->getValue();
 
                                 $cartModel = Cart::where("identifier", $identifier)
                                     ->whereNotNull("identifier")
