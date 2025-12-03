@@ -242,11 +242,11 @@ class FederalFilamentProductPage extends Page implements HasForms
 
         $cartModel = Cart::where("identifier", $tokenSession)->first();
 
-        dd($cartModel);
-
         $exists = false;
 
-        foreach (json_decode($cartModel->items) as &$item) {
+        $cart = json_decode($cartModel->items, true);
+
+        foreach ($cart as &$item) {
             if ($item['uuid'] === $this->product['uuid']) {
                 $item['amount'] += (int)$this->amount;
                 $exists = true;
@@ -263,7 +263,7 @@ class FederalFilamentProductPage extends Page implements HasForms
             ];
         }
 
-        $cartModel->update(["items" => json_encode($cart)]);
+        $cartModel->update(["items" => $cart]);
     }
 }
 
