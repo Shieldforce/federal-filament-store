@@ -108,7 +108,7 @@ class FederalFilamentProductPage extends Page implements HasForms
                         ->minValue(1),
 
                     ViewField::make('rating')
-                        ->view('filament.forms.components.range-slider')
+                        ->view('forms.components.range-slider')
                         ->viewData(
                             [
                                 'min' => 1,
