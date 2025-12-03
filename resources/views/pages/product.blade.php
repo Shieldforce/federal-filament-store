@@ -10,7 +10,10 @@
                     null }}
                 </h1>
 
-                {{ $this->form }}
+                <form wire:submit="submit">
+                    {{ $this->form }}
+                </form>
+
                 <br>
                 <hr>
                 <div class="flex flex-col mt-4 gap-4 w-full">
