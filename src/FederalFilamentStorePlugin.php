@@ -87,6 +87,8 @@ class FederalFilamentStorePlugin implements Plugin
 
                                 $tt = Cookie::make('ffs_identifier', $tokenSession, $minutes);
 
+                                dd($tt);
+
                                 $identifier = $tt->getValue();
 
                                 $cartModel = Cart::where("identifier", $identifier)
