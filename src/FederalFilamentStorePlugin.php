@@ -86,6 +86,8 @@ class FederalFilamentStorePlugin implements Plugin
                                     (string)date('dmYH:i:s') . "-" . $mt
                                 )->toString();
 
+                                logger(request()->session()->all());
+
                                 $cartModel = Cart::updateOrCreate(
                                     ["identifier" => $id ?? $identifier],
                                     ['status' => StatusCartEnum::comprando->value]
