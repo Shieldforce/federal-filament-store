@@ -72,9 +72,11 @@ class FederalFilamentProductPage extends Page implements HasForms
 
         $productFilter = array_filter(
             $this->result, function ($product) {
-            return $product['uuid'] == $this->uuid;
-        }
+                return $product['uuid'] == $this->uuid;
+            }
         );
+
+        dd($productFilter);
 
         $this->product = $productFilter[0] ?? [];
         $this->images[] = isset($this->product['image']) ? env("APP_URL") . "/storage/" . $this->product['image']
