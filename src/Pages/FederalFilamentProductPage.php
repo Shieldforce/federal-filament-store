@@ -105,9 +105,9 @@ class FederalFilamentProductPage extends Page implements HasForms
         ];
     }
 
-    public function addCart($id)
+    public function addCart($uuid)
     {
-        dd("teste");
+        dd($uuid);
     }
 
 }
