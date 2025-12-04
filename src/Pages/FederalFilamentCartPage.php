@@ -175,9 +175,16 @@ class FederalFilamentCartPage extends Page implements HasForms
 
             $transaction = $this->createOrExtractTransaction($order);
 
-            dd($user, $client, $order, $transaction);
+            if (!isset($transaction->id)) {
+                return Notification::make()
+                                   ->danger()
+                                   ->title('Transação não criado!')
+                                   ->body("Erro ao criar transação!")
+                                   ->persistent()
+                                   ->send();
+            }
 
-            //$this->processCheckout($user);
+            $this->processCheckout($transaction);
 
             /*
             $credentials = Auth::attempt([
