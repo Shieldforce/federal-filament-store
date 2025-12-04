@@ -228,11 +228,23 @@ class FederalFilamentCartPage extends Page implements HasForms
                                 TextInput::make('password')
                                          ->label('Senha')
                                          ->password()
+                                         ->minLength(4)
+                                         ->maxLength(50)
                                          ->required(),
 
                                 TextInput::make('password_confirmation')
                                          ->label('Confirme a Senha')
                                          ->password()
+                                         ->minLength(4)
+                                         ->maxLength(50)
+                                         ->rule(function (Get $get) {
+                                             return function (string $attribute, $value, $fail) use ($get) {
+                                                 $password = $get("password");
+                                                 if ($password != $value) {
+                                                     $fail("Confirmação de Senha Incorreta!");
+                                                 }
+                                             };
+                                         })
                                          ->required(),
 
                             ]),
