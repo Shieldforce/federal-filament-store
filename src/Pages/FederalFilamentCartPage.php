@@ -301,6 +301,7 @@ class FederalFilamentCartPage extends Page implements HasForms
                                       ->label("Física/Jurídica")
                                       ->autofocus()
                                       ->live()
+                                      ->reactive()
                                       ->default(1)
                                       ->options(
                                           collect(TypePeopleEnum::cases())
@@ -331,35 +332,37 @@ class FederalFilamentCartPage extends Page implements HasForms
                                              FormComponentAction::make('apiCpfCnpj')
                                                                 ->label("Buscar Cpf/CNPJ")
                                                                 ->icon('heroicon-o-user')
-                                                                ->action(function (
-                                                                    Set       $set,
-                                                                              $state,
-                                                                    Get       $get,
-                                                                    Component $livewire
-                                                                ) {
-                                                                    $apiCpfCnpj = new ApiCpfCnpjService(
-                                                                        $state, $get("birthday")
-                                                                    );
-                                                                    $data = $apiCpfCnpj->search();
-
-                                                                    logger([
-                                                                        "data" => $data,
-                                                                    ]);
-
-                                                                    if (isset($data["data"]) && isset($data["data"]["nome_da_pf"])) {
-                                                                        $set(
-                                                                            'name',
-                                                                            $data["data"]["nome_da_pf"]
+                                                                ->action(
+                                                                    function (
+                                                                        Set       $set,
+                                                                                  $state,
+                                                                        Get       $get,
+                                                                        Component $livewire
+                                                                    ) {
+                                                                        $apiCpfCnpj = new ApiCpfCnpjService(
+                                                                            $state, $get("birthday")
                                                                         );
-                                                                    }
+                                                                        $data = $apiCpfCnpj->search();
 
-                                                                    if (isset($data["data"]) && isset($data["data"]["fantasia"])) {
-                                                                        $set(
-                                                                            'name',
-                                                                            $data["data"]["fantasia"]
-                                                                        );
+                                                                        logger([
+                                                                            "data" => $data,
+                                                                        ]);
+
+                                                                        if (isset($data["data"]) && isset($data["data"]["nome_da_pf"])) {
+                                                                            $set(
+                                                                                'name',
+                                                                                $data["data"]["nome_da_pf"]
+                                                                            );
+                                                                        }
+
+                                                                        if (isset($data["data"]) && isset($data["data"]["fantasia"])) {
+                                                                            $set(
+                                                                                'name',
+                                                                                $data["data"]["fantasia"]
+                                                                            );
+                                                                        }
                                                                     }
-                                                                })
+                                                                )
                                          )
                                          ->unique('clients'),
 
