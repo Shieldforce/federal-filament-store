@@ -242,11 +242,11 @@ class FederalFilamentCartPage extends Page implements HasForms
             ->where('email', $data['email'])
             ->first();
 
-        if (!$user || !Hash::check($data['password'], $user->password)) {
+        if ($user && !Hash::check($data['password'], $user->password)) {
             Notification::make()
                         ->danger()
                         ->title('Credenciais Incorretas!')
-                        ->body("E-mail ou senha incorretos, por favor verifique e tente novamente.")
+                        ->body("Você já possui uma conta! Mas as credenciais estão incorretas!.")
                         ->send();
             return null;
         }
@@ -266,7 +266,7 @@ class FederalFilamentCartPage extends Page implements HasForms
             ->where('email', $data['email'])
             ->first();
 
-        if (!$user || !Hash::check($data['password'], $user->password)) {
+        if (!$user || $user && !Hash::check($data['password'], $user->password)) {
             Notification::make()
                         ->danger()
                         ->title('Credenciais Incorretas!')
