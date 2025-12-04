@@ -113,7 +113,7 @@ class FederalFilamentCartPage extends Page implements HasForms
 
     public function submit()
     {
-        try {
+        //try {
             $data = $this->form->getState();
 
             $userCallback = config('federal-filament-store.user_callback');
@@ -156,7 +156,7 @@ class FederalFilamentCartPage extends Page implements HasForms
 
             dd($client);
             //$this->processCheckout($user);
-        } catch (Throwable $throwable) {
+        /*} catch (Throwable $throwable) {
 
             Notification::make()
                 ->danger()
@@ -166,7 +166,7 @@ class FederalFilamentCartPage extends Page implements HasForms
                 ->send();
 
             throw $throwable;
-        }
+        }*/
     }
 
     public function notAccount(Model $user)
