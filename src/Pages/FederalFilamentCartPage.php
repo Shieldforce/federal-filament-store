@@ -13,6 +13,7 @@ use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 use Shieldforce\FederalFilamentStore\Models\Cart;
 
 class FederalFilamentCartPage extends Page implements HasForms
@@ -30,6 +31,9 @@ class FederalFilamentCartPage extends Page implements HasForms
     public string            $email                 = "";
     public string            $password              = "";
     public string            $password_confirmation = "";
+    public string            $cellphone             = "";
+    public string            $cep                   = "";
+    public string            $street                = "";
     public bool              $is_user               = false;
     protected array          $items                 = [];
     protected Cart           $cart;
@@ -233,6 +237,7 @@ class FederalFilamentCartPage extends Page implements HasForms
                                          ->minLength(4)
                                          ->maxLength(50)
                                          ->revealable()
+                                         ->prefixIcon("heroicon-o-lock-closed")
                                          ->required(),
 
                                 TextInput::make('password_confirmation')
@@ -241,6 +246,7 @@ class FederalFilamentCartPage extends Page implements HasForms
                                          ->minLength(4)
                                          ->maxLength(50)
                                          ->revealable()
+                                         ->prefixIcon("heroicon-o-lock-closed")
                                          ->rule(function (Get $get) {
                                              return function (string $attribute, $value, $fail) use ($get) {
                                                  $password = $get("password");
@@ -252,6 +258,27 @@ class FederalFilamentCartPage extends Page implements HasForms
                                          })
                                          ->required(),
 
+                                TextInput::make('cellphone')
+                                         ->label('Celular/Whatsapp')
+                                         ->prefixIcon("heroicon-o-phone")
+                                         ->mask("(99) 9999-9999")
+                                         ->required(),
+
+                                TextInput::make('cep')
+                                         ->label('Digite o CEP')
+                                         ->prefixIcon("heroicon-o-phone")
+                                         ->live()
+                                         ->required(),
+
+                            ]),
+
+                    Fieldset::make("address")
+                            ->label("Dados de endereço")
+                            ->visible(fn(Get $get) => Str::length($get("cep")) == 8)
+                            ->schema([
+                                TextInput::make('street')
+                                         ->label('Endereço')
+                                         ->required(),
                             ]),
 
                     Fieldset::make("is_user_yes")
@@ -266,6 +293,7 @@ class FederalFilamentCartPage extends Page implements HasForms
                                 TextInput::make('password')
                                          ->label('Senha')
                                          ->revealable()
+                                         ->prefixIcon("heroicon-o-lock-closed")
                                          ->password()
                                          ->required(),
 
