@@ -26,6 +26,9 @@ class FederalFilamentCartPage extends Page implements HasForms
     protected Cart           $cart;
     protected array          $items;
     public float             $totalPrice;
+    public string            $email;
+    public string            $password;
+    public bool              $is_user;
 
     public function getLayout(): string
     {
@@ -75,7 +78,7 @@ class FederalFilamentCartPage extends Page implements HasForms
 
     public function updated()
     {
-       //
+        //
     }
 
     public function submit()
