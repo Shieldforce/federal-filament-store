@@ -99,7 +99,14 @@ class FederalFilamentCartPage extends Page implements HasForms
 
         $user = $user->where("email", $data["email"])->first();
 
-        if(isset($user->id)) {
+        $credentials = Auth::attempt([
+            "email"    => $data["email"],
+            "password" => $data["password"],
+        ]);
+
+        dd($credentials);
+
+        if (isset($user->id)) {
             dd($user);
         }
 
@@ -146,8 +153,6 @@ class FederalFilamentCartPage extends Page implements HasForms
             MethodPaymentEnum::billet->value,
         ],  due_date: $due_date,
         );*/
-
-
         /*$mountCheckout->handle()->configureButtonSubmit(
             text       : "Dashboard",
             color      : "info",
