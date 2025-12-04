@@ -6,5 +6,6 @@ return [
     'sidebar_group'       => 'Loja',
     'products_callback'   => [],
     'categories_callback' => [],
-    'client_callback'     => Model::class,
+    'user_callback'       => Model::class,
+    'order_callback'      => Model::class,
 ];

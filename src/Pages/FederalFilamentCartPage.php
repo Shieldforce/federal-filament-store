@@ -12,6 +12,7 @@ use Filament\Forms\Contracts\HasForms;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Shieldforce\CheckoutPayment\Enums\MethodPaymentEnum;
+use Shieldforce\CheckoutPayment\Services\DtoSteps\DtoStep1;
 use Shieldforce\CheckoutPayment\Services\MountCheckoutStepsService;
 use Shieldforce\FederalFilamentStore\Models\Cart;
 
@@ -60,9 +61,7 @@ class FederalFilamentCartPage extends Page implements HasForms
     public function mount(): void
     {
         if (!Auth::check()) {
-            filament()
-                ->getCurrentPanel()
-                ->topNavigation()/*
+            filament()->getCurrentPanel()->topNavigation()/*
                 ->topbar(false)*/
             ;
         }
@@ -72,8 +71,7 @@ class FederalFilamentCartPage extends Page implements HasForms
 
     public function loadData()
     {
-        $this->cart = Cart::where("identifier", request()->cookie("ffs_identifier"))
-            ->first();
+        $this->cart = Cart::where("identifier", request()->cookie("ffs_identifier"))->first();
 
         $this->items = json_decode($this->cart->items ?? [], true);
 
@@ -86,7 +84,7 @@ class FederalFilamentCartPage extends Page implements HasForms
 
     public function updated($property)
     {
-        if($property == 'is_user') {
+        if ($property == 'is_user') {
             $this->loadData();
         }
     }
@@ -94,27 +92,84 @@ class FederalFilamentCartPage extends Page implements HasForms
     public function submit()
     {
         $data = $this->form->getState();
+        $cart = $this->cart;
 
-        $clientCallback = config('federal-filament-store.client_callback');
-        $client = new $clientCallback();
-        dd($client->all());
+        $userCallback = config('federal-filament-store.user_callback');
+        $user = new $userCallback();
+        //$user->updateOrCreate([], []);
 
-        /*$model = $this->cart;
+        $user = $user->where("email", $data["email"])->first();
 
-        $due_date = Carbon::createFromFormat("d/m/Y", "{$model->due_day}/{$model->reference}")
-            ->format("Y-m-d");
+        if(isset($user->id)) {
+            dd($user);
+        }
+
+        /*$transactionCallback = config('federal-filament-store.transaction_callback');
+        $transaction = new $transactionCallback();
+        $transactionModel = $transaction->updateOrCreate([], [
+            'creator_id'         => "",
+            'order_id'           => "",
+            'employee_id'        => "",
+            'supplier_id'        => "",
+            'origin_payment'     => "",
+            'name'               => "",
+            'necessary'          => "",
+            'type'               => "",
+            'value'              => "",
+            'monthly'            => "",
+            'date_monthly_start' => "",
+            'date_monthly_end'   => "",
+            'booklet'            => "",
+            'not_start_end'      => "",
+            'reference'          => "",
+            'due_day'            => "",
+            'payment_day'        => "",
+            'paid'               => "",
+            'recipient'          => "",
+            'status'             => "",
+        ]);*/
+
+        /*
+            $orderCallback = config('federal-filament-store.client_callback');
+            $order = new $orderCallback();
+            $orderModel = $order->updateOrCreate([], []);
+        */
+
+        /*$due_date = Carbon::createFromFormat(
+            "d/m/Y",
+            "{$transactionModel->due_day}/{$transactionModel->reference}"
+        )->format("Y-m-d");
 
         $mountCheckout = new MountCheckoutStepsService(
-            model          : $model,
-            requiredMethods: [
-                                 MethodPaymentEnum::credit_card->value,
-                                 MethodPaymentEnum::pix->value,
-                                 MethodPaymentEnum::billet->value,
-                             ],
-            due_date       : $due_date
-        );
+            model   : $transactionModel, requiredMethods: [
+            MethodPaymentEnum::credit_card->value,
+            MethodPaymentEnum::pix->value,
+            MethodPaymentEnum::billet->value,
+        ],  due_date: $due_date,
+        );*/
 
-        dd($mountCheckout);*/
+
+        /*$mountCheckout->handle()->configureButtonSubmit(
+            text       : "Dashboard",
+            color      : "info",
+            urlRedirect: route("filament.admin.pages.dashboard")
+        )->step1(
+            items  : array_map(callback: function (
+                $product
+            ) {
+                return (new DtoStep1(
+                    name       : $product["name"],
+                    price      : $product["pivot"]["price"],
+                    price_2    : $product["pivot"]["price"],
+                    price_3    : $product["pivot"]["price"],
+                    description: "Venda de produto: ".$product["name"],
+                    img        : $product["picture"],
+                    quantity   : $product["pivot"]["quantity"],
+                ))->toArray();
+            },
+                               array   : $transactionModel->order->products->toArray()),
+            visible: true,
+        );*/
     }
 
     protected function getFormSchema(): array
@@ -122,22 +177,13 @@ class FederalFilamentCartPage extends Page implements HasForms
         return [
             Grid::make(1)->schema(
                 [
-                    Toggle::make("is_user")
-                        ->label("Já tenho conta")
-                        ->default(false)
-                        ->live(),
+                    Toggle::make("is_user")->label("Já tenho conta")->default(false)->live(),
 
-                    TextInput::make('email')
-                        ->label('E-mail')
-                        ->visible(fn(Get $get) => $get("is_user"))
-                        ->email()
-                        ->required(),
+                    TextInput::make('email')->label('E-mail')->visible(fn(Get $get) => $get("is_user"))->email(
+                    )->required(),
 
-                    TextInput::make('password')
-                        ->label('Senha')
-                        ->visible(fn(Get $get) => $get("is_user"))
-                        ->password()
-                        ->required(),
+                    TextInput::make('password')->label('Senha')->visible(fn(Get $get) => $get("is_user"))->password(
+                    )->required(),
                 ]
             ),
         ];
