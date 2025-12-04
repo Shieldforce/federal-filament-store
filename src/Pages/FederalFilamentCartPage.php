@@ -21,6 +21,7 @@ class FederalFilamentCartPage extends Page implements HasForms
     protected array          $result          = [];
     protected Cart           $cart;
     protected array          $items;
+    public float             $totalPrice;
 
     public function getLayout(): string
     {
@@ -62,6 +63,12 @@ class FederalFilamentCartPage extends Page implements HasForms
             ->first();
 
         $this->items = json_decode($this->cart->items ?? [], true);
+
+        $this->totalPrice = collect($this->items)->sum(
+            function ($item) {
+                return $item['price'] * $item['amount'];
+            }
+        );
     }
 
     public function updated()
