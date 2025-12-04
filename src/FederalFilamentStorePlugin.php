@@ -58,7 +58,8 @@ class FederalFilamentStorePlugin implements Plugin
                         ->sort(998)
                         ->icon('heroicon-o-shopping-bag'),
                     NavigationItem::make('cart')
-                        ->visible()
+                        ->visible(fn() => Cart::where("ffs_identifier", request()->cookie("ffs_identifier"))
+                            ->exists())
                         ->label('Carrinho')
                         ->url("/admin/ffs-cart")
                         ->icon('heroicon-o-shopping-cart')

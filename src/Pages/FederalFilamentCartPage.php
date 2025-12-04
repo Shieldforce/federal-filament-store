@@ -6,18 +6,20 @@ use Filament\Pages\Page;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
 use Illuminate\Support\Facades\Auth;
+use Shieldforce\FederalFilamentStore\Models\Cart;
 
 class FederalFilamentCartPage extends Page implements HasForms
 {
     use InteractsWithForms;
 
-    protected static string $view = 'federal-filament-store::pages.cart';
-    protected static ?string $navigationIcon = 'heroicon-o-list-bullet';
+    protected static string  $view            = 'federal-filament-store::pages.cart';
+    protected static ?string $navigationIcon  = 'heroicon-o-list-bullet';
     protected static ?string $navigationGroup = 'Loja';
-    protected static ?string $label = 'Carrinho';
+    protected static ?string $label           = 'Carrinho';
     protected static ?string $navigationLabel = 'Carrinho';
-    protected static ?string $title = 'Carrinho';
-    protected array $result = [];
+    protected static ?string $title           = 'Carrinho';
+    protected array          $result          = [];
+    protected Cart           $cart;
 
     public function getLayout(): string
     {
@@ -54,6 +56,9 @@ class FederalFilamentCartPage extends Page implements HasForms
         }
 
         $this->filtrar();
+
+        $this->cart = Cart::where("ffs_identifier", request()->cookie("ffs_identifier"))
+            ->first();
     }
 
     public function updated()
@@ -71,11 +76,6 @@ class FederalFilamentCartPage extends Page implements HasForms
     protected function getData(): array
     {
         return [];
-    }
-
-    public static function getNavigationBadge(): ?string
-    {
-        return 99999;
     }
 
 }
