@@ -5,7 +5,7 @@
         <div class="md:w-[480px] lg:w-[520px] xl:w-[560px] md:flex-none pl-6 config-cart-ec">
             <x-filament::section class="!max-w-[480px] w-full !rounded-none">
                 <h1 style="font-size: 16pt;">
-                    Total do carrinho: {{ $this->totalPrice }}
+                    Total do carrinho: R$ {{ number_format($this->totalPrice, 2, ",", ".") }}
                 </h1>
                 <br>
                 <hr>
@@ -61,7 +61,8 @@
                                         {{ $item['name'] }}
                                     </h3>
                                     <p class="text-sm text-gray-500">
-                                        {{ count($item['data_product']['files'] ?? []) }} imagens upadas para esse produto
+                                        {{ count($item['data_product']['files'] ?? []) }}
+                                        imagens upadas para esse produto
                                     </p>
                                 </div>
 
