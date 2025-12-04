@@ -104,10 +104,8 @@ class FederalFilamentCartPage extends Page implements HasForms
             "password" => $data["password"],
         ]);
 
-        dd($credentials);
-
-        if (isset($user->id)) {
-            dd($user);
+        if ($credentials) {
+            dd(Auth::user());
         }
 
         /*$transactionCallback = config('federal-filament-store.transaction_callback');
