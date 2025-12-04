@@ -17,7 +17,7 @@ class FederalFilamentCartPage extends Page implements HasForms
     protected static ?string $navigationGroup = 'Loja';
     protected static ?string $label           = 'Carrinho';
     protected static ?string $navigationLabel = 'Carrinho';
-    protected static ?string $title           = 'Carrinho';
+    protected static ?string $title           = 'Aqui estão seus produtos do carrinho!';
     protected array          $result          = [];
     protected Cart           $cart;
     protected array          $items;

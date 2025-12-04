@@ -40,7 +40,71 @@
         <div class="flex-1 pr-6">
             <div class="gap-6">
 
-                gfdgdgggdfg
+                <div class="space-y-4">
+                    @forelse($this->items as $item)
+                        <div class="flex gap-4 p-4 rounded-xl border bg-white shadow-sm">
+
+                            {{-- IMAGEM --}}
+                            <div class="w-24 h-24 flex-none bg-gray-100 rounded-xl overflow-hidden">
+                                <img src="{{ asset("storage/{$item['data_product']['files'][0]}") }}" alt="{{ $item['name'] }}"
+                                     class="w-full h-full object-cover">
+                            </div>
+
+                            {{-- DETALHES --}}
+                            <div class="flex-1 flex flex-col justify-between">
+
+                                <div>
+                                    <h3 class="text-lg font-semibold">
+                                        {{ $item['name'] }}
+                                    </h3>
+                                    <p class="text-sm text-gray-500">
+                                        {{ $item['category'] ?? 'Produto' }}
+                                    </p>
+                                </div>
+
+                                {{-- QUANTIDADE + PREÇOS --}}
+                                <div class="flex items-center justify-between mt-2">
+
+                                    {{-- CONTROLES --}}
+                                    <div class="flex items-center gap-3">
+                                        <button
+                                            wire:click="decreaseQty('{{ $item['uuid'] }}')"
+                                            class="w-8 h-8 flex items-center justify-center border rounded-full hover:bg-gray-100"
+                                        >–</button>
+
+                                        <span class="font-semibold text-lg">{{ $item['amount'] }}</span>
+
+                                        <button
+                                            wire:click="increaseQty('{{ $item['uuid'] }}')"
+                                            class="w-8 h-8 flex items-center justify-center border rounded-full hover:bg-gray-100"
+                                        >+</button>
+                                    </div>
+
+                                    {{-- SUBTOTAL --}}
+                                    <div class="text-right">
+                                        <p class="font-semibold text-lg">
+                                            R$ {{ number_format($item['price'] * $item['amount'], 2, ',', '.') }}
+                                        </p>
+                                        <button
+                                            wire:click="removeItem('{{ $item['uuid'] }}')"
+                                            class="text-red-500 text-sm hover:underline"
+                                        >
+                                            Remover
+                                        </button>
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+                    @empty
+                        <div class="text-center text-gray-500 py-20">
+                            Seu carrinho está vazio.
+                        </div>
+                    @endforelse
+                </div>
+
 
             </div>
         </div>
