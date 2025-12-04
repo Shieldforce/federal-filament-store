@@ -38,11 +38,11 @@ class FederalFilamentCartPage extends Page implements HasForms
     public string            $cellphone             = "";
     public string            $zipcode               = "";
     public string            $street                = "";
-    public ?int              $number                = null;
-    public ?int              $complement            = null;
-    public ?int              $district              = null;
-    public ?int              $city                  = null;
-    public ?int              $state                 = null;
+    public string            $number                = "";
+    public ?string           $complement            = null;
+    public string            $district              = "";
+    public string            $city                  = "";
+    public string            $state                 = "";
     public bool              $is_user               = false;
     protected array          $items                 = [];
     protected Cart           $cart;
