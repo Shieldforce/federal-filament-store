@@ -156,6 +156,8 @@ class FederalFilamentCartPage extends Page implements HasForms
             "contact"  => $data["cellphone"],
         ]);
 
+        Auth::logout();
+
         $credentials = Auth::attempt([
             "email"    => $data["email"],
             "password" => $data["password"],
