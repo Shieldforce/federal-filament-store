@@ -201,19 +201,50 @@ class FederalFilamentCartPage extends Page implements HasForms
                           ->default(false)
                           ->live(),
 
-                    Fieldset::make("is_user_yes")
-                            ->label("Dados de acesso: ")
-                            ->visible(fn(Get $get) => $get("is_user"))
+                    Fieldset::make("is_user_not")
+                            ->label("Dados de acesso")
+                            ->visible(fn(Get $get) => !$get("is_user"))
                             ->schema([
+                                TextInput::make('name')
+                                         ->label('Nome completo')
+                                         ->rules([
+                                             function ($attribute, $value, $fail) {
+                                                $explode = explode(" ", $value);
+                                                if (count($explode) > 2) {
+                                                    $fail("Nome completo deve ter pelo manos 2 palavras!");
+                                                }
+                                             }
+                                         ])
+                                         ->required(),
+
                                 TextInput::make('email')
                                          ->label('E-mail')
-                                         //->visible(fn(Get $get) => $get("is_user"))
                                          ->email()
                                          ->required(),
 
                                 TextInput::make('password')
                                          ->label('Senha')
-                                         //->visible(fn(Get $get) => $get("is_user"))
+                                         ->password()
+                                         ->required(),
+
+                                TextInput::make('password')
+                                         ->label('Senha')
+                                         ->password()
+                                         ->required(),
+
+                            ]),
+
+                    Fieldset::make("is_user_yes")
+                            ->label("Dados de acesso")
+                            ->visible(fn(Get $get) => $get("is_user"))
+                            ->schema([
+                                TextInput::make('email')
+                                         ->label('E-mail')
+                                         ->email()
+                                         ->required(),
+
+                                TextInput::make('password')
+                                         ->label('Senha')
                                          ->password()
                                          ->required(),
 
