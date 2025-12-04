@@ -117,29 +117,15 @@ class FederalFilamentCartPage extends Page implements HasForms
             $user = $this->notAccount($useModel);
         }
 
-        if (!isset($user->id)) {
-            Notification::make()
-                               ->danger()
-                               ->title('Erro ao criar usuário!')
-                               ->body("Houve um erro ao criar usuário!")
-                               ->send();
-
-            return;
+        if(isset($user->id)) {
+            $client = $this->createOrExtractClient($user);
         }
 
-        $client = $this->createOrExtractClient($user);
-
-        if (!$client) {
-            Notification::make()
-                               ->danger()
-                               ->title('Conta sem cliente!')
-                               ->body("esta conta não é do tipo cliente!")
-                               ->send();
-
-            return;
+        if(isset($client->id)) {
+            dd($client);
         }
 
-        // dd($client);
+
 
         //$this->processCheckout($user);
     }
