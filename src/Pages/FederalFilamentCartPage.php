@@ -351,6 +351,7 @@ class FederalFilamentCartPage extends Page implements HasForms
                                          ->label('E-mail')
                                         ->rule(function () {
                                             return function (string $attribute, $value, $fail) {
+                                                dd($value);
                                                 $exists = DB::table("users")->where('email', $value)->exists();
                                                 if ($exists) {
                                                     $fail('Este email já está cadastrado.');
