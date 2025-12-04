@@ -21,11 +21,15 @@ use Filament\Pages\Page;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Livewire\Component;
+use Shieldforce\CheckoutPayment\Enums\MethodPaymentEnum;
+use Shieldforce\CheckoutPayment\Services\DtoSteps\DtoStep1;
+use Shieldforce\CheckoutPayment\Services\MountCheckoutStepsService;
 use Shieldforce\FederalFilamentStore\Enums\OriginPaymentTransactionEnum;
 use Shieldforce\FederalFilamentStore\Enums\StatusClientEnum;
 use Shieldforce\FederalFilamentStore\Enums\TypeContractEnum;
@@ -303,7 +307,7 @@ class FederalFilamentCartPage extends Page implements HasForms
             ->get()
             ->first() ?? null;
 
-        if (isset($order->id)) {
+        if (isset($order->cart_id) && $order->cart_id == $data["cart_id"]) {
             return $order;
         }
 
@@ -367,41 +371,55 @@ class FederalFilamentCartPage extends Page implements HasForms
             ]);
     }
 
-    public function processCheckout()
+    public function processCheckout(Model $transaction)
     {
-        /*$due_date = Carbon::createFromFormat(
+        $data = $this->form->getState();
+
+        $cart = Cart::find($data["cart_id"]);
+
+        $due_date = Carbon::createFromFormat(
             "d/m/Y",
-            "{$transactionModel->due_day}/{$transactionModel->reference}"
+            "{$transaction->due_day}/{$transaction->reference}"
         )->format("Y-m-d");
 
         $mountCheckout = new MountCheckoutStepsService(
-            model   : $transactionModel, requiredMethods: [
+            model   : $transaction, requiredMethods: [
             MethodPaymentEnum::credit_card->value,
             MethodPaymentEnum::pix->value,
             MethodPaymentEnum::billet->value,
         ],  due_date: $due_date,
-        );*/
-        /*$mountCheckout->handle()->configureButtonSubmit(
-            text       : "Dashboard",
-            color      : "info",
-            urlRedirect: route("filament.admin.pages.dashboard")
-        )->step1(
-            items  : array_map(callback: function (
-                $product
-            ) {
-                return (new DtoStep1(
-                    name       : $product["name"],
-                    price      : $product["pivot"]["price"],
-                    price_2    : $product["pivot"]["price"],
-                    price_3    : $product["pivot"]["price"],
-                    description: "Venda de produto: ".$product["name"],
-                    img        : $product["picture"],
-                    quantity   : $product["pivot"]["quantity"],
-                ))->toArray();
-            },
-                               array   : $transactionModel->order->products->toArray()),
-            visible: true,
-        );*/
+        );
+
+        $items = json_decode($cart->items, true);
+
+        $products = [];
+
+        foreach ($items as $item) {
+
+            dd($item);
+
+            $products[] = [
+                "name"        => $item["name"],
+                "price"       => $item[""],
+                "price_2"     => $item[""],
+                "price_3"     => $item[""],
+                "description" => $item["name"],
+                "img"         => $item[""],
+                "quantity"    => $item[""],
+            ];
+        }
+
+        $products = array_map(callback: function ($product) {
+            return (new DtoStep1(
+                name       : $product["name"],
+                price      : $product["price"],
+                quantity   : $product["quantity"],
+                price_2    : $product["price_2"],
+                price_3    : $product["price_3"],
+                description: $product["description"],
+                img        : $product["img"],
+            ))->toArray();
+        },                    array   : $products);
 
         Notification::make()
                     ->success()
