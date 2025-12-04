@@ -125,6 +125,8 @@ class FederalFilamentCartPage extends Page implements HasForms
                                ->send();
         }
 
+        dd($user);
+
         $client = $this->createOrExtractClient($user);
 
         if (!isset($client->id)) {
@@ -182,8 +184,6 @@ class FederalFilamentCartPage extends Page implements HasForms
                                ->body("E-mail ou senha incorretos, por favor verifique e tente novamente.")
                                ->send();
         }
-
-        dd($user->find(Auth::id()));
 
         return $user->find(Auth::id());
     }
