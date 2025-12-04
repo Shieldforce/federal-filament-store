@@ -38,7 +38,7 @@ class FederalFilamentCartPage extends Page implements HasForms
     public string            $cellphone             = "";
     public string            $zipcode               = "";
     public string            $street                = "";
-    public string            $number                = "";
+    public string            $number                = "s/n";
     public ?string           $complement            = null;
     public string            $district              = "";
     public string            $city                  = "";
@@ -109,9 +109,47 @@ class FederalFilamentCartPage extends Page implements HasForms
         $userCallback = config('federal-filament-store.user_callback');
         $useModel = new $userCallback();
 
-        if (!$data["is_user"]) {
-            $this->notAccount($useModel);
+        if ($data["is_user"]) {
+            $user = $this->isAccount($useModel);
         }
+
+        if (!$data["is_user"]) {
+            $user = $this->notAccount($useModel);
+        }
+
+        if (!isset($user->id)) {
+            return Notification::make()
+                               ->danger()
+                               ->title('Erro ao localizar!')
+                               ->body("Não encontramos nenhum usuário!")
+                               ->send();
+        }
+
+        dd($user);
+
+        $this->processCheckout($user);
+    }
+
+    public function notAccount(Model $model)
+    {
+        $data = $this->form->getState();
+
+        $create = $model->updateOrCreate(["email" => $data["email"]], [
+            "name"     => $data["name"],
+            "password" => bcrypt($data["password"]),
+            "contact"  => $data["cellphone"],
+        ]);
+
+        if (isset($create->id)) {
+            return $create;
+        }
+
+        return null;
+    }
+
+    public function isAccount(Model $model)
+    {
+        $data = $this->form->getState();
 
         $credentials = Auth::attempt([
             "email"    => $data["email"],
@@ -126,8 +164,11 @@ class FederalFilamentCartPage extends Page implements HasForms
                                ->send();
         }
 
-        //$user = $user->find(Auth::id());
+        return $model->find(Auth::id());
+    }
 
+    public function processCheckout()
+    {
         /*$transactionCallback = config('federal-filament-store.transaction_callback');
         $transaction = new $transactionCallback();
         $transactionModel = $transaction->updateOrCreate([], [
@@ -194,17 +235,6 @@ class FederalFilamentCartPage extends Page implements HasForms
         );*/
     }
 
-    public function notAccount(Model $model)
-    {
-        $data = $this->form->getState();
-
-        dd($data);
-        /*$model->updateOrCreate(["email" => $data["email"]], [
-            "name"     => $data["name"],
-            "password" => bcrypt($data["password"]),
-        ]);*/
-    }
-
     protected function getFormSchema(): array
     {
         return [
@@ -227,7 +257,7 @@ class FederalFilamentCartPage extends Page implements HasForms
                                                  if (count($explode) < 2) {
                                                      $this->loadData();
 
-                                                     $fail("Nome completo deve ter pelo menos 2 palavras!");
+                                                     $fail("Digite também o sobrenome!");
                                                  }
                                              };
                                          })
@@ -235,6 +265,7 @@ class FederalFilamentCartPage extends Page implements HasForms
 
                                 TextInput::make('email')
                                          ->label('E-mail')
+                                         ->unique('users')
                                          ->email()
                                          ->required(),
 
@@ -294,6 +325,7 @@ class FederalFilamentCartPage extends Page implements HasForms
                                                                   Notification::make()
                                                                               ->info()
                                                                               ->title('Próximo passo!')
+                                                                              ->seconds(60)
                                                                               ->body("Informar ou validar os dados do seu endereço, que estão logo abaixo!")
                                                                               ->send();
                                                               }))
@@ -312,6 +344,7 @@ class FederalFilamentCartPage extends Page implements HasForms
                                              Notification::make()
                                                          ->info()
                                                          ->title('Próximo passo!')
+                                                         ->seconds(60)
                                                          ->body("Informar ou validar os dados do seu endereço, que estão logo abaixo!")
                                                          ->send();
                                          })
