@@ -208,11 +208,13 @@ class FederalFilamentCartPage extends Page implements HasForms
                             ->schema([
                                 TextInput::make('name')
                                          ->label('Nome completo')
-                                         ->rule(function (string $attribute, $value, $fail) {
-                                             $explode = explode(" ", $value);
-                                             if (count($explode) < 2) {
-                                                 $fail("Nome completo deve ter pelo manos 2 palavras!");
-                                             }
+                                         ->rule(function (Get $get) {
+                                             return function (string $attribute, $value, $fail) use ($get) {
+                                                 $explode = explode(" ", $value);
+                                                 if (count($explode) < 2) {
+                                                     $fail("Nome completo deve ter pelo menos 2 palavras!");
+                                                 }
+                                             };
                                          })
                                          ->required(),
 
