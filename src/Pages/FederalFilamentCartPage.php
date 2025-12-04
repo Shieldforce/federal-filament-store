@@ -341,7 +341,7 @@ class FederalFilamentCartPage extends Page implements HasForms
                                          ->maxLength(50)
                                          ->required()
                                          ->dehydrateStateUsing(fn($state) => preg_replace('/\D/', '', $state))
-                                         ->unique('clients'),
+                                         ->unique('users'),
 
                                 DatePicker::make('birthday')
                                           ->label("Nascimento")
@@ -349,12 +349,9 @@ class FederalFilamentCartPage extends Page implements HasForms
 
                                 TextInput::make('email')
                                          ->label('E-mail')
-                                        ->rule(function (TextInput $component) {
-                                            return function (string $attribute, $value, $fail) use ($component) {
+                                        ->rule(function () {
+                                            return function (string $attribute, $value, $fail) {
                                                 $exists = DB::table("users")->where('email', $value)->exists();
-
-                                                dd($exists);
-
                                                 if ($exists) {
                                                     $fail('Este email já está cadastrado.');
                                                 }
