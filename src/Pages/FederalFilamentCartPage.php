@@ -315,6 +315,7 @@ class FederalFilamentCartPage extends Page implements HasForms
 
                                 TextInput::make('document')
                                          ->label("CPF/CNPJ")
+                                         ->live()
                                          ->placeholder(function (Get $get) {
                                              $people_type = $get("people_type");
                                              return $people_type == 2 ? "99.999.999/9999-99" : "999.999.999-99";
@@ -365,6 +366,16 @@ class FederalFilamentCartPage extends Page implements HasForms
                                          )
                                          ->unique('clients'),
 
+                                DatePicker::make('birthday')
+                                          ->label("Nascimento")
+                                          ->required(fn(Get $get) => $get("people_type") == TypePeopleEnum::F->value),
+
+                                TextInput::make('email')
+                                         ->label('E-mail')
+                                         ->unique('users')
+                                         ->email()
+                                         ->required(),
+
                                 TextInput::make('name')
                                          ->label('Nome completo')
                                          ->rule(function (Get $get) {
@@ -377,13 +388,8 @@ class FederalFilamentCartPage extends Page implements HasForms
                                                  }
                                              };
                                          })
-                                         ->required(),
-
-                                TextInput::make('email')
-                                         ->label('E-mail')
-                                         ->unique('users')
-                                         ->email()
-                                         ->required(),
+                                         ->required()
+                                         ->columnSpanFull(),
 
                                 TextInput::make('password')
                                          ->label('Senha')
