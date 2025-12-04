@@ -125,16 +125,16 @@ class FederalFilamentCartPage extends Page implements HasForms
                                ->send();
         }
 
-        dd($user);
+        $this->createOrExtractClient($user);
 
-        $this->processCheckout($user);
+        //$this->processCheckout($user);
     }
 
-    public function notAccount(Model $model)
+    public function notAccount(Model $user)
     {
         $data = $this->form->getState();
 
-        $create = $model->updateOrCreate(["email" => $data["email"]], [
+        $create = $user->updateOrCreate(["email" => $data["email"]], [
             "name"     => $data["name"],
             "password" => bcrypt($data["password"]),
             "contact"  => $data["cellphone"],
@@ -147,7 +147,7 @@ class FederalFilamentCartPage extends Page implements HasForms
         return null;
     }
 
-    public function isAccount(Model $model)
+    public function isAccount(Model $user)
     {
         $data = $this->form->getState();
 
@@ -164,7 +164,16 @@ class FederalFilamentCartPage extends Page implements HasForms
                                ->send();
         }
 
-        return $model->find(Auth::id());
+        return $user->find(Auth::id());
+    }
+
+    public function createOrExtractClient(Model $user)
+    {
+        $client = $user->clients->first();
+
+        if(isset($client->id)) {
+            dd($client);
+        }
     }
 
     public function processCheckout()
@@ -297,7 +306,7 @@ class FederalFilamentCartPage extends Page implements HasForms
                                 TextInput::make('cellphone')
                                          ->label('Celular/Whatsapp')
                                          ->prefixIcon("heroicon-o-phone")
-                                         ->mask("(99) 9999-9999")
+                                         ->mask("(99) 9999-99999")
                                          ->required(),
 
                                 TextInput::make('zipcode')
