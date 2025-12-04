@@ -222,7 +222,7 @@ class FederalFilamentCartPage extends Page implements HasForms
                     'email'       => $data["email"],
                     'people_type' => $data["people_type"],
                     'status'      => StatusClientEnum::ativo->value,
-                    'birthday'    => $data["name"],
+                    'birthday'    => $data["birthday"],
                     'obs'         => "Criado pelo checkout da loja!",
                 ]);
         }
