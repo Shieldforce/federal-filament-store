@@ -64,6 +64,11 @@ class FederalFilamentCartPage extends Page implements HasForms
             ;
         }
 
+        $this->loadData();
+    }
+
+    public function loadData()
+    {
         $this->cart = Cart::where("identifier", request()->cookie("ffs_identifier"))
             ->first();
 
@@ -78,7 +83,7 @@ class FederalFilamentCartPage extends Page implements HasForms
 
     public function updated()
     {
-        //
+        $this->loadData();
     }
 
     public function submit()
