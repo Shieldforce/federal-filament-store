@@ -125,18 +125,19 @@ class FederalFilamentCartPage extends Page implements HasForms
                                    ->danger()
                                    ->title('Erro ao criar usuário!')
                                    ->body("Houve um erro ao criar usuário!")
+                                   ->persistent()
                                    ->send();
             }
 
             $client = $this->createOrExtractClient($user);
 
             if (!isset($client->id)) {
-                Notification::make()
+                return Notification::make()
                                    ->danger()
                                    ->title('Conta sem cliente!')
-                                   ->body("esta conta não é do tipo cliente!")
+                                   ->body("Esta conta não é do tipo cliente!")
+                                   ->persistent()
                                    ->send();
-                return null;
             }
 
             /*
@@ -147,7 +148,6 @@ class FederalFilamentCartPage extends Page implements HasForms
             */
 
             dd($client);
-
             //$this->processCheckout($user);
         } catch (Throwable $throwable) {
             dd($throwable);
@@ -168,9 +168,11 @@ class FederalFilamentCartPage extends Page implements HasForms
     public function isAccount(Model $user)
     {
         $data = $this->form->getState();
-        $user = $user->where('email', $data['email'])->first();
+        $user = $user
+            ->where('email', $data['email'])
+            ->first();
 
-        if (! $user || ! Hash::check($data['password'], $user->password)) {
+        if (!$user || !Hash::check($data['password'], $user->password)) {
             Notification::make()
                         ->danger()
                         ->title('Credenciais Incorretas!')
@@ -179,7 +181,7 @@ class FederalFilamentCartPage extends Page implements HasForms
             return null;
         }
 
-        return $user->find(Auth::id());
+        return $user;
     }
 
     public function createOrExtractClient(Model $user)
