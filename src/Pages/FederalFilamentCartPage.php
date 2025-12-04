@@ -275,23 +275,22 @@ class FederalFilamentCartPage extends Page implements HasForms
                                          ->suffixAction(Action::make('viaCep')
                                                               ->label("Buscar CEP")
                                                               ->icon('heroicon-m-map-pin')
-                                             //->requiresConfirmation()
                                                               ->action(function (
-                                                 Set       $set,
-                                                           $state,
-                                                 Get       $get,
-                                                 Component $livewire
-                                             ) {
-                                                 $data = BuscarViaCepService::getData((string)$state);
+                                                                  Set       $set,
+                                                                            $state,
+                                                                  Get       $get,
+                                                                  Component $livewire
+                                                              ) {
+                                                                  $data = BuscarViaCepService::getData((string)$state);
 
-                                                 if (isset($data["cep"])) {
-                                                     $set('street', $data["logradouro"]);
-                                                     $set('complement', $data["complemento"]);
-                                                     $set('district', $data["bairro"]);
-                                                     $set('city', $data["localidade"]);
-                                                     $set('state', $data["uf"]);
-                                                 }
-                                             }))
+                                                                  if (isset($data["cep"])) {
+                                                                      $set('street', $data["logradouro"]);
+                                                                      $set('complement', $data["complemento"]);
+                                                                      $set('district', $data["bairro"]);
+                                                                      $set('city', $data["localidade"]);
+                                                                      $set('state', $data["uf"]);
+                                                                  }
+                                                              }))
                                          ->hint("Busca de CEP")
                                          ->afterStateUpdated(function (Set $set, Get $get, Component $livewire) {
                                              $data = BuscarViaCepService::getData((string)$get("zipcode"));
@@ -315,7 +314,7 @@ class FederalFilamentCartPage extends Page implements HasForms
                     Fieldset::make("address")
                             ->label("Dados de endereço")
                             ->visible(function (Get $get) {
-                                return Str::length($get("zipcode")) == 8 && !$get("is_user");
+                                return Str::length($get("zipcode")) == 9 && !$get("is_user");
                             })
                             ->schema([
 
