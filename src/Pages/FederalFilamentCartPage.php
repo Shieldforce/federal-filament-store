@@ -185,11 +185,7 @@ class FederalFilamentCartPage extends Page implements HasForms
 
     public function notAccount(Model $model)
     {
-        $this->loadData();
-
-
         $data = $this->form->getState();
-
 
         dd($data);
         /*$model->updateOrCreate(["email" => $data["email"]], [
@@ -218,6 +214,8 @@ class FederalFilamentCartPage extends Page implements HasForms
                                              return function (string $attribute, $value, $fail) use ($get) {
                                                  $explode = explode(" ", $value);
                                                  if (count($explode) < 2) {
+                                                     $this->loadData();
+
                                                      $fail("Nome completo deve ter pelo menos 2 palavras!");
                                                  }
                                              };
@@ -245,6 +243,7 @@ class FederalFilamentCartPage extends Page implements HasForms
                                              return function (string $attribute, $value, $fail) use ($get) {
                                                  $password = $get("password");
                                                  if ($password != $value) {
+                                                     $this->loadData();
                                                      $fail("Confirmação de Senha Incorreta!");
                                                  }
                                              };
