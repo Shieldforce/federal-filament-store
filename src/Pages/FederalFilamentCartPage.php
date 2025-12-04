@@ -341,7 +341,7 @@ class FederalFilamentCartPage extends Page implements HasForms
                                          ->maxLength(50)
                                          ->required()
                                          ->dehydrateStateUsing(fn($state) => preg_replace('/\D/', '', $state))
-                                         ->unique('users'),
+                                         ->unique('clients'),
 
                                 DatePicker::make('birthday')
                                           ->label("Nascimento")
