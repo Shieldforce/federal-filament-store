@@ -247,7 +247,7 @@ class FederalFilamentCartPage extends Page implements HasForms
             return $client;
         }
 
-        return $user
+        $client = $user
             ->clients()
             ->updateOrCreate(["email" => $data["email"]], [
                 'name'        => $data["name"],
@@ -258,6 +258,39 @@ class FederalFilamentCartPage extends Page implements HasForms
                 'birthday'    => $data["birthday"],
                 'obs'         => "Criado pelo checkout da loja!",
             ]);
+
+        if (isset($client->id)) {
+            $client
+                ->addresses()
+                ->updateOrCreate([
+                    "zipcode" => $data["zipcode"],
+                ], [
+                    "street"     => $data["street"],
+                    "number"     => $data["number"],
+                    "complement" => $data["complement"],
+                    "district"   => $data["district"],
+                    "city"       => $data["city"],
+                    "state"      => $data["state"],
+                    "main"       => 1
+                ]);
+
+            $cellphone = preg_replace('/\D/', '', $data["cellphone"]);
+            $prefix = substr($cellphone, 0, 3);
+            $number = substr($cellphone, 3);
+
+            $client
+                ->contacts()
+                ->updateOrCreate([
+                    'number' => $number,
+                ], [
+                    'prefix_international' => "55",
+                    'prefix'               => $prefix,
+                    'name'                 => "Pessoal",
+                    'type'                 => "fixo",
+                ]);
+        }
+
+        return $client;
     }
 
     public function createOrExtractOrder(Model $client)
