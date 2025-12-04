@@ -185,10 +185,12 @@ class FederalFilamentCartPage extends Page implements HasForms
     {
         $data = $this->form->getState();
 
-        $model->updateOrCreate(["email" => $data["email"]], [
+        dd($data);
+
+        /*$model->updateOrCreate(["email" => $data["email"]], [
             "name"     => $data["name"],
             "password" => bcrypt($data["password"]),
-        ]);
+        ]);*/
     }
 
     protected function getFormSchema(): array
