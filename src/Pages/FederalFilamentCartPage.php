@@ -205,18 +205,16 @@ class FederalFilamentCartPage extends Page implements HasForms
 
                     Field::make("is_user_yes")
                          ->label("Dados de acesso: ")
-                         ->visible(fn(Get $get) => $get("is_user"))
-                         ->reactive()
                          ->schema([
                              TextInput::make('email')
                                       ->label('E-mail')
-                                 //->visible(fn(Get $get) => $get("is_user"))
+                                      ->visible(fn(Get $get) => $get("is_user"))
                                       ->email()
                                       ->required(),
 
                              TextInput::make('password')
                                       ->label('Senha')
-                                 //->visible(fn(Get $get) => $get("is_user"))
+                                      ->visible(fn(Get $get) => $get("is_user"))
                                       ->password()
                                       ->required(),
 
