@@ -85,13 +85,13 @@ class FederalFilamentCartPage extends Page implements HasForms
 
     public function updated($property)
     {
-        if ($property == 'is_user') {
-            $this->loadData();
-        }
+        $this->loadData();
     }
 
     public function submit()
     {
+        $this->loadData();
+
         $data = $this->form->getState();
 
         $userCallback = config('federal-filament-store.user_callback');
