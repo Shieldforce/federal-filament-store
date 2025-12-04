@@ -103,21 +103,16 @@ class FederalFilamentCartPage extends Page implements HasForms
                     Toggle::make("is_user")
                         ->label("Já tenho conta")
                         ->default(false)
-                        ->reactive()
                         ->live(),
 
                     TextInput::make('email')
                         ->label('E-mail')
-                        ->reactive()
-                        ->live()
                         ->visible(fn(Get $get) => $get("is_user"))
                         ->email()
                         ->required(),
 
                     TextInput::make('password')
                         ->label('Senha')
-                        ->reactive()
-                        ->live()
                         ->visible(fn(Get $get) => $get("is_user"))
                         ->password()
                         ->required(),
