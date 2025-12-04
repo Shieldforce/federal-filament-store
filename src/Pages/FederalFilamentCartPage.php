@@ -157,12 +157,11 @@ class FederalFilamentCartPage extends Page implements HasForms
             ]);
             */
 
-            $this->processCheckout($user);
+            //$this->processCheckout($user);
 
-            //dd($client);
+            dd($user, $client);
 
             DB::commit();
-
         } catch (Throwable $throwable) {
             DB::rollBack();
 
@@ -182,6 +181,14 @@ class FederalFilamentCartPage extends Page implements HasForms
     public function notAccount(Model $user)
     {
         $data = $this->form->getState();
+
+        $userExist = $user
+            ->where("email", $data["email"])
+            ->first();
+
+        if (isset($userExist->id)) {
+            return $userExist;
+        }
 
         return $user->updateOrCreate(["email" => $data["email"]], [
             "name"     => $data["name"],
@@ -215,21 +222,21 @@ class FederalFilamentCartPage extends Page implements HasForms
 
         $client = $user->clients->first() ?? null;
 
-        if (!isset($client->id)) {
-            $client = $user
-                ->clients()
-                ->updateOrCreate(["email" => $data["email"]], [
-                    'name'        => $data["name"],
-                    'document'    => $data["document"],
-                    'email'       => $data["email"],
-                    'people_type' => $data["people_type"],
-                    'status'      => StatusClientEnum::ativo->value,
-                    'birthday'    => $data["birthday"],
-                    'obs'         => "Criado pelo checkout da loja!",
-                ]);
+        if (isset($client->id)) {
+            return $client;
         }
 
-        return $client;
+        return $user
+            ->clients()
+            ->updateOrCreate(["email" => $data["email"]], [
+                'name'        => $data["name"],
+                'document'    => $data["document"],
+                'email'       => $data["email"],
+                'people_type' => $data["people_type"],
+                'status'      => StatusClientEnum::ativo->value,
+                'birthday'    => $data["birthday"],
+                'obs'         => "Criado pelo checkout da loja!",
+            ]);
     }
 
     public function processCheckout()
@@ -355,8 +362,7 @@ class FederalFilamentCartPage extends Page implements HasForms
                                           ->required(fn(Get $get) => $get("people_type") == TypePeopleEnum::F->value),
 
                                 TextInput::make('email')
-                                         ->label('E-mail')
-                                         /*->rule(function () {
+                                         ->label('E-mail')/*->rule(function () {
                                              return function (string $attribute, $value, $fail) {
                                                  $user = DB::table("users")
                                                            ->where('email', $value)
