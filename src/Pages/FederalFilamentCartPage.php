@@ -183,6 +183,8 @@ class FederalFilamentCartPage extends Page implements HasForms
                                ->send();
         }
 
+        dd($user->find(Auth::id()));
+
         return $user->find(Auth::id());
     }
 
