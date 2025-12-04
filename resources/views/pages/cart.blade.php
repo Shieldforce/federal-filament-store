@@ -49,7 +49,7 @@
                                 <img
                                     src="{{ asset("storage/{$item['data_product']['files'][0]}") }}" alt="{{ $item['name'] }}"
                                      class="w-full h-full object-cover"
-                                    style="width: 200px;height: 150px;"
+                                    style="width: 200px;height: 130px;"
                                 >
                             </div>
 
@@ -61,7 +61,7 @@
                                         {{ $item['name'] }}
                                     </h3>
                                     <p class="text-sm text-gray-500">
-                                        {{ $item['category'] ?? 'Produto' }}
+                                        {{ count($item['data_product']['files'] ?? []) }} imagens upadas para esse produto
                                     </p>
                                 </div>
 
