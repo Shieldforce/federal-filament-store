@@ -17,6 +17,7 @@ use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Livewire\Component;
@@ -113,6 +114,8 @@ class FederalFilamentCartPage extends Page implements HasForms
 
     public function submit()
     {
+        DB::beginTransaction();
+
         try {
             $data = $this->form->getState();
 
@@ -154,9 +157,13 @@ class FederalFilamentCartPage extends Page implements HasForms
             ]);
             */
 
+            DB::commit();
+
             dd($client);
             //$this->processCheckout($user);
         } catch (Throwable $throwable) {
+
+            DB::rollBack();
 
             $this->loadData();
 
