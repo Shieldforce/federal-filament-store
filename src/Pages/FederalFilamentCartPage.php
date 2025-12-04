@@ -130,14 +130,15 @@ class FederalFilamentCartPage extends Page implements HasForms
             $client = $this->createOrExtractClient($user);
 
             if (!isset($client->id)) {
-                return Notification::make()
+                Notification::make()
                                    ->danger()
                                    ->title('Conta sem cliente!')
                                    ->body("esta conta não é do tipo cliente!")
                                    ->send();
+                return null;
             }
 
-            // dd($client);
+            dd("fdsfdfdf");
 
             //$this->processCheckout($user);
         } catch (Throwable $throwable) {
@@ -161,11 +162,13 @@ class FederalFilamentCartPage extends Page implements HasForms
         ]);
 
         if (!$credentials && $data["is_user"]) {
-            return Notification::make()
+            Notification::make()
                                ->danger()
                                ->title('Credenciais Incorretas!')
                                ->body("E-mail ou senha incorretos, por favor verifique e tente novamente.")
                                ->send();
+
+            return null;
         }
 
         return $create;
@@ -181,11 +184,12 @@ class FederalFilamentCartPage extends Page implements HasForms
         ]);
 
         if (!$credentials && $data["is_user"]) {
-            return Notification::make()
+            Notification::make()
                                ->danger()
                                ->title('Credenciais Incorretas!')
                                ->body("E-mail ou senha incorretos, por favor verifique e tente novamente.")
                                ->send();
+            return null;
         }
 
         return $user->find(Auth::id());
