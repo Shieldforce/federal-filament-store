@@ -69,7 +69,8 @@ class FederalFilamentCartPage extends Page implements HasForms
     protected Cart           $cart;
     public float             $totalPrice;
 
-    public function getLayout(): string
+    public
+    function getLayout(): string
     {
         if (request()->query('external') === '1') {
             return 'federal-filament-store::layouts.external';
@@ -78,22 +79,26 @@ class FederalFilamentCartPage extends Page implements HasForms
         return parent::getLayout();
     }
 
-    public static function getSlug(): string
+    public static
+    function getSlug(): string
     {
         return 'external-ffs-cart';
     }
 
-    public static function shouldRegisterNavigation(): bool
+    public static
+    function shouldRegisterNavigation(): bool
     {
         return false;
     }
 
-    public static function getNavigationGroup(): ?string
+    public static
+    function getNavigationGroup(): ?string
     {
         return config()->get('federal-filament-store.sidebar_group');
     }
 
-    public function mount(): void
+    public
+    function mount(): void
     {
         if (!Auth::check()) {
             filament()
@@ -106,26 +111,32 @@ class FederalFilamentCartPage extends Page implements HasForms
         $this->loadData();
     }
 
-    public function loadData()
+    public
+    function loadData()
     {
         $this->cart = Cart::where("identifier", request()->cookie("ffs_identifier"))
                           ->first();
 
         $this->items = json_decode($this->cart->items ?? [], true);
 
-        $this->totalPrice = collect($this->items)->sum(function ($item) {
-            return $item['price'] * $item['amount'];
-        });
+        $this->totalPrice = collect($this->items)->sum(
+            function ($item) {
+                return $item['price'] * $item['amount'];
+            }
+        );
 
         $this->cart_id = $this->cart->id;
     }
 
-    public function updated($property)
-    {
+    public
+    function updated(
+        $property
+    ) {
         $this->loadData();
     }
 
-    public function submit()
+    public
+    function submit()
     {
         DB::beginTransaction();
 
@@ -234,8 +245,10 @@ class FederalFilamentCartPage extends Page implements HasForms
         }
     }
 
-    public function notAccount(Model $user)
-    {
+    public
+    function notAccount(
+        Model $user
+    ) {
         $data = $this->form->getState();
 
         $user = $user
@@ -251,15 +264,20 @@ class FederalFilamentCartPage extends Page implements HasForms
             return null;
         }
 
-        return $user->updateOrCreate(["email" => $data["email"]], [
-            "name"     => $data["name"],
-            "password" => bcrypt($data["password"]),
-            "contact"  => $data["cellphone"],
-        ]);
+        return $user->updateOrCreate(
+            ["email" => $data["email"]],
+            [
+                "name"     => $data["name"],
+                "password" => bcrypt($data["password"]),
+                "contact"  => $data["cellphone"],
+            ]
+        );
     }
 
-    public function isAccount(Model $user)
-    {
+    public
+    function isAccount(
+        Model $user
+    ) {
         $data = $this->form->getState();
 
         $user = $user
@@ -278,8 +296,11 @@ class FederalFilamentCartPage extends Page implements HasForms
         return $user;
     }
 
-    public function createOrExtractClient(Model $user, bool $isUser)
-    {
+    public
+    function createOrExtractClient(
+        Model $user,
+        bool  $isUser
+    ) {
         $data = $this->form->getState();
 
         $client = $user->clients->first() ?? null;
@@ -294,19 +315,25 @@ class FederalFilamentCartPage extends Page implements HasForms
 
         return $user
             ->clients()
-            ->updateOrCreate(["email" => $data["email"]], [
-                'name'        => $data["name"],
-                'document'    => $data["document"],
-                'email'       => $data["email"],
-                'people_type' => $data["people_type"],
-                'status'      => StatusClientEnum::ativo->value,
-                'birthday'    => $data["birthday"],
-                'obs'         => "Criado pelo checkout da loja!",
-            ]);
+            ->updateOrCreate(
+                ["email" => $data["email"]],
+                [
+                    'name'        => $data["name"],
+                    'document'    => $data["document"],
+                    'email'       => $data["email"],
+                    'people_type' => $data["people_type"],
+                    'status'      => StatusClientEnum::ativo->value,
+                    'birthday'    => $data["birthday"],
+                    'obs'         => "Criado pelo checkout da loja!",
+                ]
+            );
     }
 
-    public function createOrExtractAddress(Model $client, bool $isUser)
-    {
+    public
+    function createOrExtractAddress(
+        Model $client,
+        bool  $isUser
+    ) {
         $data = $this->form->getState();
 
         $address = $client
@@ -325,21 +352,27 @@ class FederalFilamentCartPage extends Page implements HasForms
 
         return $client
             ->addresses()
-            ->updateOrCreate([
-                "zipcode" => $data["zipcode"],
-            ], [
-                "street"     => $data["street"],
-                "number"     => $data["number"],
-                "complement" => $data["complement"],
-                "district"   => $data["district"],
-                "city"       => $data["city"],
-                "state"      => $data["state"],
-                "main"       => 1
-            ]);
+            ->updateOrCreate(
+                [
+                    "zipcode" => $data["zipcode"],
+                ],
+                [
+                    "street"     => $data["street"],
+                    "number"     => $data["number"],
+                    "complement" => $data["complement"],
+                    "district"   => $data["district"],
+                    "city"       => $data["city"],
+                    "state"      => $data["state"],
+                    "main"       => 1
+                ]
+            );
     }
 
-    public function createOrExtractContact(Model $client, bool $isUser)
-    {
+    public
+    function createOrExtractContact(
+        Model $client,
+        bool  $isUser
+    ) {
         $data = $this->form->getState();
 
         $contact = $client->contacts->first() ?? null;
@@ -358,18 +391,24 @@ class FederalFilamentCartPage extends Page implements HasForms
 
         return $client
             ->contacts()
-            ->updateOrCreate([
-                'number' => $number,
-            ], [
-                'prefix_international' => "55",
-                'prefix'               => $prefix,
-                'name'                 => "Pessoal",
-                'type'                 => "fixo",
-            ]);
+            ->updateOrCreate(
+                [
+                    'number' => $number,
+                ],
+                [
+                    'prefix_international' => "55",
+                    'prefix'               => $prefix,
+                    'name'                 => "Pessoal",
+                    'type'                 => "fixo",
+                ]
+            );
     }
 
-    public function createOrExtractOrder(Model $client, bool $isUser)
-    {
+    public
+    function createOrExtractOrder(
+        Model $client,
+        bool  $isUser
+    ) {
         $data = $this->form->getState();
 
         $date = now()->format("Y-m-d H");
@@ -384,32 +423,54 @@ class FederalFilamentCartPage extends Page implements HasForms
             return null;
         }
 
+        $cart = Cart::find($data["cart_id"]);
+        $items = json_decode($cart->items, true);
+        $uuidProducts = array_column($items, 'uuid');
+        $products = DB::table("products")
+                      ->whereIn("uuid", $uuidProducts)
+                      ->pluck("id")
+                      ->toArray();
+
         if (isset($order->cart_id) && $order->cart_id == $data["cart_id"]) {
+            $order
+                ->products()
+                ->syncWithoutDetaching($products);
             return $order;
         }
 
-        return $client
+        $order = $client
             ->orders()
-            ->updateOrCreate([
-                "cart_id"   => $data["cart_id"],
-                "client_id" => $client->id,
-            ], [
-                'seller_id'          => null,
-                'reference'          => now()->format("m/Y"),
-                'type'               => TypeOrderEnum::AVULSO->value,
-                'status'             => StatusOrderEnum::APROVADA->value,
-                'total_price'        => $data["totalPrice"],
-                'monthly'            => false,
-                'date_monthly_start' => now()->format("Y-m-d"),
-                'date_monthly_end'   => null,
-                'booklet'            => false,
-                'not_start_end'      => false,
-                'contract_type'      => TypeContractEnum::contrato_3->value,
-            ]);
+            ->updateOrCreate(
+                [
+                    "cart_id" => $data["cart_id"],
+                ],
+                [
+                    'seller_id'          => null,
+                    'reference'          => now()->format("m/Y"),
+                    'type'               => TypeOrderEnum::AVULSO->value,
+                    'status'             => StatusOrderEnum::APROVADA->value,
+                    'total_price'        => $data["totalPrice"],
+                    'monthly'            => false,
+                    'date_monthly_start' => now()->format("Y-m-d"),
+                    'date_monthly_end'   => null,
+                    'booklet'            => false,
+                    'not_start_end'      => false,
+                    'contract_type'      => TypeContractEnum::contrato_3->value,
+                ]
+            );
+
+        $order
+            ->products()
+            ->syncWithoutDetaching($products);
+
+        return $order;
     }
 
-    public function createOrExtractTransaction(Model $order, bool $isUser)
-    {
+    public
+    function createOrExtractTransaction(
+        Model $order,
+        bool  $isUser
+    ) {
         $data = $this->form->getState();
 
         $date = now()->format("Y-m-d H");
@@ -430,77 +491,38 @@ class FederalFilamentCartPage extends Page implements HasForms
 
         return $order
             ->transactions()
-            ->updateOrCreate([
-                "order_id" => $order->id,
-            ], [
-                'creator_id'         => $order->client->user->id ?? null,
-                'name'               => "Pagamento de carrinho de compras: {$data['cart_id']}",
-                'necessary'          => 1,
-                'type'               => TypeTransactionEnum::input->value,
-                'value'              => $data["totalPrice"],
-                'monthly'            => false,
-                'date_monthly_start' => now()->format("Y-m-d"),
-                'date_monthly_end'   => null,
-                'booklet'            => false,
-                'not_start_end'      => false,
-                'reference'          => now()->format("m/Y"),
-                'due_day'            => now()
-                    ->addDays(3)
-                    ->format("d"),
-                'paid'               => false,
-                'status'             => StatusTransactionEnum::AGUARDANDO->value,
-            ]);
+            ->updateOrCreate(
+                [
+                    "order_id" => $order->id,
+                ],
+                [
+                    'creator_id'         => $order->client->user->id ?? null,
+                    'name'               => "Pagamento de carrinho de compras: {$data['cart_id']}",
+                    'necessary'          => 1,
+                    'type'               => TypeTransactionEnum::input->value,
+                    'value'              => $data["totalPrice"],
+                    'monthly'            => false,
+                    'date_monthly_start' => now()->format("Y-m-d"),
+                    'date_monthly_end'   => null,
+                    'booklet'            => false,
+                    'not_start_end'      => false,
+                    'reference'          => now()->format("m/Y"),
+                    'due_day'            => now()
+                        ->addDays(3)
+                        ->format("d"),
+                    'paid'               => false,
+                    'status'             => StatusTransactionEnum::AGUARDANDO->value,
+                ]
+            );
     }
 
-    public function processCheckout(Model $transaction, bool $isUser)
-    {
+    public
+    function processCheckout(
+        Model $transaction,
+        bool  $isUser
+    ) {
         $data = $this->form->getState();
 
-        $cart = Cart::find($data["cart_id"]);
-
-        $due_date = Carbon::createFromFormat(
-            "d/m/Y",
-            "{$transaction->due_day}/{$transaction->reference}"
-        )
-                          ->format("Y-m-d");
-
-        $mountCheckout = new MountCheckoutStepsService(
-            model   : $transaction, requiredMethods: [
-            MethodPaymentEnum::credit_card->value,
-            MethodPaymentEnum::pix->value,
-            MethodPaymentEnum::billet->value,
-        ],  due_date: $due_date,
-        );
-
-        $items = json_decode($cart->items, true);
-
-        $products = [];
-
-        foreach ($items as $item) {
-            dd($item);
-
-            $products[] = [
-                "name"        => $item["name"],
-                "price"       => $item[""],
-                "price_2"     => $item[""],
-                "price_3"     => $item[""],
-                "description" => $item["name"],
-                "img"         => $item[""],
-                "quantity"    => $item[""],
-            ];
-        }
-
-        $products = array_map(callback: function ($product) {
-            return (new DtoStep1(
-                name       : $product["name"],
-                price      : $product["price"],
-                quantity   : $product["quantity"],
-                price_2    : $product["price_2"],
-                price_3    : $product["price_3"],
-                description: $product["description"],
-                img        : $product["img"],
-            ))->toArray();
-        },                    array   : $products);
 
         Notification::make()
                     ->success()
@@ -509,226 +531,255 @@ class FederalFilamentCartPage extends Page implements HasForms
                     ->send();
     }
 
-    protected function getFormSchema(): array
+    protected
+    function getFormSchema(): array
     {
         return [
             Grid::make(1)
-                ->schema([
-                    Hidden::make("cart_id")
-                          ->default($this->cart->id ?? null),
+                ->schema(
+                    [
+                        Hidden::make("cart_id")
+                              ->default($this->cart->id ?? null),
 
-                    Hidden::make("totalPrice")
-                          ->default($this->totalPrice ?? null),
+                        Hidden::make("totalPrice")
+                              ->default($this->totalPrice ?? null),
 
-                    Toggle::make("is_user")
-                          ->label("Já tenho conta")
-                          ->default(false)
-                          ->live(),
+                        Toggle::make("is_user")
+                              ->label("Já tenho conta")
+                              ->default(false)
+                              ->live(),
 
-                    Fieldset::make("is_user_not")
-                            ->label("Dados de cadastro")
-                            ->visible(fn(Get $get) => !$get("is_user"))
-                            ->schema([
+                        Fieldset::make("is_user_not")
+                                ->label("Dados de cadastro")
+                                ->visible(fn(Get $get) => !$get("is_user"))
+                                ->schema(
+                                    [
 
-                                Select::make('people_type')
-                                      ->label("Física/Jurídica")
-                                      ->autofocus()
-                                      ->live()
-                                      ->default(1)
-                                      ->options(
-                                          collect(TypePeopleEnum::cases())
-                                              ->mapWithKeys(fn(TypePeopleEnum $type) => [
-                                                  $type->value => $type->label()
-                                              ])
-                                              ->toArray()
-                                      )
-                                      ->required(),
+                                        Select::make('people_type')
+                                              ->label("Física/Jurídica")
+                                              ->autofocus()
+                                              ->live()
+                                              ->default(1)
+                                              ->options(
+                                                  collect(TypePeopleEnum::cases())
+                                                      ->mapWithKeys(
+                                                          fn(TypePeopleEnum $type) => [
+                                                              $type->value => $type->label()
+                                                          ]
+                                                      )
+                                                      ->toArray()
+                                              )
+                                              ->required(),
 
-                                TextInput::make('document')
-                                         ->label("CPF/CNPJ")
-                                         ->placeholder(function (Get $get) {
-                                             $people_type = $get("people_type");
-                                             return $people_type == 2 ? "99.999.999/9999-99" : "999.999.999-99";
-                                         })
-                                         ->mask(function (Get $get) {
-                                             $people_type = $get("people_type");
-                                             return $people_type == 2 ? "99.999.999/9999-99" : "999.999.999-99";
-                                         })
-                                         ->maxLength(50)
-                                         ->required()
-                                         ->dehydrateStateUsing(fn($state) => preg_replace('/\D/', '', $state))
-                                         ->unique('clients'),
+                                        TextInput::make('document')
+                                                 ->label("CPF/CNPJ")
+                                                 ->placeholder(
+                                                     function (Get $get) {
+                                                         $people_type = $get("people_type");
+                                                         return $people_type == 2 ? "99.999.999/9999-99" : "999.999.999-99";
+                                                     }
+                                                 )
+                                                 ->mask(
+                                                     function (Get $get) {
+                                                         $people_type = $get("people_type");
+                                                         return $people_type == 2 ? "99.999.999/9999-99" : "999.999.999-99";
+                                                     }
+                                                 )
+                                                 ->maxLength(50)
+                                                 ->required()
+                                                 ->dehydrateStateUsing(fn($state) => preg_replace('/\D/', '', $state))
+                                                 ->unique('clients'),
 
-                                DatePicker::make('birthday')
-                                          ->label("Nascimento")
-                                          ->required(fn(Get $get) => $get("people_type") == TypePeopleEnum::F->value),
+                                        DatePicker::make('birthday')
+                                                  ->label("Nascimento")
+                                                  ->required(
+                                                      fn(Get $get) => $get("people_type") == TypePeopleEnum::F->value
+                                                  ),
 
-                                TextInput::make('email')
-                                         ->label('E-mail')
-                                         ->email()
-                                         ->required(),
+                                        TextInput::make('email')
+                                                 ->label('E-mail')
+                                                 ->email()
+                                                 ->required(),
 
-                                TextInput::make('name')
-                                         ->label('Nome completo')
-                                         ->rule(function (Get $get) {
-                                             return function (string $attribute, $value, $fail) use ($get) {
-                                                 $explode = explode(" ", $value);
-                                                 if (count($explode) < 2) {
-                                                     $this->loadData();
+                                        TextInput::make('name')
+                                                 ->label('Nome completo')
+                                                 ->rule(
+                                                     function (Get $get) {
+                                                         return function (string $attribute, $value, $fail) use ($get) {
+                                                             $explode = explode(" ", $value);
+                                                             if (count($explode) < 2) {
+                                                                 $this->loadData();
 
-                                                     $fail("Digite também o sobrenome!");
-                                                 }
-                                             };
-                                         })
-                                         ->required()
-                                         ->columnSpanFull(),
+                                                                 $fail("Digite também o sobrenome!");
+                                                             }
+                                                         };
+                                                     }
+                                                 )
+                                                 ->required()
+                                                 ->columnSpanFull(),
 
-                                TextInput::make('password')
-                                         ->label('Senha')
-                                         ->password()
-                                         ->minLength(4)
-                                         ->maxLength(50)
-                                         ->revealable()
-                                         ->required(),
+                                        TextInput::make('password')
+                                                 ->label('Senha')
+                                                 ->password()
+                                                 ->minLength(4)
+                                                 ->maxLength(50)
+                                                 ->revealable()
+                                                 ->required(),
 
-                                TextInput::make('password_confirmation')
-                                         ->label('Confirme a Senha')
-                                         ->password()
-                                         ->minLength(4)
-                                         ->maxLength(50)
-                                         ->revealable()
-                                         ->rule(function (Get $get) {
-                                             return function (string $attribute, $value, $fail) use ($get) {
-                                                 $password = $get("password");
-                                                 if ($password != $value) {
-                                                     $this->loadData();
-                                                     $fail("Confirmação de Senha Incorreta!");
-                                                 }
-                                             };
-                                         })
-                                         ->required(),
+                                        TextInput::make('password_confirmation')
+                                                 ->label('Confirme a Senha')
+                                                 ->password()
+                                                 ->minLength(4)
+                                                 ->maxLength(50)
+                                                 ->revealable()
+                                                 ->rule(
+                                                     function (Get $get) {
+                                                         return function (string $attribute, $value, $fail) use ($get) {
+                                                             $password = $get("password");
+                                                             if ($password != $value) {
+                                                                 $this->loadData();
+                                                                 $fail("Confirmação de Senha Incorreta!");
+                                                             }
+                                                         };
+                                                     }
+                                                 )
+                                                 ->required(),
 
-                                TextInput::make('cellphone')
-                                         ->label('Celular/Whatsapp')
-                                         ->prefixIcon("heroicon-o-phone")
-                                         ->mask("(99) 9999-99999")
-                                         ->required(),
+                                        TextInput::make('cellphone')
+                                                 ->label('Celular/Whatsapp')
+                                                 ->prefixIcon("heroicon-o-phone")
+                                                 ->mask("(99) 9999-99999")
+                                                 ->required(),
 
-                                TextInput::make('zipcode')
-                                         ->label("Digite o CEP")
-                                         ->dehydrateStateUsing(fn($state) => preg_replace('/\D/', '', $state))
-                                         ->suffixAction(
-                                             Action::make('viaCep')
-                                                   ->label("Buscar CEP")
-                                                   ->icon('heroicon-m-map-pin')
-                                                   ->action(function (
-                                                       Set       $set,
-                                                                 $state,
-                                                       Get       $get,
-                                                       Component $livewire
-                                                   ) {
-                                                       $data = BuscarViaCepService::getData((string)$state);
+                                        TextInput::make('zipcode')
+                                                 ->label("Digite o CEP")
+                                                 ->dehydrateStateUsing(fn($state) => preg_replace('/\D/', '', $state))
+                                                 ->suffixAction(
+                                                     Action::make('viaCep')
+                                                           ->label("Buscar CEP")
+                                                           ->icon('heroicon-m-map-pin')
+                                                           ->action(
+                                                               function (
+                                                                   Set       $set,
+                                                                             $state,
+                                                                   Get       $get,
+                                                                   Component $livewire
+                                                               ) {
+                                                                   $data = BuscarViaCepService::getData((string)$state);
 
-                                                       if (isset($data["cep"])) {
-                                                           $set('street', $data["logradouro"]);
-                                                           $set('complement', $data["complemento"]);
-                                                           $set('district', $data["bairro"]);
-                                                           $set('city', $data["localidade"]);
-                                                           $set('state', $data["uf"]);
-                                                       }
+                                                                   if (isset($data["cep"])) {
+                                                                       $set('street', $data["logradouro"]);
+                                                                       $set('complement', $data["complemento"]);
+                                                                       $set('district', $data["bairro"]);
+                                                                       $set('city', $data["localidade"]);
+                                                                       $set('state', $data["uf"]);
+                                                                   }
 
-                                                       Notification::make()
-                                                                   ->info()
-                                                                   ->title('Próximo passo!')
-                                                                   ->seconds(60)
-                                                                   ->body(
-                                                                       "Informar ou validar os dados do seu endereço, que estão logo abaixo!"
-                                                                   )
-                                                                   ->send();
-                                                   })
-                                         )
-                                         ->hint("Busca de CEP")
-                                         ->afterStateUpdated(function (Set $set, Get $get, Component $livewire) {
-                                             $data = BuscarViaCepService::getData((string)$get("zipcode"));
+                                                                   Notification::make()
+                                                                               ->info()
+                                                                               ->title('Próximo passo!')
+                                                                               ->seconds(60)
+                                                                               ->body(
+                                                                                   "Informar ou validar os dados do seu endereço, que estão logo abaixo!"
+                                                                               )
+                                                                               ->send();
+                                                               }
+                                                           )
+                                                 )
+                                                 ->hint("Busca de CEP")
+                                                 ->afterStateUpdated(
+                                                     function (Set $set, Get $get, Component $livewire) {
+                                                         $data = BuscarViaCepService::getData((string)$get("zipcode"));
 
-                                             if (isset($data["cep"])) {
-                                                 $set('street', $data["logradouro"]);
-                                                 $set('complement', $data["complemento"]);
-                                                 $set('district', $data["bairro"]);
-                                                 $set('city', $data["localidade"]);
-                                                 $set('state', $data["uf"]);
-                                             }
+                                                         if (isset($data["cep"])) {
+                                                             $set('street', $data["logradouro"]);
+                                                             $set('complement', $data["complemento"]);
+                                                             $set('district', $data["bairro"]);
+                                                             $set('city', $data["localidade"]);
+                                                             $set('state', $data["uf"]);
+                                                         }
 
-                                             Notification::make()
-                                                         ->info()
-                                                         ->title('Próximo passo!')
-                                                         ->seconds(60)
-                                                         ->body(
-                                                             "Informar ou validar os dados do seu endereço, que estão logo abaixo!"
-                                                         )
-                                                         ->send();
-                                         })
-                                         ->mask(function (Get $get) {
-                                             return "99999-999";
-                                         })
-                                         ->debounce(1000)
-                                         ->required(),
+                                                         Notification::make()
+                                                                     ->info()
+                                                                     ->title('Próximo passo!')
+                                                                     ->seconds(60)
+                                                                     ->body(
+                                                                         "Informar ou validar os dados do seu endereço, que estão logo abaixo!"
+                                                                     )
+                                                                     ->send();
+                                                     }
+                                                 )
+                                                 ->mask(
+                                                     function (Get $get) {
+                                                         return "99999-999";
+                                                     }
+                                                 )
+                                                 ->debounce(1000)
+                                                 ->required(),
 
-                            ]),
+                                    ]
+                                ),
 
-                    Fieldset::make("address")
-                            ->label("Dados de endereço")
-                            ->visible(function (Get $get) {
-                                return Str::length($get("zipcode")) == 9 && !$get("is_user");
-                            })
-                            ->schema([
+                        Fieldset::make("address")
+                                ->label("Dados de endereço")
+                                ->visible(
+                                    function (Get $get) {
+                                        return Str::length($get("zipcode")) == 9 && !$get("is_user");
+                                    }
+                                )
+                                ->schema(
+                                    [
 
-                                TextInput::make('street')
-                                         ->label('Logradouro')
-                                         ->required()
-                                         ->maxLength(255),
+                                        TextInput::make('street')
+                                                 ->label('Logradouro')
+                                                 ->required()
+                                                 ->maxLength(255),
 
-                                TextInput::make('number')
-                                         ->label('Número')
-                                         ->maxLength(20),
+                                        TextInput::make('number')
+                                                 ->label('Número')
+                                                 ->maxLength(20),
 
-                                TextInput::make('complement')
-                                         ->label('Complemento')
-                                         ->maxLength(255),
+                                        TextInput::make('complement')
+                                                 ->label('Complemento')
+                                                 ->maxLength(255),
 
-                                TextInput::make('district')
-                                         ->label('Bairro')
-                                         ->maxLength(255),
+                                        TextInput::make('district')
+                                                 ->label('Bairro')
+                                                 ->maxLength(255),
 
-                                TextInput::make('city')
-                                         ->label('Cidade')
-                                         ->required()
-                                         ->maxLength(255),
+                                        TextInput::make('city')
+                                                 ->label('Cidade')
+                                                 ->required()
+                                                 ->maxLength(255),
 
-                                TextInput::make('state')
-                                         ->label('UF')
-                                         ->required()
-                                         ->maxLength(2),
+                                        TextInput::make('state')
+                                                 ->label('UF')
+                                                 ->required()
+                                                 ->maxLength(2),
 
-                            ]),
+                                    ]
+                                ),
 
-                    Fieldset::make("is_user_yes")
-                            ->label("Dados de acesso")
-                            ->visible(fn(Get $get) => $get("is_user"))
-                            ->schema([
-                                TextInput::make('email')
-                                         ->label('E-mail')
-                                         ->email()
-                                         ->required(),
+                        Fieldset::make("is_user_yes")
+                                ->label("Dados de acesso")
+                                ->visible(fn(Get $get) => $get("is_user"))
+                                ->schema(
+                                    [
+                                        TextInput::make('email')
+                                                 ->label('E-mail')
+                                                 ->email()
+                                                 ->required(),
 
-                                TextInput::make('password')
-                                         ->label('Senha')
-                                         ->revealable()
-                                         ->password()
-                                         ->required(),
+                                        TextInput::make('password')
+                                                 ->label('Senha')
+                                                 ->revealable()
+                                                 ->password()
+                                                 ->required(),
 
-                            ]),
-                ]),
+                                    ]
+                                ),
+                    ]
+                ),
         ];
     }
 
