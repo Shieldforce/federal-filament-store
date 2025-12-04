@@ -90,9 +90,7 @@ class FederalFilamentCartPage extends Page implements HasForms
 
     public function updated($property)
     {
-        //if ($property === 'is_user') {
-            $this->loadData();
-        //}
+        $this->loadData();
     }
 
     public function submit()
@@ -272,7 +270,9 @@ class FederalFilamentCartPage extends Page implements HasForms
 
                     Fieldset::make("address")
                             ->label("Dados de endereço")
-                            ->visible(fn(Get $get) => Str::length($get("cep")) == 8)
+                            ->visible(function (Get $get) {
+                                return Str::length($get("cep")) == 8 && !$get("is_user");
+                            })
                             ->schema([
                                 TextInput::make('street')
                                          ->label('Endereço')
