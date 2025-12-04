@@ -232,6 +232,7 @@ class FederalFilamentCartPage extends Page implements HasForms
                                          ->password()
                                          ->minLength(4)
                                          ->maxLength(50)
+                                         ->revealable()
                                          ->required(),
 
                                 TextInput::make('password_confirmation')
@@ -239,6 +240,7 @@ class FederalFilamentCartPage extends Page implements HasForms
                                          ->password()
                                          ->minLength(4)
                                          ->maxLength(50)
+                                         ->revealable()
                                          ->rule(function (Get $get) {
                                              return function (string $attribute, $value, $fail) use ($get) {
                                                  $password = $get("password");
@@ -263,6 +265,7 @@ class FederalFilamentCartPage extends Page implements HasForms
 
                                 TextInput::make('password')
                                          ->label('Senha')
+                                         ->revealable()
                                          ->password()
                                          ->required(),
 
