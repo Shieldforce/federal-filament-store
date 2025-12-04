@@ -2,6 +2,7 @@
 
 namespace Shieldforce\FederalFilamentStore\Pages;
 
+use Filament\Forms\Components\Field;
 use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
@@ -10,6 +11,7 @@ use Filament\Notifications\Notification;
 use Filament\Pages\Page;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Shieldforce\CheckoutPayment\Enums\MethodPaymentEnum;
@@ -62,7 +64,9 @@ class FederalFilamentCartPage extends Page implements HasForms
     public function mount(): void
     {
         if (!Auth::check()) {
-            filament()->getCurrentPanel()->topNavigation()/*
+            filament()
+                ->getCurrentPanel()
+                ->topNavigation()/*
                 ->topbar(false)*/
             ;
         }
@@ -72,44 +76,46 @@ class FederalFilamentCartPage extends Page implements HasForms
 
     public function loadData()
     {
-        $this->cart = Cart::where("identifier", request()->cookie("ffs_identifier"))->first();
+        $this->cart = Cart::where("identifier", request()->cookie("ffs_identifier"))
+                          ->first();
 
         $this->items = json_decode($this->cart->items ?? [], true);
 
-        $this->totalPrice = collect($this->items)->sum(
-            function ($item) {
-                return $item['price'] * $item['amount'];
-            }
-        );
+        $this->totalPrice = collect($this->items)->sum(function ($item) {
+            return $item['price'] * $item['amount'];
+        });
     }
 
     public function updated($property)
     {
-        $this->loadData();
+        //
     }
 
     public function submit()
     {
-        $this->loadData();
-
         $data = $this->form->getState();
 
         $userCallback = config('federal-filament-store.user_callback');
-        $user = new $userCallback();
+        $useModel = new $userCallback();
+
+        if (!$data["is_user"]) {
+            $this->notAccount($useModel);
+        }
 
         $credentials = Auth::attempt([
             "email"    => $data["email"],
             "password" => $data["password"],
         ]);
 
-        if (!$credentials) {
+        if (!$credentials && $data["is_user"]) {
             return Notification::make()
-                ->danger()
-                ->title('Credenciais Incorretas!')
-                ->send();
+                               ->danger()
+                               ->title('Credenciais Incorretas!')
+                               ->body("E-mail ou senha incorretos, por favor verifique e tente novamente.")
+                               ->send();
         }
 
-        $user = $user->find(Auth::id());
+        //$user = $user->find(Auth::id());
 
         /*$transactionCallback = config('federal-filament-store.transaction_callback');
         $transaction = new $transactionCallback();
@@ -177,20 +183,44 @@ class FederalFilamentCartPage extends Page implements HasForms
         );*/
     }
 
+    public function notAccount(Model $model)
+    {
+        $data = $this->form->getState();
+
+        $model->updateOrCreate(["email" => $data["email"]], [
+            "name"     => $data["name"],
+            "password" => bcrypt($data["password"]),
+        ]);
+    }
+
     protected function getFormSchema(): array
     {
         return [
-            Grid::make(1)->schema(
-                [
-                    Toggle::make("is_user")->label("Já tenho conta")->default(false)->live(),
+            Grid::make(1)
+                ->schema([
+                    Toggle::make("is_user")
+                          ->label("Já tenho conta")
+                          ->default(false)
+                          ->live(),
 
-                    TextInput::make('email')->label('E-mail')->visible(fn(Get $get) => $get("is_user"))->email(
-                    )->required(),
+                    Field::make("is_user_yes")
+                         ->label("Dados de acesso: ")
+                        ->visible(fn(Get $get) => $get("is_user"))
+                         ->schema([
+                             TextInput::make('email')
+                                      ->label('E-mail')
+                                      //->visible(fn(Get $get) => $get("is_user"))
+                                      ->email()
+                                      ->required(),
 
-                    TextInput::make('password')->label('Senha')->visible(fn(Get $get) => $get("is_user"))->password(
-                    )->required(),
-                ]
-            ),
+                             TextInput::make('password')
+                                      ->label('Senha')
+                                      //->visible(fn(Get $get) => $get("is_user"))
+                                      ->password()
+                                      ->required(),
+
+                         ]),
+                ]),
         ];
     }
 
