@@ -162,17 +162,16 @@ class FederalFilamentCartPage extends Page implements HasForms
             dd($client);
             //$this->processCheckout($user);
         } catch (Throwable $throwable) {
-
             DB::rollBack();
 
             $this->loadData();
 
             Notification::make()
-                ->danger()
-                ->title('Erro ao criar conta!')
-                ->body($throwable->getMessage())
-                ->persistent()
-                ->send();
+                        ->danger()
+                        ->title('Erro ao criar conta!')
+                        ->body($throwable->getMessage())
+                        ->persistent()
+                        ->send();
 
             throw $throwable;
         }
@@ -349,14 +348,14 @@ class FederalFilamentCartPage extends Page implements HasForms
 
                                 TextInput::make('email')
                                          ->label('E-mail')
-                                        ->rule(function () {
-                                            return function (string $attribute, $value, $fail) {
-                                                $user = DB::table("users")->where('email', $value)->first();
-                                                if (isset($user->id)) {
-                                                    $fail('Este email já está cadastrado.');
-                                                }
-                                            };
-                                        })
+                                         ->rule(function (string $attribute, $value, $fail) {
+                                             $user = DB::table("users")
+                                                       ->where('email', $value)
+                                                       ->first();
+                                             if (isset($user->id)) {
+                                                 $fail('Este email já está cadastrado.');
+                                             }
+                                         })
                                          ->email()
                                          ->required(),
 
