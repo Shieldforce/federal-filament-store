@@ -328,7 +328,7 @@ class FederalFilamentCartPage extends Page implements HasForms
                 'reference'          => now()->format("m/Y"),
                 'due_day'            => now()
                     ->addDays(3)
-                    ->format("Y-m-d"),
+                    ->format("d"),
                 'paid'               => false,
                 'status'             => StatusTransactionEnum::AGUARDANDO->value,
             ]);
