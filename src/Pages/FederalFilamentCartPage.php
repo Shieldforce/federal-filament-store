@@ -20,6 +20,7 @@ class FederalFilamentCartPage extends Page implements HasForms
     protected static ?string $title           = 'Carrinho';
     protected array          $result          = [];
     protected Cart           $cart;
+    protected array          $items;
 
     public function getLayout(): string
     {
@@ -59,6 +60,8 @@ class FederalFilamentCartPage extends Page implements HasForms
 
         $this->cart = Cart::where("identifier", request()->cookie("ffs_identifier"))
             ->first();
+
+        $this->items = json_decode($this->cart->items ?? [], true);
     }
 
     public function updated()
