@@ -179,7 +179,7 @@ class FederalFilamentCartPage extends Page implements HasForms
 
     public function createOrExtractClient(Model $user)
     {
-        return $user->clients->first();
+        return $user->clients->first() ?? null;
     }
 
     public function processCheckout()
