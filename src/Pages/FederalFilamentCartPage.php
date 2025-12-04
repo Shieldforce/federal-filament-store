@@ -238,12 +238,17 @@ class FederalFilamentCartPage extends Page implements HasForms
     {
         $data = $this->form->getState();
 
-        $userExist = $user
-            ->where("email", $data["email"])
+        $user = $user
+            ->where('email', $data['email'])
             ->first();
 
-        if (isset($userExist->id)) {
-            return $userExist;
+        if (!$user || !Hash::check($data['password'], $user->password)) {
+            Notification::make()
+                        ->danger()
+                        ->title('Credenciais Incorretas!')
+                        ->body("E-mail ou senha incorretos, por favor verifique e tente novamente.")
+                        ->send();
+            return null;
         }
 
         return $user->updateOrCreate(["email" => $data["email"]], [
@@ -256,6 +261,7 @@ class FederalFilamentCartPage extends Page implements HasForms
     public function isAccount(Model $user)
     {
         $data = $this->form->getState();
+
         $user = $user
             ->where('email', $data['email'])
             ->first();
