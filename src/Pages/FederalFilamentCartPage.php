@@ -57,7 +57,7 @@ class FederalFilamentCartPage extends Page implements HasForms
 
         $this->filtrar();
 
-        $this->cart = Cart::where("ffs_identifier", request()->cookie("ffs_identifier"))
+        $this->cart = Cart::where("identifier", request()->cookie("ffs_identifier"))
             ->first();
     }
 
