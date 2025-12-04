@@ -294,7 +294,7 @@ class FederalFilamentCartPage extends Page implements HasForms
                                                                   Notification::make()
                                                                               ->info()
                                                                               ->title('Próximo passo!')
-                                                                              ->body("Informar ou validar os dados do seu endereço!")
+                                                                              ->body("Informar ou validar os dados do seu endereço, que estão logo abaixo!")
                                                                               ->send();
                                                               }))
                                          ->hint("Busca de CEP")
@@ -312,7 +312,7 @@ class FederalFilamentCartPage extends Page implements HasForms
                                              Notification::make()
                                                          ->info()
                                                          ->title('Próximo passo!')
-                                                         ->body("Informar ou validar os dados do seu endereço!")
+                                                         ->body("Informar ou validar os dados do seu endereço, que estão logo abaixo!")
                                                          ->send();
                                          })
                                          ->mask(function (Get $get) {
