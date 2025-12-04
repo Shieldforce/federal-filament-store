@@ -384,7 +384,7 @@ class FederalFilamentCartPage extends Page implements HasForms
 
         $cart = Cart::find($data["cart_id"]);
 
-        dd($cart);
+        dd($data);
 
         $due_date = Carbon::createFromFormat(
             "d/m/Y",
