@@ -22,10 +22,8 @@ use Illuminate\Support\Str;
 use Livewire\Component;
 use Shieldforce\FederalFilamentStore\Enums\TypePeopleEnum;
 use Shieldforce\FederalFilamentStore\Models\Cart;
-use Shieldforce\FederalFilamentStore\Services\ApiCpfCnpjService;
 use Shieldforce\FederalFilamentStore\Services\BuscarViaCepService;
 use Throwable;
-use Filament\Forms\Components\Actions\Action as FormComponentAction;
 
 class FederalFilamentCartPage extends Page implements HasForms
 {
@@ -40,6 +38,7 @@ class FederalFilamentCartPage extends Page implements HasForms
     protected array          $result                = [];
     public int               $people_type           = 1;
     public string            $document              = "";
+    public string            $birthday              = "";
     public string            $name                  = "";
     public string            $email                 = "";
     public string            $password              = "";
@@ -326,44 +325,7 @@ class FederalFilamentCartPage extends Page implements HasForms
                                          })
                                          ->maxLength(50)
                                          ->required()
-                                         ->maxLength(100)
                                          ->dehydrateStateUsing(fn($state) => preg_replace('/\D/', '', $state))
-                                         ->suffixAction(
-                                             FormComponentAction::make('apiCpfCnpj')
-                                                                ->label("Buscar Cpf/CNPJ")
-                                                                ->icon('heroicon-o-user')
-                                                                ->action(
-                                                                    function (
-                                                                        Set       $set,
-                                                                                  $state,
-                                                                        Get       $get,
-                                                                        Component $livewire
-                                                                    ) {
-                                                                        $apiCpfCnpj = new ApiCpfCnpjService(
-                                                                            $state, $get("birthday")
-                                                                        );
-                                                                        $data = $apiCpfCnpj->search();
-
-                                                                        logger([
-                                                                            "data" => $data,
-                                                                        ]);
-
-                                                                        if (isset($data["data"]) && isset($data["data"]["nome_da_pf"])) {
-                                                                            $set(
-                                                                                'name',
-                                                                                $data["data"]["nome_da_pf"]
-                                                                            );
-                                                                        }
-
-                                                                        if (isset($data["data"]) && isset($data["data"]["fantasia"])) {
-                                                                            $set(
-                                                                                'name',
-                                                                                $data["data"]["fantasia"]
-                                                                            );
-                                                                        }
-                                                                    }
-                                                                )
-                                         )
                                          ->unique('clients'),
 
                                 DatePicker::make('birthday')
