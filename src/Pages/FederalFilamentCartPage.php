@@ -120,12 +120,22 @@ class FederalFilamentCartPage extends Page implements HasForms
         if (!isset($user->id)) {
             return Notification::make()
                                ->danger()
-                               ->title('Erro ao localizar!')
-                               ->body("Não encontramos nenhum usuário!")
+                               ->title('Erro ao criar usuário!')
+                               ->body("Houve um erro ao criar usuário!")
                                ->send();
         }
 
-        $this->createOrExtractClient($user);
+        $client = $this->createOrExtractClient($user);
+
+        if (!isset($client->id)) {
+            return Notification::make()
+                               ->danger()
+                               ->title('Conta sem cliente!')
+                               ->body("esta conta não é do tipo cliente!")
+                               ->send();
+        }
+
+        dd($client);
 
         //$this->processCheckout($user);
     }
@@ -169,11 +179,7 @@ class FederalFilamentCartPage extends Page implements HasForms
 
     public function createOrExtractClient(Model $user)
     {
-        $client = $user->clients->first();
-
-        if(isset($client->id)) {
-            dd($client);
-        }
+        return $user->clients->first();
     }
 
     public function processCheckout()
