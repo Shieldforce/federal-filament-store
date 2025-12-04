@@ -2,7 +2,7 @@
 
 namespace Shieldforce\FederalFilamentStore\Pages;
 
-use Filament\Forms\Components\Field;
+use Filament\Forms\Components\Fieldset;
 use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
@@ -12,11 +12,7 @@ use Filament\Pages\Page;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
-use Shieldforce\CheckoutPayment\Enums\MethodPaymentEnum;
-use Shieldforce\CheckoutPayment\Services\DtoSteps\DtoStep1;
-use Shieldforce\CheckoutPayment\Services\MountCheckoutStepsService;
 use Shieldforce\FederalFilamentStore\Models\Cart;
 
 class FederalFilamentCartPage extends Page implements HasForms
@@ -203,22 +199,23 @@ class FederalFilamentCartPage extends Page implements HasForms
                           ->default(false)
                           ->live(),
 
-                    Field::make("is_user_yes")
-                         ->label("Dados de acesso: ")
-                         ->schema([
-                             TextInput::make('email')
-                                      ->label('E-mail')
-                                      ->visible(fn(Get $get) => $get("is_user"))
-                                      ->email()
-                                      ->required(),
+                    Fieldset::make("is_user_yes")
+                            ->label("Dados de acesso: ")
+                            ->visible(fn(Get $get) => $get("is_user"))
+                            ->schema([
+                                TextInput::make('email')
+                                         ->label('E-mail')
+                                    //->visible(fn(Get $get) => $get("is_user"))
+                                         ->email()
+                                         ->required(),
 
-                             TextInput::make('password')
-                                      ->label('Senha')
-                                      ->visible(fn(Get $get) => $get("is_user"))
-                                      ->password()
-                                      ->required(),
+                                TextInput::make('password')
+                                         ->label('Senha')
+                                    //->visible(fn(Get $get) => $get("is_user"))
+                                         ->password()
+                                         ->required(),
 
-                         ]),
+                            ]),
                 ]),
         ];
     }
