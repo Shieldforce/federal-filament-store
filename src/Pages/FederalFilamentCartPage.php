@@ -290,6 +290,12 @@ class FederalFilamentCartPage extends Page implements HasForms
                                                                       $set('city', $data["localidade"]);
                                                                       $set('state', $data["uf"]);
                                                                   }
+
+                                                                  Notification::make()
+                                                                              ->info()
+                                                                              ->title('Próximo passo!')
+                                                                              ->body("Informar ou validar os dados do seu endereço!")
+                                                                              ->send();
                                                               }))
                                          ->hint("Busca de CEP")
                                          ->afterStateUpdated(function (Set $set, Get $get, Component $livewire) {
@@ -302,6 +308,12 @@ class FederalFilamentCartPage extends Page implements HasForms
                                                  $set('city', $data["localidade"]);
                                                  $set('state', $data["uf"]);
                                              }
+
+                                             Notification::make()
+                                                         ->info()
+                                                         ->title('Próximo passo!')
+                                                         ->body("Informar ou validar os dados do seu endereço!")
+                                                         ->send();
                                          })
                                          ->mask(function (Get $get) {
                                              return "99999-999";
