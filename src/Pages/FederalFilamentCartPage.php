@@ -81,9 +81,11 @@ class FederalFilamentCartPage extends Page implements HasForms
         );
     }
 
-    public function updated()
+    public function updated($property)
     {
-        $this->loadData();
+        if($property == 'is_user') {
+            $this->loadData();
+        }
     }
 
     public function submit()
