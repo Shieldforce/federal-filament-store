@@ -150,11 +150,20 @@ class FederalFilamentCartPage extends Page implements HasForms
             "contact"  => $data["cellphone"],
         ]);
 
-        if (isset($create->id)) {
-            return $create;
+        $credentials = Auth::attempt([
+            "email"    => $data["email"],
+            "password" => $data["password"],
+        ]);
+
+        if (!$credentials && $data["is_user"]) {
+            return Notification::make()
+                               ->danger()
+                               ->title('Credenciais Incorretas!')
+                               ->body("E-mail ou senha incorretos, por favor verifique e tente novamente.")
+                               ->send();
         }
 
-        return null;
+        return $create;
     }
 
     public function isAccount(Model $user)
