@@ -20,6 +20,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Livewire\Component;
+use Shieldforce\FederalFilamentStore\Enums\StatusClientEnum;
 use Shieldforce\FederalFilamentStore\Enums\TypePeopleEnum;
 use Shieldforce\FederalFilamentStore\Models\Cart;
 use Shieldforce\FederalFilamentStore\Services\BuscarViaCepService;
@@ -156,7 +157,15 @@ class FederalFilamentCartPage extends Page implements HasForms
             dd($client);
             //$this->processCheckout($user);
         } catch (Throwable $throwable) {
-            dd($throwable);
+
+            Notification::make()
+                ->danger()
+                ->title('Erro ao criar conta!')
+                ->body($throwable->getMessage())
+                ->persistent()
+                ->send();
+
+            throw $throwable;
         }
     }
 
@@ -200,19 +209,17 @@ class FederalFilamentCartPage extends Page implements HasForms
             $client = $user
                 ->clients()
                 ->updateOrCreate(["email" => $data["email"]], [
-                    'name' => $data["name"],
-                    'document',
-                    'email',
-                    'people_type',
-                    'status',
-                    'birthday',
-                    'user_id',
-                    'obs',
+                    'name'        => $data["name"],
+                    'document'    => $data["document"],
+                    'email'       => $data["email"],
+                    'people_type' => $data["people_type"],
+                    'status'      => StatusClientEnum::ativo->value,
+                    'birthday'    => $data["name"],
+                    'obs'         => "Criado pelo checkout da loja!",
                 ]);
         }
 
-
-        return $user->clients->first() ?? null;
+        return $client;
     }
 
     public function processCheckout()
