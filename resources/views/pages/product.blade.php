@@ -40,7 +40,7 @@
                             type="submit"
                             wire:click="$set('action', 'finish')"
                         >
-                            Finalizar Compra
+                            Adicionar e Finalizar
                         </x-filament::button>
 
                     </div>
