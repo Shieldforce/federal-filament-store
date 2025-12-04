@@ -3,7 +3,9 @@
 namespace Shieldforce\FederalFilamentStore\Pages;
 
 use App\Enums\StatusOrderEnum;
+use App\Enums\StatusTransactionEnum;
 use App\Enums\TypeOrderEnum;
+use App\Enums\TypeTransactionEnum;
 use Filament\Forms\Components\Actions\Action;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Fieldset;
@@ -24,6 +26,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Livewire\Component;
+use Shieldforce\FederalFilamentStore\Enums\OriginPaymentTransactionEnum;
 use Shieldforce\FederalFilamentStore\Enums\StatusClientEnum;
 use Shieldforce\FederalFilamentStore\Enums\TypeContractEnum;
 use Shieldforce\FederalFilamentStore\Enums\TypePeopleEnum;
@@ -157,7 +160,18 @@ class FederalFilamentCartPage extends Page implements HasForms
 
             $order = $this->createOrExtractOrder($client);
 
-            dd($user, $client, $order);
+            if (!isset($order->id)) {
+                return Notification::make()
+                                   ->danger()
+                                   ->title('Pedido não criado!')
+                                   ->body("Erro ao criar pedido!")
+                                   ->persistent()
+                                   ->send();
+            }
+
+            $transaction = $this->createOrExtractTransaction($order);
+
+            dd($user, $client, $order, $transaction);
 
             //$this->processCheckout($user);
 
@@ -276,43 +290,52 @@ class FederalFilamentCartPage extends Page implements HasForms
                 'date_monthly_end'   => null,
                 'booklet'            => false,
                 'not_start_end'      => false,
-                'contract_type'      => TypeContractEnum::contrato_3,
+                'contract_type'      => TypeContractEnum::contrato_3->value,
+            ]);
+    }
+
+    public function createOrExtractTransaction(Model $order)
+    {
+        $data = $this->form->getState();
+
+        $date = now()->format("Y-m-d H");
+
+        $transaction = $order
+            ->transactions()
+            ->where("created_at", "like", "%$date%")
+            ->get()
+            ->first() ?? null;
+
+        if (isset($transaction->id)) {
+            return $transaction;
+        }
+
+        return $order
+            ->transactions()
+            ->updateOrCreate([
+                "order_id" => $order->id,
+            ], [
+                'creator_id'         => $order->client->user->id ?? null,
+                'name'               => "Pagamento de carrinho de compras: {$data['cart_id']}",
+                'necessary'          => 1,
+                'type'               => TypeTransactionEnum::input->value,
+                'value'              => $data["totalPrice"],
+                'monthly'            => false,
+                'date_monthly_start' => now()->format("Y-m-d"),
+                'date_monthly_end'   => null,
+                'booklet'            => false,
+                'not_start_end'      => false,
+                'reference'          => now()->format("m/Y"),
+                'due_day'            => now()
+                    ->addDays(3)
+                    ->format("Y-m-d"),
+                'paid'               => false,
+                'status'             => StatusTransactionEnum::AGUARDANDO->value,
             ]);
     }
 
     public function processCheckout()
     {
-        /*$transactionCallback = config('federal-filament-store.transaction_callback');
-        $transaction = new $transactionCallback();
-        $transactionModel = $transaction->updateOrCreate([], [
-            'creator_id'         => "",
-            'order_id'           => "",
-            'employee_id'        => "",
-            'supplier_id'        => "",
-            'origin_payment'     => "",
-            'name'               => "",
-            'necessary'          => "",
-            'type'               => "",
-            'value'              => "",
-            'monthly'            => "",
-            'date_monthly_start' => "",
-            'date_monthly_end'   => "",
-            'booklet'            => "",
-            'not_start_end'      => "",
-            'reference'          => "",
-            'due_day'            => "",
-            'payment_day'        => "",
-            'paid'               => "",
-            'recipient'          => "",
-            'status'             => "",
-        ]);*/
-
-        /*
-            $orderCallback = config('federal-filament-store.client_callback');
-            $order = new $orderCallback();
-            $orderModel = $order->updateOrCreate([], []);
-        */
-
         /*$due_date = Carbon::createFromFormat(
             "d/m/Y",
             "{$transactionModel->due_day}/{$transactionModel->reference}"
