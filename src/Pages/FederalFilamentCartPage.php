@@ -186,7 +186,6 @@ class FederalFilamentCartPage extends Page implements HasForms
         $data = $this->form->getState();
 
         dd($data);
-
         /*$model->updateOrCreate(["email" => $data["email"]], [
             "name"     => $data["name"],
             "password" => bcrypt($data["password"]),
@@ -209,14 +208,12 @@ class FederalFilamentCartPage extends Page implements HasForms
                             ->schema([
                                 TextInput::make('name')
                                          ->label('Nome completo')
-                                         ->rules([
-                                             function (string $attribute, $value, $fail) {
-                                                $explode = explode(" ", $value);
-                                                if (count($explode) < 2) {
-                                                    $fail("Nome completo deve ter pelo manos 2 palavras!");
-                                                }
+                                         ->rule(function (string $attribute, $value, $fail) {
+                                             $explode = explode(" ", $value);
+                                             if (count($explode) < 2) {
+                                                 $fail("Nome completo deve ter pelo manos 2 palavras!");
                                              }
-                                         ])
+                                         })
                                          ->required(),
 
                                 TextInput::make('email')
