@@ -15,6 +15,7 @@ use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Livewire\Component;
 use Shieldforce\FederalFilamentStore\Models\Cart;
@@ -138,7 +139,14 @@ class FederalFilamentCartPage extends Page implements HasForms
                 return null;
             }
 
-            dd("fdsfdfdf");
+            /*
+            $credentials = Auth::attempt([
+                "email"    => $data["email"],
+                "password" => $data["password"],
+            ]);
+            */
+
+            dd($client);
 
             //$this->processCheckout($user);
         } catch (Throwable $throwable) {
@@ -150,47 +158,24 @@ class FederalFilamentCartPage extends Page implements HasForms
     {
         $data = $this->form->getState();
 
-        $create = $user->updateOrCreate(["email" => $data["email"]], [
+        return $user->updateOrCreate(["email" => $data["email"]], [
             "name"     => $data["name"],
             "password" => bcrypt($data["password"]),
             "contact"  => $data["cellphone"],
         ]);
-
-        Auth::logout();
-
-        $credentials = Auth::attempt([
-            "email"    => $data["email"],
-            "password" => $data["password"],
-        ]);
-
-        if (!$credentials && $data["is_user"]) {
-            Notification::make()
-                               ->danger()
-                               ->title('Credenciais Incorretas!')
-                               ->body("E-mail ou senha incorretos, por favor verifique e tente novamente.")
-                               ->send();
-
-            return null;
-        }
-
-        return $create;
     }
 
     public function isAccount(Model $user)
     {
         $data = $this->form->getState();
+        $user = $user->where('email', $data['email'])->first();
 
-        $credentials = Auth::attempt([
-            "email"    => $data["email"],
-            "password" => $data["password"],
-        ]);
-
-        if (!$credentials && $data["is_user"]) {
+        if (! $user || ! Hash::check($data['password'], $user->password)) {
             Notification::make()
-                               ->danger()
-                               ->title('Credenciais Incorretas!')
-                               ->body("E-mail ou senha incorretos, por favor verifique e tente novamente.")
-                               ->send();
+                        ->danger()
+                        ->title('Credenciais Incorretas!')
+                        ->body("E-mail ou senha incorretos, por favor verifique e tente novamente.")
+                        ->send();
             return null;
         }
 
