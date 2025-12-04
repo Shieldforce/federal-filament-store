@@ -34,6 +34,7 @@ class FederalFilamentCartPage extends Page implements HasForms
     public string            $cellphone             = "";
     public string            $cep                   = "";
     public string            $street                = "";
+    public ?int              $number                = null;
     public bool              $is_user               = false;
     protected array          $items                 = [];
     protected Cart           $cart;
@@ -262,7 +263,7 @@ class FederalFilamentCartPage extends Page implements HasForms
 
                                 TextInput::make('cep')
                                          ->label('Digite o CEP')
-                                         ->prefixIcon("heroicon-o-phone")
+                                         ->prefixIcon("heroicon-o-map-pin")
                                          ->live()
                                          ->required(),
 
@@ -276,6 +277,11 @@ class FederalFilamentCartPage extends Page implements HasForms
                             ->schema([
                                 TextInput::make('street')
                                          ->label('Endereço')
+                                         ->columns(3)
+                                         ->required(),
+                                TextInput::make('number')
+                                         ->label('Número')
+                                         ->columns(1)
                                          ->required(),
                             ]),
 
