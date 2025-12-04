@@ -6,6 +6,7 @@ use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Forms\Get;
+use Filament\Notifications\Notification;
 use Filament\Pages\Page;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
@@ -95,18 +96,20 @@ class FederalFilamentCartPage extends Page implements HasForms
 
         $userCallback = config('federal-filament-store.user_callback');
         $user = new $userCallback();
-        //$user->updateOrCreate([], []);
-
-        $user = $user->where("email", $data["email"])->first();
 
         $credentials = Auth::attempt([
             "email"    => $data["email"],
             "password" => $data["password"],
         ]);
 
-        if ($credentials) {
-            dd(Auth::user());
+        if (!$credentials) {
+            return Notification::make()
+                ->danger()
+                ->title('Credenciais Incorretas!')
+                ->send();
         }
+
+        $user = $user->find(Auth::id());
 
         /*$transactionCallback = config('federal-filament-store.transaction_callback');
         $transaction = new $transactionCallback();
