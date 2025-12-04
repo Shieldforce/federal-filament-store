@@ -317,7 +317,7 @@ class FederalFilamentCartPage extends Page implements HasForms
                                 Select::make('people_type')
                                       ->label("Física/Jurídica")
                                       ->autofocus()
-                                      ->live()
+                                      //->live()
                                       ->default(1)
                                       ->options(
                                           collect(TypePeopleEnum::cases())
@@ -330,7 +330,7 @@ class FederalFilamentCartPage extends Page implements HasForms
 
                                 TextInput::make('document')
                                          ->label("CPF/CNPJ")
-                                         ->live()
+                                         //->live()
                                          ->placeholder(function (Get $get) {
                                              $people_type = $get("people_type");
                                              return $people_type == 2 ? "99.999.999/9999-99" : "999.999.999-99";
