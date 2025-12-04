@@ -19,6 +19,7 @@ use Illuminate\Support\Str;
 use Livewire\Component;
 use Shieldforce\FederalFilamentStore\Models\Cart;
 use Shieldforce\FederalFilamentStore\Services\BuscarViaCepService;
+use Throwable;
 
 class FederalFilamentCartPage extends Page implements HasForms
 {
@@ -104,30 +105,44 @@ class FederalFilamentCartPage extends Page implements HasForms
 
     public function submit()
     {
-        $data = $this->form->getState();
+        try {
+            $data = $this->form->getState();
 
-        $userCallback = config('federal-filament-store.user_callback');
-        $useModel = new $userCallback();
+            $userCallback = config('federal-filament-store.user_callback');
+            $useModel = new $userCallback();
 
-        if ($data["is_user"]) {
-            $user = $this->isAccount($useModel);
-        }
+            if ($data["is_user"]) {
+                $user = $this->isAccount($useModel);
+            }
 
-        if (!$data["is_user"]) {
-            $user = $this->notAccount($useModel);
-        }
+            if (!$data["is_user"]) {
+                $user = $this->notAccount($useModel);
+            }
 
-        if(isset($user->id)) {
+            if (!isset($user->id)) {
+                return Notification::make()
+                                   ->danger()
+                                   ->title('Erro ao criar usuário!')
+                                   ->body("Houve um erro ao criar usuário!")
+                                   ->send();
+            }
+
             $client = $this->createOrExtractClient($user);
+
+            if (!isset($client->id)) {
+                return Notification::make()
+                                   ->danger()
+                                   ->title('Conta sem cliente!')
+                                   ->body("esta conta não é do tipo cliente!")
+                                   ->send();
+            }
+
+            // dd($client);
+
+            //$this->processCheckout($user);
+        } catch (Throwable $throwable) {
+            dd($throwable);
         }
-
-        if(isset($client->id)) {
-            dd($client);
-        }
-
-
-
-        //$this->processCheckout($user);
     }
 
     public function notAccount(Model $user)
