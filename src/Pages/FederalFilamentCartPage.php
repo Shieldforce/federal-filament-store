@@ -19,17 +19,19 @@ class FederalFilamentCartPage extends Page implements HasForms
 {
     use InteractsWithForms;
 
-    protected static string  $view            = 'federal-filament-store::pages.cart';
-    protected static ?string $navigationIcon  = 'heroicon-o-list-bullet';
-    protected static ?string $navigationGroup = 'Loja';
-    protected static ?string $label           = 'Carrinho';
-    protected static ?string $navigationLabel = 'Carrinho';
-    protected static ?string $title           = 'Aqui estão seus produtos do carrinho!';
-    protected array          $result          = [];
-    public string            $email           = "";
-    public string            $password        = "";
-    public bool              $is_user         = false;
-    protected array          $items           = [];
+    protected static string  $view                  = 'federal-filament-store::pages.cart';
+    protected static ?string $navigationIcon        = 'heroicon-o-list-bullet';
+    protected static ?string $navigationGroup       = 'Loja';
+    protected static ?string $label                 = 'Carrinho';
+    protected static ?string $navigationLabel       = 'Carrinho';
+    protected static ?string $title                 = 'Aqui estão seus produtos do carrinho!';
+    protected array          $result                = [];
+    public string            $name                  = "";
+    public string            $email                 = "";
+    public string            $password              = "";
+    public string            $password_confirmation = "";
+    public bool              $is_user               = false;
+    protected array          $items                 = [];
     protected Cart           $cart;
     public float             $totalPrice;
 
@@ -228,8 +230,8 @@ class FederalFilamentCartPage extends Page implements HasForms
                                          ->password()
                                          ->required(),
 
-                                TextInput::make('password')
-                                         ->label('Senha')
+                                TextInput::make('password_confirmation')
+                                         ->label('Confirme a Senha')
                                          ->password()
                                          ->required(),
 
