@@ -125,9 +125,9 @@ class FederalFilamentCartPage extends Page implements HasForms
                                ->send();
         }
 
-        dd($user);
-
         $client = $this->createOrExtractClient($user);
+
+        dd($client);
 
         if (!isset($client->id)) {
             return Notification::make()
