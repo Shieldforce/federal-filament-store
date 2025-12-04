@@ -6,7 +6,6 @@ use App\Enums\StatusOrderEnum;
 use App\Enums\StatusTransactionEnum;
 use App\Enums\TypeOrderEnum;
 use App\Enums\TypeTransactionEnum;
-use Exception;
 use Filament\Forms\Components\Actions\Action;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Fieldset;
@@ -31,7 +30,6 @@ use Livewire\Component;
 use Shieldforce\CheckoutPayment\Enums\MethodPaymentEnum;
 use Shieldforce\CheckoutPayment\Services\DtoSteps\DtoStep1;
 use Shieldforce\CheckoutPayment\Services\MountCheckoutStepsService;
-use Shieldforce\FederalFilamentStore\Enums\OriginPaymentTransactionEnum;
 use Shieldforce\FederalFilamentStore\Enums\StatusClientEnum;
 use Shieldforce\FederalFilamentStore\Enums\TypeContractEnum;
 use Shieldforce\FederalFilamentStore\Enums\TypePeopleEnum;
@@ -118,6 +116,8 @@ class FederalFilamentCartPage extends Page implements HasForms
         $this->totalPrice = collect($this->items)->sum(function ($item) {
             return $item['price'] * $item['amount'];
         });
+
+        $this->cart_id = $this->cart->id;
     }
 
     public function updated($property)
@@ -130,7 +130,6 @@ class FederalFilamentCartPage extends Page implements HasForms
         DB::beginTransaction();
 
         try {
-
             $data = $this->form->getState();
 
             $userCallback = config('federal-filament-store.user_callback');
@@ -280,7 +279,7 @@ class FederalFilamentCartPage extends Page implements HasForms
         $client = $user->clients->first() ?? null;
 
         if (!isset($client->id) && $isUser) {
-            throw new Exception("Cliente not found!");
+            return null;
         }
 
         if (isset($client->id)) {
@@ -304,7 +303,15 @@ class FederalFilamentCartPage extends Page implements HasForms
     {
         $data = $this->form->getState();
 
-        $address = $client->addresses()->where("main", 1)->get()->first() ?? null;
+        $address = $client
+            ->addresses()
+            ->where("main", 1)
+            ->get()
+            ->first() ?? null;
+
+        if (!isset($address->id) && $isUser) {
+            return null;
+        }
 
         if (isset($address->id)) {
             return $address;
@@ -331,6 +338,10 @@ class FederalFilamentCartPage extends Page implements HasForms
 
         $contact = $client->contacts->first() ?? null;
 
+        if (!isset($contact->id) && $isUser) {
+            return null;
+        }
+
         if (isset($contact->id)) {
             return $contact;
         }
@@ -354,12 +365,18 @@ class FederalFilamentCartPage extends Page implements HasForms
     public function createOrExtractOrder(Model $client, bool $isUser)
     {
         $data = $this->form->getState();
+
         $date = now()->format("Y-m-d H");
+
         $order = $client
             ->orders()
             ->where("created_at", "like", "%$date%")
             ->get()
             ->first() ?? null;
+
+        if (!isset($order->id) && $isUser) {
+            return null;
+        }
 
         if (isset($order->cart_id) && $order->cart_id == $data["cart_id"]) {
             return $order;
@@ -396,6 +413,10 @@ class FederalFilamentCartPage extends Page implements HasForms
             ->where("created_at", "like", "%$date%")
             ->get()
             ->first() ?? null;
+
+        if (!isset($transaction->id) && $isUser) {
+            return null;
+        }
 
         if (isset($transaction->id)) {
             return $transaction;
