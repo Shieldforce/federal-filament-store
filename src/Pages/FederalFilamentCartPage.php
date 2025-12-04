@@ -262,7 +262,7 @@ class FederalFilamentCartPage extends Page implements HasForms
 
         return $client
             ->orders()
-            ->create([
+            ->updateOrCreate([
                 "cart_id"   => $data["cart_id"],
                 "client_id" => $client->id,
             ], [
