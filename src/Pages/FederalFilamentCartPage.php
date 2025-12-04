@@ -6,6 +6,7 @@ use App\Enums\StatusOrderEnum;
 use App\Enums\StatusTransactionEnum;
 use App\Enums\TypeOrderEnum;
 use App\Enums\TypeTransactionEnum;
+use Exception;
 use Filament\Forms\Components\Actions\Action;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Fieldset;
@@ -129,16 +130,18 @@ class FederalFilamentCartPage extends Page implements HasForms
         DB::beginTransaction();
 
         try {
+
             $data = $this->form->getState();
 
             $userCallback = config('federal-filament-store.user_callback');
             $useModel = new $userCallback();
+            $isUser = $data["is_user"];
 
-            if ($data["is_user"]) {
+            if ($isUser) {
                 $user = $this->isAccount($useModel);
             }
 
-            if (!$data["is_user"]) {
+            if (!$isUser) {
                 $user = $this->notAccount($useModel);
             }
 
@@ -151,7 +154,7 @@ class FederalFilamentCartPage extends Page implements HasForms
                                    ->send();
             }
 
-            $client = $this->createOrExtractClient($user);
+            $client = $this->createOrExtractClient($user, $isUser);
 
             if (!isset($client->id)) {
                 return Notification::make()
@@ -162,7 +165,29 @@ class FederalFilamentCartPage extends Page implements HasForms
                                    ->send();
             }
 
-            $order = $this->createOrExtractOrder($client);
+            $address = $this->createOrExtractAddress($client, $isUser);
+
+            if (!isset($address->id)) {
+                return Notification::make()
+                                   ->danger()
+                                   ->title('Erro ao criar Endereço')
+                                   ->body("Endereço não foi criado!")
+                                   ->persistent()
+                                   ->send();
+            }
+
+            $contact = $this->createOrExtractContact($client, $isUser);
+
+            if (!isset($contact->id)) {
+                return Notification::make()
+                                   ->danger()
+                                   ->title('Erro ao criar Contato!')
+                                   ->body("Contato não foi criado!")
+                                   ->persistent()
+                                   ->send();
+            }
+
+            $order = $this->createOrExtractOrder($client, $isUser);
 
             if (!isset($order->id)) {
                 return Notification::make()
@@ -173,7 +198,7 @@ class FederalFilamentCartPage extends Page implements HasForms
                                    ->send();
             }
 
-            $transaction = $this->createOrExtractTransaction($order);
+            $transaction = $this->createOrExtractTransaction($order, $isUser);
 
             if (!isset($transaction->id)) {
                 return Notification::make()
@@ -184,7 +209,7 @@ class FederalFilamentCartPage extends Page implements HasForms
                                    ->send();
             }
 
-            $this->processCheckout($transaction);
+            $this->processCheckout($transaction, $isUser);
 
             /*
             $credentials = Auth::attempt([
@@ -248,17 +273,21 @@ class FederalFilamentCartPage extends Page implements HasForms
         return $user;
     }
 
-    public function createOrExtractClient(Model $user)
+    public function createOrExtractClient(Model $user, bool $isUser)
     {
         $data = $this->form->getState();
 
         $client = $user->clients->first() ?? null;
 
+        if (!isset($client->id) && $isUser) {
+            throw new Exception("Cliente not found!");
+        }
+
         if (isset($client->id)) {
             return $client;
         }
 
-        $client = $user
+        return $user
             ->clients()
             ->updateOrCreate(["email" => $data["email"]], [
                 'name'        => $data["name"],
@@ -269,42 +298,60 @@ class FederalFilamentCartPage extends Page implements HasForms
                 'birthday'    => $data["birthday"],
                 'obs'         => "Criado pelo checkout da loja!",
             ]);
-
-        if (isset($client->id)) {
-            $client
-                ->addresses()
-                ->updateOrCreate([
-                    "zipcode" => $data["zipcode"],
-                ], [
-                    "street"     => $data["street"],
-                    "number"     => $data["number"],
-                    "complement" => $data["complement"],
-                    "district"   => $data["district"],
-                    "city"       => $data["city"],
-                    "state"      => $data["state"],
-                    "main"       => 1
-                ]);
-
-            $cellphone = preg_replace('/\D/', '', $data["cellphone"]);
-            $prefix = substr($cellphone, 0, 3);
-            $number = substr($cellphone, 3);
-
-            $client
-                ->contacts()
-                ->updateOrCreate([
-                    'number' => $number,
-                ], [
-                    'prefix_international' => "55",
-                    'prefix'               => $prefix,
-                    'name'                 => "Pessoal",
-                    'type'                 => "fixo",
-                ]);
-        }
-
-        return $client;
     }
 
-    public function createOrExtractOrder(Model $client)
+    public function createOrExtractAddress(Model $client, bool $isUser)
+    {
+        $data = $this->form->getState();
+
+        $address = $client->addresses()->where("main", 1)->get()->first() ?? null;
+
+        if (isset($address->id)) {
+            return $address;
+        }
+
+        return $client
+            ->addresses()
+            ->updateOrCreate([
+                "zipcode" => $data["zipcode"],
+            ], [
+                "street"     => $data["street"],
+                "number"     => $data["number"],
+                "complement" => $data["complement"],
+                "district"   => $data["district"],
+                "city"       => $data["city"],
+                "state"      => $data["state"],
+                "main"       => 1
+            ]);
+    }
+
+    public function createOrExtractContact(Model $client, bool $isUser)
+    {
+        $data = $this->form->getState();
+
+        $contact = $client->contacts->first() ?? null;
+
+        if (isset($contact->id)) {
+            return $contact;
+        }
+
+        $cellphone = preg_replace('/\D/', '', $data["cellphone"]);
+        $prefix = substr($cellphone, 0, 3);
+        $number = substr($cellphone, 3);
+
+        return $client
+            ->contacts()
+            ->updateOrCreate([
+                'number' => $number,
+            ], [
+                'prefix_international' => "55",
+                'prefix'               => $prefix,
+                'name'                 => "Pessoal",
+                'type'                 => "fixo",
+            ]);
+    }
+
+    public function createOrExtractOrder(Model $client, bool $isUser)
     {
         $data = $this->form->getState();
         $date = now()->format("Y-m-d H");
@@ -338,7 +385,7 @@ class FederalFilamentCartPage extends Page implements HasForms
             ]);
     }
 
-    public function createOrExtractTransaction(Model $order)
+    public function createOrExtractTransaction(Model $order, bool $isUser)
     {
         $data = $this->form->getState();
 
@@ -378,7 +425,7 @@ class FederalFilamentCartPage extends Page implements HasForms
             ]);
     }
 
-    public function processCheckout(Model $transaction)
+    public function processCheckout(Model $transaction, bool $isUser)
     {
         $data = $this->form->getState();
 
@@ -389,7 +436,8 @@ class FederalFilamentCartPage extends Page implements HasForms
         $due_date = Carbon::createFromFormat(
             "d/m/Y",
             "{$transaction->due_day}/{$transaction->reference}"
-        )->format("Y-m-d");
+        )
+                          ->format("Y-m-d");
 
         $mountCheckout = new MountCheckoutStepsService(
             model   : $transaction, requiredMethods: [
@@ -404,7 +452,6 @@ class FederalFilamentCartPage extends Page implements HasForms
         $products = [];
 
         foreach ($items as $item) {
-
             dd($item);
 
             $products[] = [
