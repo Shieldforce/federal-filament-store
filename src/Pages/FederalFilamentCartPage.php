@@ -128,7 +128,7 @@ class FederalFilamentCartPage extends Page implements HasForms
         $client = $this->createOrExtractClient($user);
 
         if (!$client) {
-            return Notification::make()
+            Notification::make()
                                ->danger()
                                ->title('Conta sem cliente!')
                                ->body("esta conta não é do tipo cliente!")
