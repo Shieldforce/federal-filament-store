@@ -325,6 +325,7 @@ class FederalFilamentCartPage extends Page implements HasForms
                                          ->maxLength(50)
                                          ->required()
                                          ->maxLength(100)
+                                         ->columnSpanFull()
                                          ->dehydrateStateUsing(fn($state) => preg_replace('/\D/', '', $state))
                                          ->suffixAction(
                                              FormComponentAction::make('apiCpfCnpj')
