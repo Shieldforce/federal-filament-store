@@ -157,10 +157,12 @@ class FederalFilamentCartPage extends Page implements HasForms
             ]);
             */
 
+            $this->processCheckout($user);
+
+            //dd($client);
+
             DB::commit();
 
-            dd($client);
-            //$this->processCheckout($user);
         } catch (Throwable $throwable) {
             DB::rollBack();
 
@@ -296,6 +298,12 @@ class FederalFilamentCartPage extends Page implements HasForms
                                array   : $transactionModel->order->products->toArray()),
             visible: true,
         );*/
+
+        Notification::make()
+                    ->success()
+                    ->title('fsdfsff')
+                    ->body("sdfdsfff")
+                    ->send();
     }
 
     protected function getFormSchema(): array
