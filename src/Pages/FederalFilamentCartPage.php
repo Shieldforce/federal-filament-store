@@ -116,7 +116,7 @@ class FederalFilamentCartPage extends Page implements HasForms
     {
         DB::beginTransaction();
 
-        try {
+        //try {
             $data = $this->form->getState();
 
             $userCallback = config('federal-filament-store.user_callback');
@@ -161,7 +161,7 @@ class FederalFilamentCartPage extends Page implements HasForms
 
             dd($client);
             //$this->processCheckout($user);
-        } catch (Throwable $throwable) {
+        /*} catch (Throwable $throwable) {
             DB::rollBack();
 
             $this->loadData();
@@ -174,7 +174,7 @@ class FederalFilamentCartPage extends Page implements HasForms
                         ->send();
 
             throw $throwable;
-        }
+        }*/
     }
 
     public function notAccount(Model $user)
@@ -356,8 +356,6 @@ class FederalFilamentCartPage extends Page implements HasForms
                                                  if (isset($user->id)) {
                                                      $fail('Este email já está cadastrado.');
                                                  }
-
-                                                 return false;
                                              };
                                          })
                                          ->email()
