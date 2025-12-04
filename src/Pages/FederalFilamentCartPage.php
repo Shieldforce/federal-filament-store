@@ -91,7 +91,7 @@ class FederalFilamentCartPage extends Page implements HasForms
             Grid::make(1)->schema(
                 [
                     Toggle::make("is_user")
-                        ->label("Não Tenho conta")
+                        ->label("Já tenho conta")
                         ->default(false)
                         ->reactive()
                         ->live(),
@@ -99,14 +99,16 @@ class FederalFilamentCartPage extends Page implements HasForms
                     TextInput::make('email')
                         ->label('E-mail')
                         ->reactive()
-                        ->visible(fn(Get $get) => !$get("is_user"))
+                        ->live()
+                        ->visible(fn(Get $get) => $get("is_user"))
                         ->email()
                         ->required(),
 
                     TextInput::make('password')
                         ->label('Senha')
                         ->reactive()
-                        ->visible(fn(Get $get) => !$get("is_user"))
+                        ->live()
+                        ->visible(fn(Get $get) => $get("is_user"))
                         ->password()
                         ->required(),
                 ]
