@@ -5,7 +5,7 @@
         <div class="md:w-[480px] lg:w-[520px] xl:w-[560px] md:flex-none pl-6 config-cart-ec">
             <x-filament::section class="!max-w-[480px] w-full !rounded-none">
                 <h1 style="font-size: 16pt;">
-                    hgfhghfhhfgh
+                    @dd($this->cart)
                 </h1>
                 <br>
                 <hr>
