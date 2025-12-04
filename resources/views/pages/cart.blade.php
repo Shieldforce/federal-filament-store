@@ -46,8 +46,11 @@
 
                             {{-- IMAGEM --}}
                             <div class="w-24 h-24 flex-none bg-gray-100 rounded-xl overflow-hidden">
-                                <img src="{{ asset("storage/{$item['data_product']['files'][0]}") }}" alt="{{ $item['name'] }}"
-                                     class="w-full h-full object-cover">
+                                <img
+                                    src="{{ asset("storage/{$item['data_product']['files'][0]}") }}" alt="{{ $item['name'] }}"
+                                     class="w-full h-full object-cover"
+                                    style="width: 200px;height: 150px;"
+                                >
                             </div>
 
                             {{-- DETALHES --}}
