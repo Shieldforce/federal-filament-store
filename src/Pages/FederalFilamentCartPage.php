@@ -2,6 +2,10 @@
 
 namespace Shieldforce\FederalFilamentStore\Pages;
 
+use Filament\Forms\Components\Grid;
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Toggle;
+use Filament\Forms\Get;
 use Filament\Pages\Page;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
@@ -57,8 +61,6 @@ class FederalFilamentCartPage extends Page implements HasForms
             ;
         }
 
-        $this->filtrar();
-
         $this->cart = Cart::where("identifier", request()->cookie("ffs_identifier"))
             ->first();
 
@@ -73,19 +75,43 @@ class FederalFilamentCartPage extends Page implements HasForms
 
     public function updated()
     {
-        $this->resetPage();
-        $this->filtrar();
+       //
     }
 
-    public function filtrar()
+    public function submit()
     {
-        $data = $this->getData();
-        $this->result = array_values($data);
+        $data = $this->form->getState();
+
+        dd($data);
     }
 
-    protected function getData(): array
+    protected function getFormSchema(): array
     {
-        return [];
+        return [
+            Grid::make(1)->schema(
+                [
+                    Toggle::make("is_user")
+                        ->label("Não Tenho conta")
+                        ->default(false)
+                        ->reactive()
+                        ->live(),
+
+                    TextInput::make('email')
+                        ->label('E-mail')
+                        ->reactive()
+                        ->visible(fn(Get $get) => !$get("is_user"))
+                        ->email()
+                        ->required(),
+
+                    TextInput::make('password')
+                        ->label('Senha')
+                        ->reactive()
+                        ->visible(fn(Get $get) => !$get("is_user"))
+                        ->password()
+                        ->required(),
+                ]
+            ),
+        ];
     }
 
 }

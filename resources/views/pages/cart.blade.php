@@ -24,9 +24,8 @@
                             icon="heroicon-o-check-circle"
                             class="w-full py-3 text-center"
                             type="submit"
-                            wire:click="$set('action', 'finish')"
                         >
-                            Finalizar Compra
+                            Ir Para checkout
                         </x-filament::button>
 
                     </div>
