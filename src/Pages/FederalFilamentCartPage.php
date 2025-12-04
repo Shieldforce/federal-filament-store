@@ -350,7 +350,15 @@ class FederalFilamentCartPage extends Page implements HasForms
 
                                 TextInput::make('email')
                                          ->label('E-mail')
-                                         ->unique('users')
+                                        ->rule(function (TextInput $component) {
+                                            return function (string $attribute, $value, $fail) use ($component) {
+                                                $exists = DB::table("users")->where('email', $value)->exists();
+
+                                                if ($exists) {
+                                                    $fail('Este email já está cadastrado.');
+                                                }
+                                            };
+                                        })
                                          ->email()
                                          ->required(),
 
