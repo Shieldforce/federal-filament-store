@@ -23,12 +23,12 @@ class FederalFilamentCartPage extends Page implements HasForms
     protected static ?string $navigationLabel = 'Carrinho';
     protected static ?string $title           = 'Aqui estão seus produtos do carrinho!';
     protected array          $result          = [];
+    public string            $email           = "";
+    public string            $password        = "";
+    public bool              $is_user         = false;
     protected Cart           $cart;
     protected array          $items;
     public float             $totalPrice;
-    public string            $email;
-    public string            $password;
-    public bool              $is_user;
 
     public function getLayout(): string
     {
