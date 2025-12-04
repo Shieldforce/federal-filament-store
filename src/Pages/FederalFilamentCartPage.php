@@ -3,8 +3,10 @@
 namespace Shieldforce\FederalFilamentStore\Pages;
 
 use Filament\Forms\Components\Actions\Action;
+use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Fieldset;
 use Filament\Forms\Components\Grid;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Forms\Get;
@@ -18,9 +20,12 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Livewire\Component;
+use Shieldforce\FederalFilamentStore\Enums\TypePeopleEnum;
 use Shieldforce\FederalFilamentStore\Models\Cart;
+use Shieldforce\FederalFilamentStore\Services\ApiCpfCnpjService;
 use Shieldforce\FederalFilamentStore\Services\BuscarViaCepService;
 use Throwable;
+use Filament\Forms\Components\Actions\Action as FormComponentAction;
 
 class FederalFilamentCartPage extends Page implements HasForms
 {
@@ -172,8 +177,6 @@ class FederalFilamentCartPage extends Page implements HasForms
             ->where('email', $data['email'])
             ->first();
 
-        dd($user, Hash::check($data['password'], $user->password));
-
         if (!$user || !Hash::check($data['password'], $user->password)) {
             Notification::make()
                         ->danger()
@@ -183,13 +186,31 @@ class FederalFilamentCartPage extends Page implements HasForms
             return null;
         }
 
-        dd($user);
-
         return $user;
     }
 
     public function createOrExtractClient(Model $user)
     {
+        $data = $this->form->getState();
+
+        $client = $user->clients->first() ?? null;
+
+        if (!isset($client->id)) {
+            $client = $user
+                ->clients()
+                ->updateOrCreate(["email" => $data["email"]], [
+                    'name' => $data["name"],
+                    'document',
+                    'email',
+                    'people_type',
+                    'status',
+                    'birthday',
+                    'user_id',
+                    'obs',
+                ]);
+        }
+
+
         return $user->clients->first() ?? null;
     }
 
@@ -275,6 +296,72 @@ class FederalFilamentCartPage extends Page implements HasForms
                             ->label("Dados de cadastro")
                             ->visible(fn(Get $get) => !$get("is_user"))
                             ->schema([
+
+                                Select::make('people_type')
+                                      ->label("Física/Jurídica")
+                                      ->autofocus()
+                                      ->live()
+                                      ->default(1)
+                                      ->options(
+                                          collect(TypePeopleEnum::cases())
+                                              ->mapWithKeys(fn(TypePeopleEnum $type) => [
+                                                  $type->value => $type->label()
+                                              ])
+                                              ->toArray()
+                                      )
+                                      ->required(),
+
+                                TextInput::make('document')
+                                         ->label("CPF/CNPJ")
+                                         ->live()
+                                         ->placeholder(function (Get $get) {
+                                             $people_type = $get("people_type");
+                                             return $people_type == 2 ? "99.999.999/9999-99" : "999.999.999-99";
+                                         })
+                                         ->mask(function (Get $get) {
+                                             $people_type = $get("people_type");
+                                             return $people_type == 2 ? "99.999.999/9999-99" : "999.999.999-99";
+                                         })
+                                         ->maxLength(50)
+                                         ->required()
+                                         ->maxLength(100)
+                                         ->dehydrateStateUsing(fn($state) => preg_replace('/\D/', '', $state))
+                                         ->suffixAction(
+                                             FormComponentAction::make('apiCpfCnpj')
+                                                                ->label("Buscar Cpf/CNPJ")
+                                                                ->icon('heroicon-o-user')
+                                                                ->action(function (
+                                                                    Set       $set,
+                                                                              $state,
+                                                                    Get       $get,
+                                                                    Component $livewire
+                                                                ) {
+                                                                    $apiCpfCnpj = new ApiCpfCnpjService(
+                                                                        $state, $get("birthday")
+                                                                    );
+                                                                    $data = $apiCpfCnpj->search();
+
+                                                                    logger([
+                                                                        "data" => $data,
+                                                                    ]);
+
+                                                                    if (isset($data["data"]) && isset($data["data"]["nome_da_pf"])) {
+                                                                        $set(
+                                                                            'name',
+                                                                            $data["data"]["nome_da_pf"]
+                                                                        );
+                                                                    }
+
+                                                                    if (isset($data["data"]) && isset($data["data"]["fantasia"])) {
+                                                                        $set(
+                                                                            'name',
+                                                                            $data["data"]["fantasia"]
+                                                                        );
+                                                                    }
+                                                                })
+                                         )
+                                         ->unique('clients'),
+
                                 TextInput::make('name')
                                          ->label('Nome completo')
                                          ->rule(function (Get $get) {
@@ -329,32 +416,36 @@ class FederalFilamentCartPage extends Page implements HasForms
                                 TextInput::make('zipcode')
                                          ->label("Digite o CEP")
                                          ->dehydrateStateUsing(fn($state) => preg_replace('/\D/', '', $state))
-                                         ->suffixAction(Action::make('viaCep')
-                                                              ->label("Buscar CEP")
-                                                              ->icon('heroicon-m-map-pin')
-                                                              ->action(function (
-                                                                  Set       $set,
-                                                                            $state,
-                                                                  Get       $get,
-                                                                  Component $livewire
-                                                              ) {
-                                                                  $data = BuscarViaCepService::getData((string)$state);
+                                         ->suffixAction(
+                                             Action::make('viaCep')
+                                                   ->label("Buscar CEP")
+                                                   ->icon('heroicon-m-map-pin')
+                                                   ->action(function (
+                                                       Set       $set,
+                                                                 $state,
+                                                       Get       $get,
+                                                       Component $livewire
+                                                   ) {
+                                                       $data = BuscarViaCepService::getData((string)$state);
 
-                                                                  if (isset($data["cep"])) {
-                                                                      $set('street', $data["logradouro"]);
-                                                                      $set('complement', $data["complemento"]);
-                                                                      $set('district', $data["bairro"]);
-                                                                      $set('city', $data["localidade"]);
-                                                                      $set('state', $data["uf"]);
-                                                                  }
+                                                       if (isset($data["cep"])) {
+                                                           $set('street', $data["logradouro"]);
+                                                           $set('complement', $data["complemento"]);
+                                                           $set('district', $data["bairro"]);
+                                                           $set('city', $data["localidade"]);
+                                                           $set('state', $data["uf"]);
+                                                       }
 
-                                                                  Notification::make()
-                                                                              ->info()
-                                                                              ->title('Próximo passo!')
-                                                                              ->seconds(60)
-                                                                              ->body("Informar ou validar os dados do seu endereço, que estão logo abaixo!")
-                                                                              ->send();
-                                                              }))
+                                                       Notification::make()
+                                                                   ->info()
+                                                                   ->title('Próximo passo!')
+                                                                   ->seconds(60)
+                                                                   ->body(
+                                                                       "Informar ou validar os dados do seu endereço, que estão logo abaixo!"
+                                                                   )
+                                                                   ->send();
+                                                   })
+                                         )
                                          ->hint("Busca de CEP")
                                          ->afterStateUpdated(function (Set $set, Get $get, Component $livewire) {
                                              $data = BuscarViaCepService::getData((string)$get("zipcode"));
@@ -371,7 +462,9 @@ class FederalFilamentCartPage extends Page implements HasForms
                                                          ->info()
                                                          ->title('Próximo passo!')
                                                          ->seconds(60)
-                                                         ->body("Informar ou validar os dados do seu endereço, que estão logo abaixo!")
+                                                         ->body(
+                                                             "Informar ou validar os dados do seu endereço, que estão logo abaixo!"
+                                                         )
                                                          ->send();
                                          })
                                          ->mask(function (Get $get) {
