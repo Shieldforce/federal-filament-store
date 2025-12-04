@@ -425,11 +425,20 @@ class FederalFilamentCartPage extends Page implements HasForms
 
         $cart = Cart::find($data["cart_id"]);
         $items = json_decode($cart->items, true);
-        $uuidProducts = array_column($items, 'uuid');
-        $products = DB::table("products")
-                      ->whereIn("uuid", $uuidProducts)
-                      ->pluck("id")
-                      ->toArray();
+
+        $products = [];
+
+        foreach ($items as $item) {
+            $product = DB::table("products")
+                         ->where("uuid", $item["uuid"])
+                         ->first();
+
+            $products[$product->id] = [
+                "quantity"    => $item["amount"],
+                "price"       => $item["price"],
+                "description" => $product->description,
+            ];
+        }
 
         if (isset($order->cart_id) && $order->cart_id == $data["cart_id"]) {
             $order
