@@ -9,7 +9,10 @@ use Filament\Forms\Get;
 use Filament\Pages\Page;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Shieldforce\CheckoutPayment\Enums\MethodPaymentEnum;
+use Shieldforce\CheckoutPayment\Services\MountCheckoutStepsService;
 use Shieldforce\FederalFilamentStore\Models\Cart;
 
 class FederalFilamentCartPage extends Page implements HasForms
@@ -92,7 +95,26 @@ class FederalFilamentCartPage extends Page implements HasForms
     {
         $data = $this->form->getState();
 
-        dd($data);
+        $client = config('federal-filament-store.client_callback');
+
+        dd($client);
+
+        /*$model = $this->cart;
+
+        $due_date = Carbon::createFromFormat("d/m/Y", "{$model->due_day}/{$model->reference}")
+            ->format("Y-m-d");
+
+        $mountCheckout = new MountCheckoutStepsService(
+            model          : $model,
+            requiredMethods: [
+                                 MethodPaymentEnum::credit_card->value,
+                                 MethodPaymentEnum::pix->value,
+                                 MethodPaymentEnum::billet->value,
+                             ],
+            due_date       : $due_date
+        );
+
+        dd($mountCheckout);*/
     }
 
     protected function getFormSchema(): array
