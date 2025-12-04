@@ -90,9 +90,9 @@ class FederalFilamentCartPage extends Page implements HasForms
 
     public function updated($property)
     {
-        if ($property === 'is_user') {
+        //if ($property === 'is_user') {
             $this->loadData();
-        }
+        //}
     }
 
     public function submit()
@@ -237,7 +237,6 @@ class FederalFilamentCartPage extends Page implements HasForms
                                          ->minLength(4)
                                          ->maxLength(50)
                                          ->revealable()
-                                         ->prefixIcon("heroicon-o-lock-closed")
                                          ->required(),
 
                                 TextInput::make('password_confirmation')
@@ -246,7 +245,6 @@ class FederalFilamentCartPage extends Page implements HasForms
                                          ->minLength(4)
                                          ->maxLength(50)
                                          ->revealable()
-                                         ->prefixIcon("heroicon-o-lock-closed")
                                          ->rule(function (Get $get) {
                                              return function (string $attribute, $value, $fail) use ($get) {
                                                  $password = $get("password");
@@ -293,7 +291,6 @@ class FederalFilamentCartPage extends Page implements HasForms
                                 TextInput::make('password')
                                          ->label('Senha')
                                          ->revealable()
-                                         ->prefixIcon("heroicon-o-lock-closed")
                                          ->password()
                                          ->required(),
 
