@@ -2,11 +2,13 @@
 
 namespace Shieldforce\FederalFilamentStore\Pages;
 
+use Filament\Forms\Components\Actions\Action;
 use Filament\Forms\Components\Fieldset;
 use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Forms\Get;
+use Filament\Forms\Set;
 use Filament\Notifications\Notification;
 use Filament\Pages\Page;
 use Filament\Forms\Concerns\InteractsWithForms;
@@ -14,7 +16,9 @@ use Filament\Forms\Contracts\HasForms;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
+use Livewire\Component;
 use Shieldforce\FederalFilamentStore\Models\Cart;
+use Shieldforce\FederalFilamentStore\Services\BuscarViaCepService;
 
 class FederalFilamentCartPage extends Page implements HasForms
 {
@@ -32,9 +36,13 @@ class FederalFilamentCartPage extends Page implements HasForms
     public string            $password              = "";
     public string            $password_confirmation = "";
     public string            $cellphone             = "";
-    public string            $cep                   = "";
+    public string            $zipcode               = "";
     public string            $street                = "";
     public ?int              $number                = null;
+    public ?int              $complement            = null;
+    public ?int              $district              = null;
+    public ?int              $city                  = null;
+    public ?int              $state                 = null;
     public bool              $is_user               = false;
     protected array          $items                 = [];
     protected Cart           $cart;
@@ -261,10 +269,45 @@ class FederalFilamentCartPage extends Page implements HasForms
                                          ->mask("(99) 9999-9999")
                                          ->required(),
 
-                                TextInput::make('cep')
-                                         ->label('Digite o CEP')
-                                         ->prefixIcon("heroicon-o-map-pin")
-                                         ->live()
+                                TextInput::make('zipcode')
+                                         ->label("Digite o CEP")
+                                         ->dehydrateStateUsing(fn($state) => preg_replace('/\D/', '', $state))
+                                         ->suffixAction(Action::make('viaCep')
+                                                              ->label("Buscar CEP")
+                                                              ->icon('heroicon-m-map-pin')
+                                             //->requiresConfirmation()
+                                                              ->action(function (
+                                                 Set       $set,
+                                                           $state,
+                                                 Get       $get,
+                                                 Component $livewire
+                                             ) {
+                                                 $data = BuscarViaCepService::getData((string)$state);
+
+                                                 if (isset($data["cep"])) {
+                                                     $set('street', $data["logradouro"]);
+                                                     $set('complement', $data["complemento"]);
+                                                     $set('district', $data["bairro"]);
+                                                     $set('city', $data["localidade"]);
+                                                     $set('state', $data["uf"]);
+                                                 }
+                                             }))
+                                         ->hint("Busca de CEP")
+                                         ->afterStateUpdated(function (Set $set, Get $get, Component $livewire) {
+                                             $data = BuscarViaCepService::getData((string)$get("zipcode"));
+
+                                             if (isset($data["cep"])) {
+                                                 $set('street', $data["logradouro"]);
+                                                 $set('complement', $data["complemento"]);
+                                                 $set('district', $data["bairro"]);
+                                                 $set('city', $data["localidade"]);
+                                                 $set('state', $data["uf"]);
+                                             }
+                                         })
+                                         ->mask(function (Get $get) {
+                                             return "99999-999";
+                                         })
+                                         ->debounce(1000)
                                          ->required(),
 
                             ]),
@@ -272,17 +315,37 @@ class FederalFilamentCartPage extends Page implements HasForms
                     Fieldset::make("address")
                             ->label("Dados de endereço")
                             ->visible(function (Get $get) {
-                                return Str::length($get("cep")) == 8 && !$get("is_user");
+                                return Str::length($get("zipcode")) == 8 && !$get("is_user");
                             })
                             ->schema([
+
                                 TextInput::make('street')
-                                         ->label('Endereço')
-                                         ->columns(3)
-                                         ->required(),
+                                         ->label('Logradouro')
+                                         ->required()
+                                         ->maxLength(255),
+
                                 TextInput::make('number')
                                          ->label('Número')
-                                         ->columns(1)
-                                         ->required(),
+                                         ->maxLength(20),
+
+                                TextInput::make('complement')
+                                         ->label('Complemento')
+                                         ->maxLength(255),
+
+                                TextInput::make('district')
+                                         ->label('Bairro')
+                                         ->maxLength(255),
+
+                                TextInput::make('city')
+                                         ->label('Cidade')
+                                         ->required()
+                                         ->maxLength(255),
+
+                                TextInput::make('state')
+                                         ->label('UF')
+                                         ->required()
+                                         ->maxLength(2),
+
                             ]),
 
                     Fieldset::make("is_user_yes")
