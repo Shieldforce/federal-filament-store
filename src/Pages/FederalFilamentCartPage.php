@@ -2,10 +2,13 @@
 
 namespace Shieldforce\FederalFilamentStore\Pages;
 
+use App\Enums\StatusOrderEnum;
+use App\Enums\TypeOrderEnum;
 use Filament\Forms\Components\Actions\Action;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Fieldset;
 use Filament\Forms\Components\Grid;
+use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
@@ -22,6 +25,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Livewire\Component;
 use Shieldforce\FederalFilamentStore\Enums\StatusClientEnum;
+use Shieldforce\FederalFilamentStore\Enums\TypeContractEnum;
 use Shieldforce\FederalFilamentStore\Enums\TypePeopleEnum;
 use Shieldforce\FederalFilamentStore\Models\Cart;
 use Shieldforce\FederalFilamentStore\Services\BuscarViaCepService;
@@ -55,6 +59,7 @@ class FederalFilamentCartPage extends Page implements HasForms
     public string            $state                 = "";
     public bool              $is_user               = false;
     protected array          $items                 = [];
+    public ?int              $cart_id               = null;
     protected Cart           $cart;
     public float             $totalPrice;
 
@@ -150,16 +155,18 @@ class FederalFilamentCartPage extends Page implements HasForms
                                    ->send();
             }
 
+            $order = $this->createOrExtractOrder($client);
+
+            dd($user, $client, $order);
+
+            //$this->processCheckout($user);
+
             /*
             $credentials = Auth::attempt([
                 "email"    => $data["email"],
                 "password" => $data["password"],
             ]);
             */
-
-            //$this->processCheckout($user);
-
-            dd($user, $client);
 
             DB::commit();
         } catch (Throwable $throwable) {
@@ -236,6 +243,40 @@ class FederalFilamentCartPage extends Page implements HasForms
                 'status'      => StatusClientEnum::ativo->value,
                 'birthday'    => $data["birthday"],
                 'obs'         => "Criado pelo checkout da loja!",
+            ]);
+    }
+
+    public function createOrExtractOrder(Model $client)
+    {
+        $data = $this->form->getState();
+        $date = now()->format("Y-m-d H");
+        $order = $client
+            ->orders()
+            ->where("created_at", "like", "%$date%")
+            ->get()
+            ->first() ?? null;
+
+        if (isset($order->id)) {
+            return $order;
+        }
+
+        return $client
+            ->orders()
+            ->create([
+                "cart_id"   => $data["cart_id"],
+                "client_id" => $client->id,
+            ], [
+                'seller_id'          => null,
+                'reference'          => now()->format("m/Y"),
+                'type'               => TypeOrderEnum::AVULSO->value,
+                'status'             => StatusOrderEnum::APROVADA->value,
+                'total_price'        => $data["totalPrice"],
+                'monthly'            => false,
+                'date_monthly_start' => now()->format("Y-m-d"),
+                'date_monthly_end'   => null,
+                'booklet'            => false,
+                'not_start_end'      => false,
+                'contract_type'      => TypeContractEnum::contrato_3,
             ]);
     }
 
@@ -318,6 +359,12 @@ class FederalFilamentCartPage extends Page implements HasForms
         return [
             Grid::make(1)
                 ->schema([
+                    Hidden::make("cart_id")
+                          ->default($this->cart->id ?? null),
+
+                    Hidden::make("totalPrice")
+                          ->default($this->totalPrice ?? null),
+
                     Toggle::make("is_user")
                           ->label("Já tenho conta")
                           ->default(false)
@@ -362,16 +409,7 @@ class FederalFilamentCartPage extends Page implements HasForms
                                           ->required(fn(Get $get) => $get("people_type") == TypePeopleEnum::F->value),
 
                                 TextInput::make('email')
-                                         ->label('E-mail')/*->rule(function () {
-                                             return function (string $attribute, $value, $fail) {
-                                                 $user = DB::table("users")
-                                                           ->where('email', $value)
-                                                           ->first();
-                                                 if (isset($user->id)) {
-                                                     $fail('Este email já está cadastrado.');
-                                                 }
-                                             };
-                                         })*/
+                                         ->label('E-mail')
                                          ->email()
                                          ->required(),
 
