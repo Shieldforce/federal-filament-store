@@ -185,9 +185,11 @@ class FederalFilamentCartPage extends Page implements HasForms
 
     public function notAccount(Model $model)
     {
+        $this->loadData();
+
+
         $data = $this->form->getState();
 
-        $this->loadData();
 
         dd($data);
         /*$model->updateOrCreate(["email" => $data["email"]], [
