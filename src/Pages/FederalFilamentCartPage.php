@@ -84,7 +84,9 @@ class FederalFilamentCartPage extends Page implements HasForms
 
     public function updated($property)
     {
-        //
+        if ($property === 'is_user') {
+            $this->loadData();
+        }
     }
 
     public function submit()
@@ -205,13 +207,13 @@ class FederalFilamentCartPage extends Page implements HasForms
                             ->schema([
                                 TextInput::make('email')
                                          ->label('E-mail')
-                                    //->visible(fn(Get $get) => $get("is_user"))
+                                         //->visible(fn(Get $get) => $get("is_user"))
                                          ->email()
                                          ->required(),
 
                                 TextInput::make('password')
                                          ->label('Senha')
-                                    //->visible(fn(Get $get) => $get("is_user"))
+                                         //->visible(fn(Get $get) => $get("is_user"))
                                          ->password()
                                          ->required(),
 
