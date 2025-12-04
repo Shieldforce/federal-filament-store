@@ -97,7 +97,7 @@ class FederalFilamentCartPage extends Page implements HasForms
 
         $client = config('federal-filament-store.client_callback');
 
-        dd($client);
+        dd($client->find(1));
 
         /*$model = $this->cart;
 
