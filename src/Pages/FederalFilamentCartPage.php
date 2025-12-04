@@ -314,6 +314,7 @@ class FederalFilamentCartPage extends Page implements HasForms
                                 TextInput::make('document')
                                          ->label("CPF/CNPJ")
                                          ->live()
+                                         ->reactive()
                                          ->placeholder(function (Get $get) {
                                              $people_type = $get("people_type");
                                              return $people_type == 2 ? "99.999.999/9999-99" : "999.999.999-99";
