@@ -226,9 +226,10 @@ class FederalFilamentCartPage extends Page implements HasForms
                                    ->send();
             }
 
+            DB::commit();
+
             $this->processCheckout($transaction, $isUser);
 
-            DB::commit();
         } catch (Throwable $throwable) {
             DB::rollBack();
 
