@@ -40,12 +40,14 @@ class FederalFilamentProductPage extends Page implements HasForms
     public bool              $image_all;
     public bool              $publish_social_network;
 
-    public function getTitle(): string|Htmlable
+    public
+    function getTitle(): string|Htmlable
     {
         return $this->product['name'] ?? parent::getTitle();
     }
 
-    public function getLayout(): string
+    public
+    function getLayout(): string
     {
         if (request()->query('external') === '1') {
             return 'federal-filament-store::layouts.external';
@@ -54,22 +56,26 @@ class FederalFilamentProductPage extends Page implements HasForms
         return parent::getLayout();
     }
 
-    public static function getSlug(): string
+    public static
+    function getSlug(): string
     {
         return 'external-ffs-product';
     }
 
-    public static function shouldRegisterNavigation(): bool
+    public static
+    function shouldRegisterNavigation(): bool
     {
         return false;
     }
 
-    public static function getNavigationGroup(): ?string
+    public static
+    function getNavigationGroup(): ?string
     {
         return config()->get('federal-filament-store.sidebar_group');
     }
 
-    public function mount(): void
+    public
+    function mount(): void
     {
         if (!Auth::check()) {
             filament()
@@ -84,136 +90,147 @@ class FederalFilamentProductPage extends Page implements HasForms
         $this->uuid = explode("/", $_SERVER["REQUEST_URI"])[3] ?? null;
 
         $productFilter = array_filter(
-            $this->result, function ($product) {
-            return $product['uuid'] == $this->uuid;
-        }
+            $this->result,
+            function ($product) {
+                return $product['uuid'] == $this->uuid;
+            }
         );
 
         $this->product = reset($productFilter) ?: [];
-        $this->images[] = isset($this->product['image']) ? env("APP_URL") . "/storage/" . $this->product['image']
+        $this->images[] = isset($this->product['image']) ? env("APP_URL")."/storage/".$this->product['image']
             : 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&w=2070&q=80';
 
         foreach ($this->product['images'] ?? [] as $image) {
-            $this->images[] = env("APP_URL") . "/storage/" . $image['path'];
+            $this->images[] = env("APP_URL")."/storage/".$image['path'];
         }
 
         $this->amount = 1;
         $this->image_all = false;
         $this->totalPrice = $this->amount * $this->product['price'];
-
-
     }
 
-    public function updated($property)
-    {
+    public
+    function updated(
+        $property
+    ) {
         if ($property == 'amount') {
             $this->totalPrice = $this->amount * $this->product['price'];
         }
     }
 
-    protected function getFormSchema(): array
+    protected
+    function getFormSchema(): array
     {
         return [
-            Grid::make(1)->schema(
-                [
-                    TextInput::make('amount')
-                        ->label('Quantidade')
-                        ->numeric()
-                        ->reactive()
-                        ->live()
-                        ->required()
-                        ->default(1)
-                        ->minValue(1),
+            Grid::make(1)
+                ->schema(
+                    [
+                        TextInput::make('amount')
+                                 ->label('Quantidade')
+                                 ->numeric()
+                                 ->reactive()
+                                 ->live()
+                                 ->required()
+                                 ->default(1)
+                                 ->minValue(1),
 
-                    Toggle::make("image_all")
-                        ->label("Usar a mesma imagem")
-                        ->default(false)
-                        ->reactive()
-                        ->live(),
+                        Toggle::make("image_all")
+                              ->label("Usar a mesma imagem")
+                              ->default(false)
+                              ->reactive()
+                              ->live(),
 
-                    Toggle::make("publish_social_network")
-                        ->label("Podemos publicar nas redes sociais?")
-                        ->default(false)
-                        ->reactive()
-                        ->live(),
+                        Toggle::make("publish_social_network")
+                              ->label("Podemos publicar nas redes sociais?")
+                              ->default(false)
+                              ->reactive()
+                              ->live(),
 
-                    FileUpload::make('files')
-                        ->directory('files_products')
-                        ->columnSpanFull()
-                        ->required()
-                        ->multiple()
-                        ->reactive()
-                        ->live()
-                        ->image()
-                        ->imageEditor()
-                        ->imageEditorAspectRatios(['1:1'])
-                        ->openable()
-                        ->previewable(true)
-                        ->label('Imagens Necessárias')
-                        ->rule(
-                            function (Get $get) {
-                                return function (string $attribute, $value, $fail) use ($get) {
-                                    $image_all = $get("image_all");
-                                    $amountImages = count($get("files"));
-                                    $amount = (int)$get('amount');
+                        FileUpload::make('files')
+                                  ->directory('files_products')
+                                  ->columnSpanFull()
+                                  ->required()
+                                  ->multiple()
+                                  ->reactive()
+                                  ->live()
+                                  ->image()
+                                  ->imageEditor()
+                                  ->imageEditorAspectRatios(['1:1'])
+                                  ->openable()
+                                  ->previewable(true)
+                                  ->label('Imagens Necessárias')
+                                  ->maxFiles(
+                                      function (Get $get) {
+                                          return $get('image_all') ? 1 : (int)$get('amount');
+                                      }
+                                  )
+                                  ->rule(
+                                      function (Get $get) {
+                                          return function (string $attribute, $value, $fail) use ($get) {
+                                              $image_all = $get("image_all");
+                                              $amountImages = count($get("files"));
+                                              $amount = (int)$get('amount');
 
-                                    if ($image_all && $amountImages !== 1) {
-                                        $fail(
-                                            "Você enviou {$amountImages} imagens, mas precisa enviar exatamente 1."
-                                        );
-                                    }
+                                              if ($image_all && $amountImages !== 1) {
+                                                  $fail(
+                                                      "Você enviou {$amountImages} imagens, mas precisa enviar exatamente 1."
+                                                  );
+                                              }
 
-                                    if (!$image_all && $amountImages !== $amount) {
-                                        $fail(
-                                            "Você enviou {$amountImages} imagens, mas precisa enviar exatamente {$amount}."
-                                        );
-                                    }
-                                };
-                            }
-                        ),
+                                              if (!$image_all && $amountImages !== $amount) {
+                                                  $fail(
+                                                      "Você enviou {$amountImages} imagens, mas precisa enviar exatamente {$amount}."
+                                                  );
+                                              }
+                                          };
+                                      }
+                                  ),
 
-                ]
-            ),
+                    ]
+                ),
         ];
     }
 
-    public function addCart()
+    public
+    function addCart()
     {
         Notification::make()
-            ->success()
-            ->title('Item adicionado ao carrinho!')
-            ->body("Redirecionando para Loja em 30 segundos.... Ou Clique em Ir para Loja!")
-            ->seconds(30)
-            ->actions(
-                [
-                    Action::make('Ir para Loja')
-                        ->button()
-                        ->color('primary')
-                        ->icon('heroicon-o-shopping-bag')
-                        ->url('/admin/ffs-store'),
-                    Action::make('Ir para o Carrinho')
-                        ->button()
-                        ->color('primary')
-                        ->icon('heroicon-o-shopping-cart')
-                        ->url('/admin/ffs-cart'),
-                ]
-            )
-            ->send();
+                    ->success()
+                    ->title('Item adicionado ao carrinho!')
+                    ->body("Redirecionando para Loja em 30 segundos.... Ou Clique em Ir para Loja!")
+                    ->seconds(30)
+                    ->actions(
+                        [
+                            Action::make('Ir para Loja')
+                                  ->button()
+                                  ->color('primary')
+                                  ->icon('heroicon-o-shopping-bag')
+                                  ->url('/admin/ffs-store'),
+                            Action::make('Ir para o Carrinho')
+                                  ->button()
+                                  ->color('primary')
+                                  ->icon('heroicon-o-shopping-cart')
+                                  ->url('/admin/ffs-cart'),
+                        ]
+                    )
+                    ->send();
 
         $this->dispatch('redirect-after-delay');
     }
 
-    public function finish()
+    public
+    function finish()
     {
         $this->redirect("/admin/ffs-cart");
 
         Notification::make()
-            ->success()
-            ->title('Agora finalize sua compra no carrinho!')
-            ->send();
+                    ->success()
+                    ->title('Agora finalize sua compra no carrinho!')
+                    ->send();
     }
 
-    public function submit()
+    public
+    function submit()
     {
         $this->validate();
 
@@ -230,11 +247,13 @@ class FederalFilamentProductPage extends Page implements HasForms
         }
     }
 
-    public function cartUpdate()
+    public
+    function cartUpdate()
     {
         $identifier = request()->cookie('ffs_identifier');
 
-        $cartModel = Cart::where("identifier", $identifier)->first();
+        $cartModel = Cart::where("identifier", $identifier)
+                         ->first();
 
         $exists = false;
 
@@ -252,10 +271,10 @@ class FederalFilamentProductPage extends Page implements HasForms
 
         if (!$exists) {
             $cart[] = [
-                'uuid'   => $this->product['uuid'],
-                'name'   => $this->product['name'],
-                'amount' => (int)$this->amount,
-                'price'  => $this->product['price'],
+                'uuid'         => $this->product['uuid'],
+                'name'         => $this->product['name'],
+                'amount'       => (int)$this->amount,
+                'price'        => $this->product['price'],
                 'data_product' => $data,
             ];
         }
