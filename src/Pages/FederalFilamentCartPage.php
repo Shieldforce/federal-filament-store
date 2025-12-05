@@ -278,12 +278,10 @@ class FederalFilamentCartPage extends Page implements HasForms
         $userCreate
             ->roles()
             ->syncWithoutDetaching(
-                [
-                    DB::table("roles")
-                      ->whereIn("name", $roles)
-                      ->pluck("id")
-                      ->toArray()
-                ]
+                DB::table("roles")
+                  ->whereIn("name", $roles)
+                  ->pluck("id")
+                  ->toArray()
             );
 
         return $userCreate;
