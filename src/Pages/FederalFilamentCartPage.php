@@ -550,16 +550,16 @@ class FederalFilamentCartPage extends Page implements HasForms
 
         Notification::make()
                     ->success()
-                    ->title('Redirecionando em 10 segundos....')
-                    ->body("Aguarde vamos te redirecionar para as formar de pagamento!")
+                    ->title('Opa agora só escolher um método de pagamento!')
+                    ->body("Se quiser ver todos os seus pedidos, clique em Ir para meus pedidos!")
                     ->icon("heroicon-o-credit-card")
                     ->actions(
                         [
                             ActionNotificationButton::make("payment")
-                                                    ->label("Ir para formas de pagamento!")
+                                                    ->label("Ir para meus pedidos!")
                                                     ->button()
-                                                    ->icon("heroicon-o-credit-card")
-                                                    ->url("/admin/checkout/{$checkout->uuid}"),
+                                                    ->icon("heroicon-o-truck")
+                                                    ->url("/admin/my-order/{$transaction->order->id}"),
                         ]
                     )
                     ->send();
