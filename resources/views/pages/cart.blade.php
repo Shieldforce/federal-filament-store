@@ -2,7 +2,10 @@
     <div class="w-full flex flex-col md:flex-row gap-6">
 
         {{-- SIDEBAR --}}
-        <div class="md:w-[480px] lg:w-[520px] xl:w-[560px] md:flex-none pl-6 config-cart-ec">
+        <div
+            class="md:w-[480px] lg:w-[520px] xl:w-[560px] md:flex-none pl-6 config-cart-ec"
+            style="display: {{ isset($this->totalPrice) && $this->totalPrice > 0 ? 'block' : 'none' }}"
+        >
             <x-filament::section class="!max-w-[480px] w-full !rounded-none">
                 <h1 style="font-size: 16pt;">
                     Total do carrinho: R$ {{ number_format($this->totalPrice, 2, ",", ".") }}
