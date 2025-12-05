@@ -164,6 +164,19 @@ class FederalFilamentProductPage extends Page implements HasForms
                                           return $get('image_all') ? 1 : (int)$get('amount');
                                       }
                                   )
+                                  ->afterStateUpdated(
+                                      function ($state, callable $set, Get $get, callable $fail) {
+                                          $max = $get('image_all') ? 1 : (int)$get('amount');
+                                          $count = count($state ?? []);
+
+                                          if ($count > $max) {
+                                              $fail("Você pode enviar no máximo {$max} imagem(s).");
+
+                                              // Remove os excedentes automaticamente
+                                              $set('files', array_slice($state, 0, $max));
+                                          }
+                                      }
+                                  )
                                   ->rule(
                                       function (Get $get) {
                                           return function (string $attribute, $value, $fail) use ($get) {
