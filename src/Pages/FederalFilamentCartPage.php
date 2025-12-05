@@ -115,9 +115,7 @@ class FederalFilamentCartPage extends Page implements HasForms
         $this->cart = Cart::where("identifier", request()->cookie("ffs_identifier"))
                           ->first();
 
-        $this->items = json_decode($this->cart->items ?? [], true);
-
-        dd($this->items);
+        $this->items = json_decode($this?->cart?->items ?? [], true);
 
         $this->totalPrice = collect($this->items)->sum(
             function ($item) {
