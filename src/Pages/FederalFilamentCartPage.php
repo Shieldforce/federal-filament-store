@@ -26,6 +26,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Livewire\Component;
+use Shieldforce\FederalFilamentStore\Enums\StatusCartEnum;
 use Shieldforce\FederalFilamentStore\Enums\StatusClientEnum;
 use Shieldforce\FederalFilamentStore\Enums\TypeContractEnum;
 use Shieldforce\FederalFilamentStore\Enums\TypePeopleEnum;
@@ -564,6 +565,11 @@ class FederalFilamentCartPage extends Page implements HasForms
                     ->send();
 
         sleep(10);
+
+        $cart = $transaction->order->cart;
+        if (isset($cart->id)) {
+            $transaction->order->cart->update(["status" => StatusCartEnum::finalizado->value]);
+        }
 
         redirect("/admin/checkout/{$checkout->uuid}");
     }
