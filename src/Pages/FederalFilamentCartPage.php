@@ -264,8 +264,6 @@ class FederalFilamentCartPage extends Page implements HasForms
             return null;
         }
 
-        dd($data);
-
         return $user->updateOrCreate(
             ["email" => $data["email"]],
             [
