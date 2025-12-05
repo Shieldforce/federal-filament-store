@@ -21,20 +21,17 @@ use Filament\Pages\Page;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Livewire\Component;
-use Shieldforce\CheckoutPayment\Enums\MethodPaymentEnum;
-use Shieldforce\CheckoutPayment\Services\DtoSteps\DtoStep1;
-use Shieldforce\CheckoutPayment\Services\MountCheckoutStepsService;
 use Shieldforce\FederalFilamentStore\Enums\StatusClientEnum;
 use Shieldforce\FederalFilamentStore\Enums\TypeContractEnum;
 use Shieldforce\FederalFilamentStore\Enums\TypePeopleEnum;
 use Shieldforce\FederalFilamentStore\Models\Cart;
 use Shieldforce\FederalFilamentStore\Services\BuscarViaCepService;
+use Filament\Notifications\Actions\Action as ActionNotificationButton;
 use Throwable;
 
 class FederalFilamentCartPage extends Page implements HasForms
@@ -482,11 +479,11 @@ class FederalFilamentCartPage extends Page implements HasForms
     ) {
         $data = $this->form->getState();
 
-        $date = now()->format("Y-m-d H");
+        $date = $order->created_at->format("Y-m-d H");
 
         $transaction = $order
             ->transactions()
-            ->where("created_at", "like", "%$date%")
+            ->where("created_at", "like", "%{$date}%")
             ->get()
             ->first() ?? null;
 
@@ -534,11 +531,32 @@ class FederalFilamentCartPage extends Page implements HasForms
 
         $this->loadData();
 
+        $date = $transaction->created_at->format("Y-m-d H");
+
+        $checkout = $transaction
+            ->checkouts()
+            ->where("created_at", "like", "%{$date}%")
+            ->first();
+
         Notification::make()
                     ->success()
-                    ->title('fsdfsff')
-                    ->body("sdfdsfff")
+                    ->title('Redirecionando em 10 segundos....')
+                    ->body("Aguarde vamos te redirecionar para as formar de pagamento!")
+                    ->icon("heroicon-o-credit-card")
+                    ->actions(
+                        [
+                            ActionNotificationButton::make()
+                                                    ->label("Ir para formas de pagamento!")
+                                                    ->button()
+                                                    ->icon("heroicon-o-credit-card")
+                                                    ->url("/admin/checkout/{$checkout->uuid}"),
+                        ]
+                    )
                     ->send();
+
+        sleep(10);
+
+        redirect("/admin/checkout/{$checkout->uuid}");
     }
 
     protected

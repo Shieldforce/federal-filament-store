@@ -40,6 +40,7 @@
                         >
                             <span wire:loading wire:target="submit">
                                 <x-filament::loading-indicator class="w-5 h-5" />
+                                 Processando...
                             </span>
 
                             <span wire:loading.remove wire:target="submit">
