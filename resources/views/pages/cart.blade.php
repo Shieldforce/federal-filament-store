@@ -19,13 +19,34 @@
 
                     <div class="flex flex-col mt-4 gap-4 w-full">
                         {{-- FINALIZAR COMPRA --}}
-                        <x-filament::button
+                        {{--<x-filament::button
                             color="success"
                             icon="heroicon-o-check-circle"
                             class="w-full py-3 text-center"
                             type="submit"
                         >
                             Ir Para checkout
+                        </x-filament::button>--}}
+
+                        <x-filament::button
+                            type="submit"
+                            color="success"
+                            class="w-full py-3 text-center"
+                            :extra-attributes="[
+                                    'wire:loading.attr' => 'disabled',
+                                ]"
+                        >
+                            {{-- Texto normal --}}
+                            <span wire:loading.remove>
+                                <x-heroicon-o-check-circle class="w-5 h-5 inline" />
+                                Ir Para checkout
+                            </span>
+
+                            {{-- Loading + spinner --}}
+                            <span wire:loading>
+                                <x-filament::loading-indicator class="w-5 h-5 inline" />
+                                Processando...
+                            </span>
                         </x-filament::button>
 
                     </div>

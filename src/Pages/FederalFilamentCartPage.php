@@ -532,6 +532,7 @@ class FederalFilamentCartPage extends Page implements HasForms
     ) {
         $data = $this->form->getState();
 
+        $this->loadData();
 
         Notification::make()
                     ->success()
