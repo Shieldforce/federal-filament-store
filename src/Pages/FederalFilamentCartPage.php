@@ -257,10 +257,6 @@ class FederalFilamentCartPage extends Page implements HasForms
             ->where('email', $data['email'])
             ->first();
 
-        dd($userModel, $data);
-
-        //dd($data['password'] ?? null, $userModel->password ?? null);
-
         if ($userModel && !Hash::check($data['password'], $userModel->password)) {
             Notification::make()
                         ->danger()
