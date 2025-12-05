@@ -251,11 +251,11 @@ class FederalFilamentCartPage extends Page implements HasForms
     ) {
         $data = $this->form->getState();
 
-        $user = $user
+        $userModel = $user
             ->where('email', $data['email'])
             ->first();
 
-        if ($user && !Hash::check($data['password'], $user->password)) {
+        if ($userModel && !Hash::check($data['password'], $userModel->password)) {
             Notification::make()
                         ->danger()
                         ->title('Credenciais Incorretas!')
@@ -263,8 +263,6 @@ class FederalFilamentCartPage extends Page implements HasForms
                         ->send();
             return null;
         }
-
-        dd($user);
 
         return $user->updateOrCreate(
             ["email" => $data["email"]],
@@ -282,11 +280,11 @@ class FederalFilamentCartPage extends Page implements HasForms
     ) {
         $data = $this->form->getState();
 
-        $user = $user
+        $userModel = $user
             ->where('email', $data['email'])
             ->first();
 
-        if (!$user || $user && !Hash::check($data['password'], $user->password)) {
+        if (!$userModel || $userModel && !Hash::check($data['password'], $userModel->password)) {
             Notification::make()
                         ->danger()
                         ->title('Credenciais Incorretas!')
@@ -295,7 +293,7 @@ class FederalFilamentCartPage extends Page implements HasForms
             return null;
         }
 
-        return $user;
+        return $userModel;
     }
 
     public
