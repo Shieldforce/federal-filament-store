@@ -228,13 +228,6 @@ class FederalFilamentCartPage extends Page implements HasForms
 
             $this->processCheckout($transaction, $isUser);
 
-            /*
-            $credentials = Auth::attempt([
-                "email"    => $data["email"],
-                "password" => $data["password"],
-            ]);
-            */
-
             DB::commit();
         } catch (Throwable $throwable) {
             DB::rollBack();
@@ -261,12 +254,6 @@ class FederalFilamentCartPage extends Page implements HasForms
         $userModel = $user
             ->where('email', $data['email'])
             ->first();
-
-        dd([
-            "teste_Hash" => [Hash::check($data['password'], $userModel->password)]
-        ],[
-            "teste_bcrypt" => [bcrypt($data['password']) == $userModel->password],
-        ]);
 
         if ($userModel && !Hash::check($data['password'], $userModel->password)) {
             Notification::make()
@@ -575,7 +562,16 @@ class FederalFilamentCartPage extends Page implements HasForms
             $transaction->order->cart->update(["status" => StatusCartEnum::finalizado->value]);
         }
 
-        redirect("/admin/checkout/{$checkout->uuid}");
+        if (
+            Auth::attempt(
+                [
+                    "email"    => $data["email"],
+                    "password" => $data["password"],
+                ]
+            )
+        ) {
+            redirect("/admin/checkout/{$checkout->uuid}");
+        }
     }
 
     protected
