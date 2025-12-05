@@ -434,9 +434,9 @@ class FederalFilamentCartPage extends Page implements HasForms
                          ->first();
 
             $products[$product->id] = [
-                "quantity"    => $item["amount"],
-                "price"       => $item["price"],
-                "description" => $product->description,
+                "quantity"     => $item["amount"],
+                "price"        => $item["price"],
+                "observations" => "Item comprado no carrinho de compras: {$cart->id}",
             ];
         }
 
