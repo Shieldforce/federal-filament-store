@@ -229,9 +229,7 @@ class FederalFilamentCartPage extends Page implements HasForms
             $this->processCheckout($transaction, $isUser);
 
             DB::commit();
-
         } catch (Throwable $throwable) {
-
             DB::rollBack();
 
             $this->loadData();
@@ -564,14 +562,9 @@ class FederalFilamentCartPage extends Page implements HasForms
             $transaction->order->cart->update(["status" => StatusCartEnum::finalizado->value]);
         }
 
-        if (
-            Auth::attempt(
-                [
-                    "email"    => $data["email"],
-                    "password" => $data["password"],
-                ]
-            )
-        ) {
+        Auth::login($transaction?->order?->client?->user);
+
+        if (Auth::check()) {
             redirect("/admin/checkout/{$checkout->uuid}");
         }
     }
