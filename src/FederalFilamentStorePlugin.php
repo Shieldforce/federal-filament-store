@@ -91,7 +91,7 @@ class FederalFilamentStorePlugin implements Plugin
 
                                           $minutes = 60 * 24 * 30; // 30 dias
 
-                                          $date = now()->format("YmdHis");
+                                          $date = now()->format("YmdHi");
 
                                           $tt = Cookie::make(
                                               name   : 'ffs_identifier',
