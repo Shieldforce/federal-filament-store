@@ -264,7 +264,7 @@ class FederalFilamentCartPage extends Page implements HasForms
             return null;
         }
 
-        return $user->updateOrCreate(
+        $userCreate = $user->updateOrCreate(
             ["email" => $data["email"]],
             [
                 "name"     => $data["name"],
@@ -272,6 +272,21 @@ class FederalFilamentCartPage extends Page implements HasForms
                 "contact"  => $data["cellphone"],
             ]
         );
+
+        $roles = ["Cliente"];
+
+        $userCreate
+            ->roles()
+            ->syncWithoutDetaching(
+                [
+                    DB::table("roles")
+                      ->whereIn("name", $roles)
+                      ->pluck("id")
+                      ->toArray()
+                ]
+            );
+
+        return $userCreate;
     }
 
     public
