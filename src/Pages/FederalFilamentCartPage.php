@@ -226,11 +226,12 @@ class FederalFilamentCartPage extends Page implements HasForms
                                    ->send();
             }
 
-            DB::commit();
-
             $this->processCheckout($transaction, $isUser);
 
+            DB::commit();
+
         } catch (Throwable $throwable) {
+
             DB::rollBack();
 
             $this->loadData();
@@ -255,6 +256,8 @@ class FederalFilamentCartPage extends Page implements HasForms
         $userModel = $user
             ->where('email', $data['email'])
             ->first();
+
+        dd($data['password'], $userModel->password);
 
         if ($userModel && !Hash::check($data['password'], $userModel->password)) {
             Notification::make()
