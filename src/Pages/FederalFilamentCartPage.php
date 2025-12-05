@@ -554,7 +554,7 @@ class FederalFilamentCartPage extends Page implements HasForms
                     ->icon("heroicon-o-credit-card")
                     ->actions(
                         [
-                            ActionNotificationButton::make()
+                            ActionNotificationButton::make("payment")
                                                     ->label("Ir para formas de pagamento!")
                                                     ->button()
                                                     ->icon("heroicon-o-credit-card")
