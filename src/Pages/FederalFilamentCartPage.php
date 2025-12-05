@@ -564,8 +564,6 @@ class FederalFilamentCartPage extends Page implements HasForms
                     )
                     ->send();
 
-        sleep(10);
-
         $cart = $transaction->order->cart;
         if (isset($cart->id)) {
             $transaction->order->cart->update(["status" => StatusCartEnum::finalizado->value]);

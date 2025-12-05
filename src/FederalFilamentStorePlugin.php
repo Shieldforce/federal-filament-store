@@ -18,92 +18,105 @@ class FederalFilamentStorePlugin implements Plugin
 {
     public string $labelGroupSidebar = "Loja";
 
-    public function getId(): string
+    public
+    function getId(): string
     {
         return 'federal-filament-store';
     }
 
-    public function register(Panel $panel): void
-    {
+    public
+    function register(
+        Panel $panel
+    ): void {
         $panel
             ->routes(
                 function () {
                     Route::get('/ffs-store', FederalFilamentStorePage::class)
-                        ->name('ffs-store.store.external')
-                        ->defaults('external', 1);
+                         ->name('ffs-store.store.external')
+                         ->defaults('external', 1);
 
                     Route::get('/ffs-product/{uuid?}', FederalFilamentProductPage::class)
-                        ->name('ffs-product.product.external')
-                        ->defaults('external', 1);
+                         ->name('ffs-product.product.external')
+                         ->defaults('external', 1);
 
                     Route::get('/ffs-cart', FederalFilamentCartPage::class)
-                        ->name('ffs-cart.cart.external')
-                        ->defaults('external', 1);
+                         ->name('ffs-cart.cart.external')
+                         ->defaults('external', 1);
 
                     Route::get(
-                        '/cart-count', function () {
-                        $identifier = request()->cookie('ffs_identifier');
-                        $cartModel = Cart::where("identifier", $identifier)->first();
-                        return response()->json(collect(json_decode($cartModel->items, true))->sum('amount'));
-                    }
+                        '/cart-count',
+                        function () {
+                            $identifier = request()->cookie('ffs_identifier');
+                            $cartModel = Cart::where("identifier", $identifier)
+                                             ->first();
+                            return response()->json(
+                                collect(json_decode($cartModel->items, true))
+                                    ->sum('amount')
+                            );
+                        }
                     );
                 }
             )
             ->navigationItems(
                 [
                     NavigationItem::make('loja')
-                        ->visible()
-                        ->label('Loja')
-                        ->url("/admin/ffs-store")
-                        ->sort(998)
-                        ->icon('heroicon-o-shopping-bag'),
+                                  ->visible()
+                                  ->label('Loja')
+                                  ->url("/admin/ffs-store")
+                                  ->sort(998)
+                                  ->icon('heroicon-o-shopping-bag'),
                     NavigationItem::make('cart')
-                        ->visible(fn() => Cart::where("identifier", request()->cookie("ffs_identifier"))
-                            ->exists())
-                        ->label('Carrinho')
-                        ->url("/admin/ffs-cart")
-                        ->icon('heroicon-o-shopping-cart')
-                        ->badgeTooltip('Itens do carrinho')
-                        ->sort(999)
-                        ->badge(
-                            function () {
+                                  ->visible(
+                                      fn() => Cart::where("identifier", request()->cookie("ffs_identifier"))
+                                                  ->exists()
+                                  )
+                                  ->label('Carrinho')
+                                  ->url("/admin/ffs-cart")
+                                  ->icon('heroicon-o-shopping-cart')
+                                  ->badgeTooltip('Itens do carrinho')
+                                  ->sort(999)
+                                  ->badge(
+                                      function () {
+                                          $identifierVerify = request()->cookie('ffs_identifier');
 
-                                $identifierVerify = request()->cookie('ffs_identifier');
+                                          $cartModel = Cart::where("identifier", $identifierVerify)
+                                                           ->whereNotNull("identifier")
+                                                           ->where("status", StatusCartEnum::comprando->value)
+                                                           ->first();
 
-                                $cartModel = Cart::where("identifier", $identifierVerify)
-                                    ->whereNotNull("identifier")
-                                    ->where("status", "!=", StatusCartEnum::finalizado->value)
-                                    ->first();
+                                          if (isset($cartModel->id)) {
+                                              return collect(json_decode($cartModel->items, true))
+                                                  ->sum('amount');
+                                          }
 
-                                if (isset($cartModel->id)) {
-                                    return collect(json_decode($cartModel->items, true))
-                                        ->sum('amount');
-                                }
+                                          $tokenSession = request()
+                                              ->session()
+                                              ->get('_token');
 
-                                $tokenSession = request()->session()->get('_token');
+                                          $minutes = 60 * 24 * 30; // 30 dias
 
-                                $minutes = 60 * 24 * 30; // 30 dias
+                                          $date = now()->format("YmdHis");
 
-                                $tt = Cookie::make(
-                                    name: 'ffs_identifier',
-                                    value: $tokenSession,
-                                    minutes: $minutes
-                                );
+                                          $tt = Cookie::make(
+                                              name   : 'ffs_identifier',
+                                              value  : $tokenSession."|".$date,
+                                              minutes: $minutes
+                                          );
 
-                                Cookie::queue($tt);
+                                          Cookie::queue($tt);
 
-                                $identifier = $tt->getValue();
+                                          $identifier = $tt->getValue();
 
-                                $cartModel = Cart::updateOrCreate(
-                                    ["identifier" => $identifier],
-                                    ['status' => StatusCartEnum::comprando->value]
-                                );
+                                          $cartModel = Cart::updateOrCreate(
+                                              ["identifier" => $identifier],
+                                              ['status' => StatusCartEnum::comprando->value]
+                                          );
 
-                                return collect(json_decode($cartModel->items, true))
-                                    ->sum('amount');
-
-                            }, 'danger'
-                        ),
+                                          return collect(json_decode($cartModel->items, true))
+                                              ->sum('amount');
+                                      },
+                                      'danger'
+                                  ),
                 ]
             )
             ->pages(
@@ -115,17 +128,21 @@ class FederalFilamentStorePlugin implements Plugin
             );
     }
 
-    public function boot(Panel $panel): void
-    {
+    public
+    function boot(
+        Panel $panel
+    ): void {
         config()->set('federal-filament-store.sidebar_group', $this->labelGroupSidebar);
     }
 
-    public static function make(): static
+    public static
+    function make(): static
     {
         return app(static::class);
     }
 
-    public static function get(): static
+    public static
+    function get(): static
     {
         /** @var static $plugin */
         $plugin = filament(app(static::class)->getId());
@@ -133,14 +150,16 @@ class FederalFilamentStorePlugin implements Plugin
         return $plugin;
     }
 
-    public function setLabelGroupSidebar(
+    public
+    function setLabelGroupSidebar(
         string $labelGroupSidebar
     ): static {
         $this->labelGroupSidebar = $labelGroupSidebar;
         return $this;
     }
 
-    public function getLabelGroupSidebar()
+    public
+    function getLabelGroupSidebar()
     {
         return $this->labelGroupSidebar;
     }
