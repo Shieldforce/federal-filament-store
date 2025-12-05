@@ -29,23 +29,21 @@
                         </x-filament::button>--}}
 
                         <x-filament::button
-                            type="submit"
                             color="success"
+                            icon="heroicon-o-check-circle"
                             class="w-full py-3 text-center"
-                            :extra-attributes="[
-                                    'wire:loading.attr' => 'disabled',
-                                ]"
+                            type="submit"
+
+                            wire:loading.class="opacity-50 cursor-not-allowed"
+                            wire:loading.attr="disabled"
+                            wire:target="submit"
                         >
-                            {{-- Texto normal --}}
-                            <span wire:loading.remove>
-                                <x-heroicon-o-check-circle class="w-5 h-5 inline" />
-                                Ir Para checkout
+                            <span wire:loading wire:target="submit">
+                                <x-filament::loading-indicator class="w-5 h-5" />
                             </span>
 
-                            {{-- Loading + spinner --}}
-                            <span wire:loading>
-                                <x-filament::loading-indicator class="w-5 h-5 inline" />
-                                Processando...
+                            <span wire:loading.remove wire:target="submit">
+                                Ir Para checkout
                             </span>
                         </x-filament::button>
 
