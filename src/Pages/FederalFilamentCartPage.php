@@ -505,6 +505,7 @@ class FederalFilamentCartPage extends Page implements HasForms
             return $transaction;
         }
 
+        DB::enableQueryLog();
         $transaction = $order
             ->transactions()
             ->updateOrCreate(
@@ -531,7 +532,7 @@ class FederalFilamentCartPage extends Page implements HasForms
                 ]
             );
 
-        dd($transaction);
+        dd(DB::getQueryLog());
 
         return $transaction;
     }
