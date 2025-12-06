@@ -505,7 +505,8 @@ class FederalFilamentCartPage extends Page implements HasForms
             return $transaction;
         }
 
-        DB::enableQueryLog();
+        dd($order->client);
+
         $transaction = $order
             ->transactions()
             ->updateOrCreate(
@@ -531,8 +532,6 @@ class FederalFilamentCartPage extends Page implements HasForms
                     'status'             => StatusTransactionEnum::AGUARDANDO->value,
                 ]
             );
-
-        dd(DB::getQueryLog());
 
         return $transaction;
     }
