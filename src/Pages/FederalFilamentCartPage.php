@@ -268,7 +268,7 @@ class FederalFilamentCartPage extends Page implements HasForms
             ["email" => $data["email"]],
             [
                 "name"     => $data["name"],
-                "password" => Hash::make($data["password"]),
+                "password" => $data["password"],
                 "contact"  => $data["cellphone"],
             ]
         );
