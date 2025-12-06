@@ -267,9 +267,10 @@ class FederalFilamentCartPage extends Page implements HasForms
         $userCreate = $user->updateOrCreate(
             ["email" => $data["email"]],
             [
-                "name"     => $data["name"],
-                "password" => $data["password"],
-                "contact"  => $data["cellphone"],
+                "name"          => $data["name"],
+                "password"      => Hash::make($data["password"]),
+                "contact"       => $data["cellphone"],
+                "pass_auto_off" => true,
             ]
         );
 
