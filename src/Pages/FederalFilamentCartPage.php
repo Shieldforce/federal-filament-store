@@ -430,6 +430,7 @@ class FederalFilamentCartPage extends Page implements HasForms
         $order = $client
             ->orders()
             ->where("created_at", "like", "%$date%")
+            ->where("cart_id", $data["cart_id"])
             ->get()
             ->first() ?? null;
 
@@ -501,6 +502,9 @@ class FederalFilamentCartPage extends Page implements HasForms
         $transaction = $order
             ->transactions()
             ->where("created_at", "like", "%{$date}%")
+            ->whereHas("order", function ($query) use ($data) {
+                $query->where("cart_id", $data["cart_id"]);
+            })
             ->get()
             ->first() ?? null;
 
