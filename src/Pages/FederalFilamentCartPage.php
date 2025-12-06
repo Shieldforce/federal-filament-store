@@ -505,6 +505,25 @@ class FederalFilamentCartPage extends Page implements HasForms
             return $transaction;
         }
 
+        dd([
+            'creator_id'         => $order->client->user->id ?? null,
+            'name'               => "Pagamento de carrinho de compras: {$data['cart_id']}",
+            'necessary'          => 1,
+            'type'               => TypeTransactionEnum::input->value,
+            'value'              => $data["totalPrice"],
+            'monthly'            => false,
+            'date_monthly_start' => now()->format("Y-m-d"),
+            'date_monthly_end'   => null,
+            'booklet'            => false,
+            'not_start_end'      => false,
+            'reference'          => now()->format("m/Y"),
+            'due_day'            => now()
+                ->addDays(3)
+                ->format("d"),
+            'paid'               => false,
+            'status'             => StatusTransactionEnum::AGUARDANDO->value,
+        ]);
+
         $transaction = $order
             ->transactions()
             ->updateOrCreate(
