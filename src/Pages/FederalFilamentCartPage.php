@@ -553,7 +553,7 @@ class FederalFilamentCartPage extends Page implements HasForms
                     ->title('Opa agora só escolher um método de pagamento!')
                     ->body("Se quiser ver todos os seus pedidos, clique em Ir para meus pedidos!")
                     ->icon("heroicon-o-credit-card")
-                    ->actions(
+                    /*->actions(
                         [
                             ActionNotificationButton::make("payment")
                                                     ->label("Ir para meus pedidos!")
@@ -561,7 +561,7 @@ class FederalFilamentCartPage extends Page implements HasForms
                                                     ->icon("heroicon-o-truck")
                                                     ->url("/admin/my-order/{$transaction->order->id}"),
                         ]
-                    )
+                    )*/
                     ->send();
 
         $cart = $transaction->order->cart;
