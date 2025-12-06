@@ -505,7 +505,7 @@ class FederalFilamentCartPage extends Page implements HasForms
             return $transaction;
         }
 
-        dd($order->client);
+        dd($order->client->user);
 
         $transaction = $order
             ->transactions()
