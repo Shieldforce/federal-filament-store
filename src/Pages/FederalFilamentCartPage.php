@@ -434,8 +434,8 @@ class FederalFilamentCartPage extends Page implements HasForms
             ->get()
             ->first() ?? null;
 
-        if (!isset($order->id) && $isUser) {
-            return null;
+        if (isset($order->id)) {
+            return $order;
         }
 
         $cart = Cart::find($data["cart_id"]);
@@ -453,13 +453,6 @@ class FederalFilamentCartPage extends Page implements HasForms
                 "price"        => $item["price"],
                 "observations" => "Item comprado no carrinho de compras: {$cart->id}",
             ];
-        }
-
-        if (isset($order->cart_id) && $order->cart_id == $data["cart_id"]) {
-            $order
-                ->products()
-                ->syncWithoutDetaching($products);
-            return $order;
         }
 
         $order = $client
@@ -507,10 +500,6 @@ class FederalFilamentCartPage extends Page implements HasForms
             })
             ->get()
             ->first() ?? null;
-
-        if (!isset($transaction->id) && $isUser) {
-            return null;
-        }
 
         if (isset($transaction->id)) {
             return $transaction;
