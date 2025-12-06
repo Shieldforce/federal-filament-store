@@ -480,6 +480,8 @@ class FederalFilamentCartPage extends Page implements HasForms
             ->products()
             ->syncWithoutDetaching($products);
 
+        dd($order);
+
         return $order;
     }
 
@@ -546,22 +548,18 @@ class FederalFilamentCartPage extends Page implements HasForms
         $checkout = $transaction
             ->checkouts()
             ->where("created_at", "like", "%{$date}%")
+            ->whereHas("referencable", function ($transaction) use ($data) {
+                $transaction->whereHas("order", function ($query) use ($data) {
+                    $query->where("cart_id", $data["cart_id"]);
+                });
+            })
             ->first();
 
         Notification::make()
                     ->success()
                     ->title('Opa agora só escolher um método de pagamento!')
-                    ->body("Se quiser ver todos os seus pedidos, clique em Ir para meus pedidos!")
+                    ->body("Se quiser ver todos os seus pedidos, clique em Meus pedidos na barra de menu!")
                     ->icon("heroicon-o-credit-card")
-                    /*->actions(
-                        [
-                            ActionNotificationButton::make("payment")
-                                                    ->label("Ir para meus pedidos!")
-                                                    ->button()
-                                                    ->icon("heroicon-o-truck")
-                                                    ->url("/admin/my-order/{$transaction->order->id}"),
-                        ]
-                    )*/
                     ->send();
 
         $cart = $transaction->order->cart;
