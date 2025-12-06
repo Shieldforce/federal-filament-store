@@ -141,7 +141,11 @@ class FederalFilamentCartPage extends Page implements HasForms
         try {
             $data = $this->form->getState();
 
-            if (!isset($data["street"])) {
+            $userCallback = config('federal-filament-store.user_callback');
+            $useModel = new $userCallback();
+            $isUser = $data["is_user"];
+
+            if (!isset($data["street"]) && !$isUser) {
                 return Notification::make()
                                    ->danger()
                                    ->title('Endereço é obrigatório!')
@@ -149,10 +153,6 @@ class FederalFilamentCartPage extends Page implements HasForms
                                    ->persistent()
                                    ->send();
             }
-
-            $userCallback = config('federal-filament-store.user_callback');
-            $useModel = new $userCallback();
-            $isUser = $data["is_user"];
 
             if ($isUser) {
                 $user = $this->isAccount($useModel);
