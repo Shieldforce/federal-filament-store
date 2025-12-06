@@ -480,8 +480,6 @@ class FederalFilamentCartPage extends Page implements HasForms
             ->products()
             ->syncWithoutDetaching($products);
 
-        dd($order);
-
         return $order;
     }
 
@@ -507,7 +505,7 @@ class FederalFilamentCartPage extends Page implements HasForms
             return $transaction;
         }
 
-        return $order
+        $transaction = $order
             ->transactions()
             ->updateOrCreate(
                 [
@@ -532,6 +530,10 @@ class FederalFilamentCartPage extends Page implements HasForms
                     'status'             => StatusTransactionEnum::AGUARDANDO->value,
                 ]
             );
+
+        dd($transaction);
+
+        return $transaction;
     }
 
     public
