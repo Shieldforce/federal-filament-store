@@ -721,6 +721,13 @@ class FederalFilamentCartPage extends Page implements HasForms
                                                      Action::make('viaCep')
                                                            ->label("Buscar CEP")
                                                            ->icon('heroicon-m-map-pin')
+                                                           ->extraAttributes(
+                                                               [
+                                                                   'wire:loading.attr'  => 'disabled',
+                                                                   'wire:loading.class' => 'opacity-50 cursor-not-allowed',
+                                                               ]
+                                                           )
+                                                           ->indicator('heroicon-m-arrow-path')
                                                            ->action(
                                                                function (
                                                                    Set       $set,
@@ -777,21 +784,6 @@ class FederalFilamentCartPage extends Page implements HasForms
                                                          return "99999-999";
                                                      }
                                                  )
-                                                 ->rule(
-                                                     function (Get $get) {
-                                                         return function (string $attribute, $value, $fail) use ($get) {
-                                                             $len = strlen($value);
-
-                                                             dd($len);
-
-                                                             if (count($len) < 2) {
-                                                                 $this->loadData();
-
-                                                                 $fail("Digite também o sobrenome!");
-                                                             }
-                                                         };
-                                                     }
-                                                 )
                                                  ->debounce(1000)
                                                  ->required(),
 
@@ -802,7 +794,7 @@ class FederalFilamentCartPage extends Page implements HasForms
                                 ->label("Dados de endereço")
                                 ->visible(
                                     function (Get $get) {
-                                        return Str::length($get("zipcode")) == 9 && !$get("is_user");
+                                        return /*Str::length($get("zipcode")) == 9 && */ !$get("is_user");
                                     }
                                 )
                                 ->schema(
