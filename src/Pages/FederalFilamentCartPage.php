@@ -674,8 +674,8 @@ class FederalFilamentCartPage extends Page implements HasForms
                                                  ->label('E-mail')
                                                  ->email()
                                                  ->afterStateUpdated(
-                                                     function (Set $set, Get $get, Component $livewire) {
-                                                         $email = $get("email");
+                                                     function ($state) {
+                                                         $email = $state;
 
                                                          if (
                                                              isset($email) &&
