@@ -24,7 +24,6 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Str;
 use Livewire\Component;
 use Shieldforce\FederalFilamentStore\Enums\StatusCartEnum;
 use Shieldforce\FederalFilamentStore\Enums\StatusClientEnum;
@@ -32,7 +31,6 @@ use Shieldforce\FederalFilamentStore\Enums\TypeContractEnum;
 use Shieldforce\FederalFilamentStore\Enums\TypePeopleEnum;
 use Shieldforce\FederalFilamentStore\Models\Cart;
 use Shieldforce\FederalFilamentStore\Services\BuscarViaCepService;
-use Filament\Notifications\Actions\Action as ActionNotificationButton;
 use Throwable;
 
 class FederalFilamentCartPage extends Page implements HasForms
@@ -107,6 +105,8 @@ class FederalFilamentCartPage extends Page implements HasForms
         }
 
         $this->loadData();
+
+        $this->form->fill([]);
     }
 
     public
