@@ -673,9 +673,11 @@ class FederalFilamentCartPage extends Page implements HasForms
                                         TextInput::make('email')
                                                  ->label('E-mail')
                                                  ->email()
+                                                 ->debounce(1000)
                                                  ->afterStateUpdated(
                                                      function ($state) {
                                                          $email = $state;
+                                                         dd($email);
 
                                                          if (
                                                              isset($email) &&
