@@ -132,7 +132,7 @@ class FederalFilamentCartPage extends Page implements HasForms
     ) {
         $this->loadData();
 
-        if ($property === "zipcode" && strlen(preg_replace("/\D/", "", $this->zipcode))) {
+        if ($property === "zipcode" && strlen(preg_replace("/\D/", "", $this->zipcode)) == 8) {
             $msg = "Estamos buscando informações de";
             $msg .= " CEP pra completar dados de endereço!";
             Notification::make()
@@ -141,7 +141,6 @@ class FederalFilamentCartPage extends Page implements HasForms
                         ->seconds(60)
                         ->body($msg)
                         ->send();
-
         }
     }
 
