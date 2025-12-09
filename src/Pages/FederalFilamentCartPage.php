@@ -264,6 +264,17 @@ class FederalFilamentCartPage extends Page implements HasForms
             return null;
         }
 
+        if ($userModel && Hash::check($data['password'], $userModel->password)) {
+            $msg = "Você já possui conta com esse email, clique em ";
+            $msg .= " 'Já tenho conta', e coloque suas credenciais.";
+            Notification::make()
+                        ->danger()
+                        ->title('Conta já existe!')
+                        ->body($msg)
+                        ->send();
+            return null;
+        }
+
         $userCreate = $user->updateOrCreate(
             ["email" => $data["email"]],
             [
@@ -495,17 +506,18 @@ class FederalFilamentCartPage extends Page implements HasForms
         $transaction = $order
             ->transactions()
             ->where("created_at", "like", "%{$date}%")
-            ->whereHas("order", function ($query) use ($data) {
-                $query->where("cart_id", $data["cart_id"]);
-            })
+            ->whereHas(
+                "order",
+                function ($query) use ($data) {
+                    $query->where("cart_id", $data["cart_id"]);
+                }
+            )
             ->get()
             ->first() ?? null;
 
         if (isset($transaction->id)) {
             return $transaction;
         }
-
-        dd($order->client->user);
 
         $transaction = $order
             ->transactions()
@@ -550,11 +562,17 @@ class FederalFilamentCartPage extends Page implements HasForms
         $checkout = $transaction
             ->checkouts()
             ->where("created_at", "like", "%{$date}%")
-            ->whereHas("referencable", function ($transaction) use ($data) {
-                $transaction->whereHas("order", function ($query) use ($data) {
-                    $query->where("cart_id", $data["cart_id"]);
-                });
-            })
+            ->whereHas(
+                "referencable",
+                function ($transaction) use ($data) {
+                    $transaction->whereHas(
+                        "order",
+                        function ($query) use ($data) {
+                            $query->where("cart_id", $data["cart_id"]);
+                        }
+                    );
+                }
+            )
             ->first();
 
         Notification::make()
@@ -757,6 +775,21 @@ class FederalFilamentCartPage extends Page implements HasForms
                                                  ->mask(
                                                      function (Get $get) {
                                                          return "99999-999";
+                                                     }
+                                                 )
+                                                 ->rule(
+                                                     function (Get $get) {
+                                                         return function (string $attribute, $value, $fail) use ($get) {
+                                                             $len = strlen($value);
+
+                                                             dd($len);
+
+                                                             if (count($len) < 2) {
+                                                                 $this->loadData();
+
+                                                                 $fail("Digite também o sobrenome!");
+                                                             }
+                                                         };
                                                      }
                                                  )
                                                  ->debounce(1000)
