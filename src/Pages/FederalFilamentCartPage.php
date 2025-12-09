@@ -673,6 +673,30 @@ class FederalFilamentCartPage extends Page implements HasForms
                                         TextInput::make('email')
                                                  ->label('E-mail')
                                                  ->email()
+                                                 ->afterStateUpdated(
+                                                     function (Set $set, Get $get, Component $livewire) {
+                                                         $email = $get("email");
+
+                                                         if (
+                                                             isset($email) &&
+                                                             strlen($email) > 12 &&
+                                                             filter_var($email, FILTER_VALIDATE_EMAIL) &&
+                                                             DB::table("users")
+                                                               ->where("email", $email)
+                                                               ->exists()
+                                                         ) {
+                                                             $msg = "Você já possui conta com esse e-mail.";
+                                                             $msg .= " Clique em 'Já tenho conta' ";
+                                                             $msg .= " paga continuar o checkout!";
+                                                             Notification::make()
+                                                                         ->info()
+                                                                         ->title('Usuário já existe!')
+                                                                         ->seconds(60)
+                                                                         ->body($msg)
+                                                                         ->send();
+                                                         }
+                                                     }
+                                                 )
                                                  ->required(),
 
                                         TextInput::make('name')
