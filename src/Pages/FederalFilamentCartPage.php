@@ -686,11 +686,11 @@ class FederalFilamentCartPage extends Page implements HasForms
                                                                ->where("email", $email)
                                                                ->exists()
                                                          ) {
-                                                             $msg = "Você já possui conta com esse e-mail.";
+                                                             $msg = "Você já possui conta com esse e-mail: {$email}.";
                                                              $msg .= " Clique em 'Já tenho conta' ";
                                                              $msg .= " paga continuar o checkout!";
                                                              Notification::make()
-                                                                         ->info()
+                                                                         ->danger()
                                                                          ->title('Usuário já existe!')
                                                                          ->seconds(60)
                                                                          ->body($msg)
