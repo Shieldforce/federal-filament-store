@@ -721,13 +721,6 @@ class FederalFilamentCartPage extends Page implements HasForms
                                                      Action::make('viaCep')
                                                            ->label("Buscar CEP")
                                                            ->icon('heroicon-m-map-pin')
-                                                           ->extraAttributes(
-                                                               [
-                                                                   'wire:loading.attr'  => 'disabled',
-                                                                   'wire:loading.class' => 'opacity-50 cursor-not-allowed',
-                                                               ]
-                                                           )
-                                                           ->indicator('heroicon-m-arrow-path')
                                                            ->action(
                                                                function (
                                                                    Set       $set,
@@ -735,6 +728,15 @@ class FederalFilamentCartPage extends Page implements HasForms
                                                                    Get       $get,
                                                                    Component $livewire
                                                                ) {
+                                                                   $msg = "Estamos buscando informações de";
+                                                                   $msg .= " CEP pra completar dados de endereço!";
+                                                                   Notification::make()
+                                                                               ->info()
+                                                                               ->title('Aguarde informações de CEP!')
+                                                                               ->seconds(60)
+                                                                               ->body($msg)
+                                                                               ->send();
+
                                                                    $data = BuscarViaCepService::getData((string)$state);
 
                                                                    if (isset($data["cep"])) {
@@ -744,21 +746,21 @@ class FederalFilamentCartPage extends Page implements HasForms
                                                                        $set('city', $data["localidade"]);
                                                                        $set('state', $data["uf"]);
                                                                    }
-
-                                                                   Notification::make()
-                                                                               ->info()
-                                                                               ->title('Próximo passo!')
-                                                                               ->seconds(60)
-                                                                               ->body(
-                                                                                   "Informar ou validar os dados do seu endereço, que estão logo abaixo!"
-                                                                               )
-                                                                               ->send();
                                                                }
                                                            )
                                                  )
                                                  ->hint("Busca de CEP")
                                                  ->afterStateUpdated(
                                                      function (Set $set, Get $get, Component $livewire) {
+                                                         $msg = "Estamos buscando informações de";
+                                                         $msg .= " CEP pra completar dados de endereço!";
+                                                         Notification::make()
+                                                                     ->info()
+                                                                     ->title('Aguarde informações de CEP!')
+                                                                     ->seconds(60)
+                                                                     ->body($msg)
+                                                                     ->send();
+
                                                          $data = BuscarViaCepService::getData((string)$get("zipcode"));
 
                                                          if (isset($data["cep"])) {
