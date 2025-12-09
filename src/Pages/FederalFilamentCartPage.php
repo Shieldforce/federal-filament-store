@@ -131,6 +131,18 @@ class FederalFilamentCartPage extends Page implements HasForms
         $property
     ) {
         $this->loadData();
+
+        if ($property === "zipcode" && strlen(preg_replace("/\D/", "", $this->zipcode))) {
+            $msg = "Estamos buscando informações de";
+            $msg .= " CEP pra completar dados de endereço!";
+            Notification::make()
+                        ->info()
+                        ->title('Aguarde informações de CEP!')
+                        ->seconds(60)
+                        ->body($msg)
+                        ->send();
+
+        }
     }
 
     public
@@ -728,14 +740,14 @@ class FederalFilamentCartPage extends Page implements HasForms
                                                                    Get       $get,
                                                                    Component $livewire
                                                                ) {
-                                                                   $msg = "Estamos buscando informações de";
+                                                                   /*$msg = "Estamos buscando informações de";
                                                                    $msg .= " CEP pra completar dados de endereço!";
                                                                    Notification::make()
                                                                                ->info()
                                                                                ->title('Aguarde informações de CEP!')
                                                                                ->seconds(60)
                                                                                ->body($msg)
-                                                                               ->send();
+                                                                               ->send();*/
 
                                                                    $data = BuscarViaCepService::getData((string)$state);
 
@@ -752,14 +764,14 @@ class FederalFilamentCartPage extends Page implements HasForms
                                                  ->hint("Busca de CEP")
                                                  ->afterStateUpdated(
                                                      function (Set $set, Get $get, Component $livewire) {
-                                                         $msg = "Estamos buscando informações de";
+                                                         /*$msg = "Estamos buscando informações de";
                                                          $msg .= " CEP pra completar dados de endereço!";
                                                          Notification::make()
                                                                      ->info()
                                                                      ->title('Aguarde informações de CEP!')
                                                                      ->seconds(60)
                                                                      ->body($msg)
-                                                                     ->send();
+                                                                     ->send();*/
 
                                                          $data = BuscarViaCepService::getData((string)$get("zipcode"));
 
