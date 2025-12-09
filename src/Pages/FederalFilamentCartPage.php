@@ -770,15 +770,6 @@ class FederalFilamentCartPage extends Page implements HasForms
                                                              $set('city', $data["localidade"]);
                                                              $set('state', $data["uf"]);
                                                          }
-
-                                                         Notification::make()
-                                                                     ->info()
-                                                                     ->title('Próximo passo!')
-                                                                     ->seconds(60)
-                                                                     ->body(
-                                                                         "Informar ou validar os dados do seu endereço, que estão logo abaixo!"
-                                                                     )
-                                                                     ->send();
                                                      }
                                                  )
                                                  ->mask(
