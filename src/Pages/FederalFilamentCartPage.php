@@ -105,8 +105,6 @@ class FederalFilamentCartPage extends Page implements HasForms
         }
 
         $this->loadData();
-
-        $this->form->fill([]);
     }
 
     public
@@ -688,7 +686,7 @@ class FederalFilamentCartPage extends Page implements HasForms
                                                          ) {
                                                              $msg = "Você já possui conta com esse e-mail: {$email}.";
                                                              $msg .= " Clique em 'Já tenho conta' ";
-                                                             $msg .= " paga continuar o checkout!";
+                                                             $msg .= " para continuar o checkout!";
                                                              Notification::make()
                                                                          ->danger()
                                                                          ->title('Usuário já existe!')
