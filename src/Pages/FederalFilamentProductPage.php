@@ -15,6 +15,7 @@ use Filament\Pages\Page;
 use Filament\Forms\Contracts\HasForms;
 use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Livewire\WithPagination;
 use Shieldforce\FederalFilamentStore\Models\Cart;
 
@@ -34,6 +35,7 @@ class FederalFilamentProductPage extends Page implements HasForms
     public array             $files           = [];
     public string            $action          = '';
     public array             $product;
+    public array             $productConfig;
     public float             $totalPrice;
     public                   $uuid;
     public int               $amount;
@@ -107,6 +109,10 @@ class FederalFilamentProductPage extends Page implements HasForms
         $this->amount = 1;
         $this->image_all = false;
         $this->totalPrice = $this->amount * $this->product['price'];
+        $product = DB::table("products")
+                     ->where("uuid", $this->product['uuid'])
+                     ->first();
+        $this->productConfig = $product->configs->first() ?? null;
     }
 
     public
@@ -131,19 +137,21 @@ class FederalFilamentProductPage extends Page implements HasForms
                                  ->reactive()
                                  ->live()
                                  ->required()
-                                 ->default(1)
-                                 ->minValue(1),
+                                 ->default($this->productConfig->limit_min_amount ?? 1)
+                                 ->minValue($this->productConfig->limit_min_amount ?? 1),
 
                         Toggle::make("image_all")
                               ->label("Usar a mesma imagem")
                               ->default(false)
                               ->reactive()
+                              ->visible(fn() => $this->productConfig->image_all ?? true)
                               ->live(),
 
                         Toggle::make("publish_social_network")
                               ->label("Podemos publicar nas redes sociais?")
                               ->default(false)
                               ->reactive()
+                              ->visible(fn() => $this->productConfig->publish_social_network ?? true)
                               ->live(),
 
                         FileUpload::make('files')
@@ -152,6 +160,7 @@ class FederalFilamentProductPage extends Page implements HasForms
                                   ->required()
                                   ->multiple()
                                   ->reactive()
+                                  ->visible(fn() => $this->productConfig->files ?? true)
                                   ->live()
                                   ->image()
                                   ->imageEditor()
