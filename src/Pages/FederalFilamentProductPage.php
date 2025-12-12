@@ -112,9 +112,9 @@ class FederalFilamentProductPage extends Page implements HasForms
         $product = DB::table("products")
                      ->where("uuid", $this->product['uuid'])
                      ->first();
-        $this->productConfig = null;
-
-        dd($product);
+        $this->productConfig = DB::table("config_products")
+                                 ->where("product_id", $product->id)
+                                 ->first();
     }
 
     public
