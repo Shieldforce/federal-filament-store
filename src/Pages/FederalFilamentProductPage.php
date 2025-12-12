@@ -35,7 +35,7 @@ class FederalFilamentProductPage extends Page implements HasForms
     public array             $files           = [];
     public string            $action          = '';
     public array             $product;
-    public array             $productConfig;
+    public                   $productConfig;
     public float             $totalPrice;
     public                   $uuid;
     public int               $amount;
@@ -112,7 +112,7 @@ class FederalFilamentProductPage extends Page implements HasForms
         $product = DB::table("products")
                      ->where("uuid", $this->product['uuid'])
                      ->first();
-        $this->productConfig =  null;
+        $this->productConfig = null;
 
         dd($product);
     }
