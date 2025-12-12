@@ -113,6 +113,8 @@ class FederalFilamentProductPage extends Page implements HasForms
                      ->where("uuid", $this->product['uuid'])
                      ->first();
         $this->productConfig = $product->configs->first() ?? null;
+
+        dd($this->productConfig);
     }
 
     public
