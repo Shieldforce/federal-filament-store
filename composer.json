@@ -23,7 +23,8 @@
         "php": "^8.4",
         "filament/filament": "^3.3",
         "spatie/laravel-package-tools": "^1.15.0",
-        "shieldforce/checkout-payment": "^5.15"
+        "shieldforce/checkout-payment": "^5.15",
+        "rupadana/filament-slider" : "^1.0"
     },
     "require-dev": {
         "laravel/pint": "^1.0",
