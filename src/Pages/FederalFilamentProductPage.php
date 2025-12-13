@@ -145,12 +145,25 @@ class FederalFilamentProductPage extends Page implements HasForms
                         InputSliderGroup::make()
                                         ->sliders(
                                             [
-                                                InputSlider::make('min')
+                                                InputSlider::make('amount')
                                             ]
                                         )
-                                        ->label('Limit'),
+                                        ->min($this?->productConfig?->limit_min_amount ?? 1)
+                                        ->label('Quantidade')
+                                        ->live()
+                                        ->reactive()
+                                        ->default($this?->productConfig?->limit_min_amount ?? 1)
+                                        ->afterStateUpdated(
+                                            function (Get $get, Set $set, $state) {
+                                                $minAmount = $this?->productConfig?->limit_min_amount ?? 1;
+                                                if (isset($state) && $state < $minAmount) {
+                                                    $set("amount", $minAmount);
+                                                }
+                                            }
+                                        )
+                                        ->required(),
 
-                        TextInput::make('amount')
+                        /*TextInput::make('amount')
                                  ->label('Quantidade')
                                  ->numeric()
                                  ->reactive()
@@ -165,7 +178,7 @@ class FederalFilamentProductPage extends Page implements HasForms
                                      }
                                  )
                                  ->default($this?->productConfig?->limit_min_amount ?? 1)
-                                 ->minValue($this?->productConfig?->limit_min_amount ?? 1),
+                                 ->minValue($this?->productConfig?->limit_min_amount ?? 1),*/
 
                         Toggle::make("image_all")
                               ->label("Usar a mesma imagem")
