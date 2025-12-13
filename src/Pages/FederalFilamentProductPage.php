@@ -106,10 +106,6 @@ class FederalFilamentProductPage extends Page implements HasForms
             $this->images[] = env("APP_URL")."/storage/".$image['path'];
         }
 
-        $this->amount = $this?->productConfig?->limit_min_amount ?? 1;
-
-        dd($this->amount);
-
         $this->image_all = false;
         $this->totalPrice = $this->amount * $this->product['price'];
         $product = DB::table("products")
@@ -118,6 +114,10 @@ class FederalFilamentProductPage extends Page implements HasForms
         $this->productConfig = DB::table("config_products")
                                  ->where("product_id", $product->id)
                                  ->first();
+
+        $this->amount = $this?->productConfig?->limit_min_amount ?? 1;
+
+        //dd($this->amount);
     }
 
     public
