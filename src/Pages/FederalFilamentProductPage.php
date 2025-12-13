@@ -128,7 +128,8 @@ class FederalFilamentProductPage extends Page implements HasForms
         }
 
         if ($property == 'amount' && !isset($this->amount)) {
-            $this->totalPrice = 0.00;
+            $this->amount = $this?->productConfig?->limit_min_amount ?? 1;
+            $this->totalPrice = $this->amount * $this->product['price'];
         }
     }
 
@@ -136,13 +137,6 @@ class FederalFilamentProductPage extends Page implements HasForms
     function getFormSchema(): array
     {
         $minAmount = $this?->productConfig?->limit_min_amount ?? 1;
-        $maxAmount = 1000;
-        $step = 1;
-
-        if ($minAmount > 99) {
-            $maxAmount = 10000;
-            $step = 50;
-        }
 
         return [
             Grid::make(1)
@@ -156,15 +150,14 @@ class FederalFilamentProductPage extends Page implements HasForms
                                  ->debounce(3)
                                  ->required()
                                  ->afterStateUpdated(
-                                     function (Get $get, Set $set, $state) {
-                                         $minAmount = $this?->productConfig?->limit_min_amount ?? 1;
+                                     function (Get $get, Set $set, $state) use ($minAmount) {
                                          if (isset($state) && $state < $minAmount) {
                                              $set("amount", $minAmount);
                                          }
                                      }
                                  )
-                                 ->default($this?->productConfig?->limit_min_amount ?? 1)
-                                 ->minValue($this?->productConfig?->limit_min_amount ?? 1),
+                                 ->default($minAmount)
+                                 ->minValue($minAmount),
 
                         Toggle::make("image_all")
                               ->label("Usar a mesma imagem")
