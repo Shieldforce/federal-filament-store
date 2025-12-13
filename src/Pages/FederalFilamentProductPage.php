@@ -35,11 +35,11 @@ class FederalFilamentProductPage extends Page implements HasForms
     public array             $images          = [];
     public array             $files           = [];
     public string            $action          = '';
+    public int               $amount          = 1;
     public array             $product;
     public                   $productConfig;
     public float             $totalPrice;
     public                   $uuid;
-    public int               $amount;
     public bool              $image_all;
     public bool              $publish_social_network;
 
