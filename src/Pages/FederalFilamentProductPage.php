@@ -161,6 +161,8 @@ class FederalFilamentProductPage extends Page implements HasForms
                                                 }
                                             }
                                         )
+                                        ->step(1)
+                                        ->enableTooltips()
                                         ->required(),
 
                         /*TextInput::make('amount')
