@@ -35,7 +35,7 @@ class FederalFilamentProductPage extends Page implements HasForms
     public array             $images          = [];
     public array             $files           = [];
     public string            $action          = '';
-    public                   $amount          = 1;
+    public int               $amount          = 1;
     public array             $product;
     public                   $productConfig;
     public float             $totalPrice;
@@ -117,7 +117,7 @@ class FederalFilamentProductPage extends Page implements HasForms
 
         $this->amount = $this?->productConfig?->limit_min_amount ?? 1;
         $this->image_all = false;
-        $this->totalPrice = $this->amount * $this->product['price'];
+        $this->totalPrice = (int) $this->amount * (float) $this->product['price'];
     }
 
     public
@@ -125,7 +125,7 @@ class FederalFilamentProductPage extends Page implements HasForms
         $property
     ) {
         if ($property == 'amount') {
-            $this->totalPrice = $this->amount * $this->product['price'];
+            $this->totalPrice = (int) $this->amount * (float) $this->product['price'];
         }
     }
 
