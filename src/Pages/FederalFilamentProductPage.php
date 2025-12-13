@@ -128,8 +128,8 @@ class FederalFilamentProductPage extends Page implements HasForms
         }
 
         if ($property == 'amount' && !isset($this->amount)) {
-            $this->amount = $this?->productConfig?->limit_min_amount ?? 1;
-            $this->totalPrice = $this->amount * $this->product['price'];
+            $minAmount = $this?->productConfig?->limit_min_amount ?? 1;
+            $this->totalPrice = $minAmount * $this->product['price'];
         }
     }
 
