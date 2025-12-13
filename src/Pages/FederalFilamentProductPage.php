@@ -142,14 +142,14 @@ class FederalFilamentProductPage extends Page implements HasForms
                                  ->reactive()
                                  ->live()
                                  ->required()
-                                 ->afterStateUpdated(
+                                 /*->afterStateUpdated(
                                      function (Get $get, Set $set, $state) {
                                          $minAmount = $this?->productConfig?->limit_min_amount ?? 1;
                                          if (isset($state) && $state < $minAmount) {
                                              $set("amount", $minAmount);
                                          }
                                      }
-                                 )
+                                 )*/
                                  ->default($this?->productConfig?->limit_min_amount ?? 1)
                                  ->minValue($this?->productConfig?->limit_min_amount ?? 1),
 
