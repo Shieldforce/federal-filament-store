@@ -145,7 +145,17 @@ class FederalFilamentProductPage extends Page implements HasForms
                                  ->debounce(3)
                                  ->required()
                                  ->default($minAmount)
-                                 ->minValue($minAmount),
+                                 ->rule(
+                                     function (Get $get) use ($minAmount) {
+                                         return function (string $attribute, $value, $fail) use ($get, $minAmount) {
+                                             if ($minAmount < $value) {
+                                                 $fail(
+                                                     "Quantidade é menor que a quantidade mínima!"
+                                                 );
+                                             }
+                                         };
+                                     }
+                                 ),
 
                         Toggle::make("image_all")
                               ->label("Usar a mesma imagem")
