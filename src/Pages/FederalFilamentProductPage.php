@@ -144,8 +144,9 @@ class FederalFilamentProductPage extends Page implements HasForms
                                  ->required()
                                  ->afterStateUpdated(
                                      function (Get $get, Set $set, $state) {
-                                         if (isset($state) && $state < $this?->productConfig?->limit_min_amount) {
-                                             $set("amount", $this?->productConfig?->limit_min_amount);
+                                         $minAmount = $this?->productConfig?->limit_min_amount ?? 1;
+                                         if (isset($state) && $state < $minAmount) {
+                                             $set("amount", $minAmount);
                                          }
                                      }
                                  )
