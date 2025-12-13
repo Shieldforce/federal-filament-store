@@ -144,7 +144,7 @@ class FederalFilamentProductPage extends Page implements HasForms
                                  ->live()
                                  ->debounce(3)
                                  ->required()
-                                 ->default($minAmount)
+                                 //->default($minAmount)
                                  ->rule(
                                      function (Get $get) use ($minAmount) {
                                          return function (string $attribute, $value, $fail) use ($get, $minAmount) {
