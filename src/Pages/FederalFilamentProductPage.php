@@ -154,7 +154,7 @@ class FederalFilamentProductPage extends Page implements HasForms
                                          return function (string $attribute, $value, $fail) use ($get, $minAmount) {
                                              if ($minAmount > $value) {
                                                  $fail(
-                                                     "Quantidade é menor que a quantidade mínima!"
+                                                     "Quantidade mínima {$minAmount} é obrigatório."
                                                  );
                                              }
                                          };
