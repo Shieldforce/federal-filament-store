@@ -124,9 +124,9 @@ class FederalFilamentProductPage extends Page implements HasForms
     function updated(
         $property
     ) {
-        /*if ($property == 'amount') {
+        if ($property == 'amount' && $this->amount) {
             $this->totalPrice = $this->amount * $this->product['price'];
-        }*/
+        }
     }
 
     protected
