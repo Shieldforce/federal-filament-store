@@ -138,6 +138,15 @@ class FederalFilamentProductPage extends Page implements HasForms
     protected
     function getFormSchema(): array
     {
+        $minAmount = $this?->productConfig?->limit_min_amount ?? 1;
+        $maxAmount = 1000;
+        $step = 1;
+
+        if($minAmount > 99) {
+            $maxAmount = 10000;
+            $step = 50;
+        }
+
         return [
             Grid::make(1)
                 ->schema(
@@ -148,21 +157,20 @@ class FederalFilamentProductPage extends Page implements HasForms
                                                 InputSlider::make('amount')
                                             ]
                                         )
-                                        ->min($this?->productConfig?->limit_min_amount ?? 1)
-                                        ->max(100000)
+                                        ->min($minAmount)
+                                        ->max($maxAmount)
                                         ->label('Quantidade')
                                         ->live()
                                         ->reactive()
-                                        ->default($this?->productConfig?->limit_min_amount ?? 1)
+                                        ->default($minAmount)
                                         ->afterStateUpdated(
-                                            function (Get $get, Set $set, $state) {
-                                                $minAmount = $this?->productConfig?->limit_min_amount ?? 1;
+                                            function (Get $get, Set $set, $state) use ($minAmount) {
                                                 if (isset($state) && $state < $minAmount) {
                                                     $set("amount", $minAmount);
                                                 }
                                             }
                                         )
-                                        ->step(1)
+                                        ->step($step)
                                         ->enableTooltips()
                                         ->required(),
 
