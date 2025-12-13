@@ -2,7 +2,6 @@
 
 namespace Shieldforce\FederalFilamentStore\Pages;
 
-use Closure;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\TextInput;
@@ -18,8 +17,6 @@ use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Livewire\WithPagination;
-use Rupadana\FilamentSlider\Components\InputSlider;
-use Rupadana\FilamentSlider\Components\InputSliderGroup;
 use Shieldforce\FederalFilamentStore\Models\Cart;
 
 class FederalFilamentProductPage extends Page implements HasForms
@@ -151,30 +148,6 @@ class FederalFilamentProductPage extends Page implements HasForms
             Grid::make(1)
                 ->schema(
                     [
-                        /*InputSliderGroup::make()
-                                        ->sliders(
-                                            [
-                                                InputSlider::make('amount')
-                                                    ->live()
-                                                    ->reactive()
-                                                    ->default($minAmount)
-                                                    ->afterStateUpdated(
-                                                        function (Get $get, Set $set, $state) use ($minAmount) {
-                                                            if (isset($state) && $state < $minAmount) {
-                                                                $set("amount", $minAmount);
-                                                            }
-                                                        }
-                                                    ),
-
-                                            ]
-                                        )
-                                        ->min($minAmount)
-                                        ->max($maxAmount)
-                                        ->label('Quantidade')
-                                        ->step($step)
-                                        ->enableTooltips()
-                                        ->required(),*/
-
                         TextInput::make('amount')
                                  ->label('Quantidade')
                                  ->numeric()
