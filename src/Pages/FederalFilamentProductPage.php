@@ -149,6 +149,7 @@ class FederalFilamentProductPage extends Page implements HasForms
                                             ]
                                         )
                                         ->min($this?->productConfig?->limit_min_amount ?? 1)
+                                        ->max(100000)
                                         ->label('Quantidade')
                                         ->live()
                                         ->reactive()
