@@ -107,6 +107,9 @@ class FederalFilamentProductPage extends Page implements HasForms
         }
 
         $this->amount = $this?->productConfig?->limit_min_amount ?? 1;
+
+        dd($this->amount);
+
         $this->image_all = false;
         $this->totalPrice = $this->amount * $this->product['price'];
         $product = DB::table("products")
