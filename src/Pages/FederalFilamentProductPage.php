@@ -9,6 +9,7 @@ use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Get;
+use Filament\Forms\Set;
 use Filament\Notifications\Actions\Action;
 use Filament\Notifications\Notification;
 use Filament\Pages\Page;
@@ -141,6 +142,13 @@ class FederalFilamentProductPage extends Page implements HasForms
                                  ->reactive()
                                  ->live()
                                  ->required()
+                                 ->afterStateUpdated(
+                                     function (Get $get, Set $set, $state) {
+                                         if($state > $this?->productConfig?->limit_min_amount) {
+                                             $set("amount", $this?->productConfig?->limit_min_amount);
+                                         }
+                                     }
+                                 )
                                  ->default($this?->productConfig?->limit_min_amount ?? 1)
                                  ->minValue($this?->productConfig?->limit_min_amount ?? 1),
 
