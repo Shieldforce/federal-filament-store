@@ -7,6 +7,7 @@ use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
+use Filament\Forms\Components\ViewField;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Get;
 use Filament\Forms\Set;
@@ -140,6 +141,14 @@ class FederalFilamentProductPage extends Page implements HasForms
             Grid::make(1)
                 ->schema(
                     [
+                        TextInput::make('rate')
+                                 ->label('Avaliação')
+                                 ->numeric()
+                                 ->minValue(1)
+                                 ->maxValue(5)
+                                 ->step(1)
+                                 ->required(),
+
                         TextInput::make('amount')
                                  ->label('Quantidade')
                                  ->numeric()
