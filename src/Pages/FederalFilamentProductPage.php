@@ -157,21 +157,22 @@ class FederalFilamentProductPage extends Page implements HasForms
                                         ->sliders(
                                             [
                                                 InputSlider::make('amount')
+                                                    ->live()
+                                                    ->reactive()
+                                                    ->default($minAmount)
+                                                    ->afterStateUpdated(
+                                                        function (Get $get, Set $set, $state) use ($minAmount) {
+                                                            if (isset($state) && $state < $minAmount) {
+                                                                $set("amount", $minAmount);
+                                                            }
+                                                        }
+                                                    ),
+
                                             ]
                                         )
                                         ->min($minAmount)
                                         ->max($maxAmount)
                                         ->label('Quantidade')
-                                        ->live()
-                                        ->reactive()
-                                        ->default($minAmount)
-                                        ->afterStateUpdated(
-                                            function (Get $get, Set $set, $state) use ($minAmount) {
-                                                if (isset($state) && $state < $minAmount) {
-                                                    $set("amount", $minAmount);
-                                                }
-                                            }
-                                        )
                                         ->step($step)
                                         ->enableTooltips()
                                         ->required(),
