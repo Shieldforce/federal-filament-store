@@ -69,8 +69,12 @@
                             {{-- IMAGEM --}}
                             <div class="w-24 h-24 flex-none bg-gray-100 rounded-xl overflow-hidden">
                                 <img
-                                    src="{{ asset("storage/{$item['data_product']['files'][0]}") }}" alt="{{ $item['name'] }}"
-                                     class="w-full h-full object-cover"
+                                    src="{{
+                                        isset($item['data_product']['files'][0])
+                                        ? asset("storage/{$item['data_product']['files'][0]}")
+                                        : asset('vendor/federal-filament-store/files/not-products-image.png') }}"
+                                    alt="{{ $item['name'] }}"
+                                    class="w-full h-full object-cover"
                                     style="width: 200px;height: 130px;"
                                 >
                             </div>
