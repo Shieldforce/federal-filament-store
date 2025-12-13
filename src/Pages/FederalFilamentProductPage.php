@@ -126,8 +126,6 @@ class FederalFilamentProductPage extends Page implements HasForms
     function updated(
         $property
     ) {
-        dd($property, $this->amount);
-
         if ($property == 'amount' && isset($this->amount)) {
             $this->totalPrice = $this->amount * $this->product['price'];
         }
@@ -144,7 +142,7 @@ class FederalFilamentProductPage extends Page implements HasForms
         $maxAmount = 1000;
         $step = 1;
 
-        if($minAmount > 99) {
+        if ($minAmount > 99) {
             $maxAmount = 10000;
             $step = 50;
         }
@@ -153,7 +151,7 @@ class FederalFilamentProductPage extends Page implements HasForms
             Grid::make(1)
                 ->schema(
                     [
-                        InputSliderGroup::make()
+                        /*InputSliderGroup::make()
                                         ->sliders(
                                             [
                                                 InputSlider::make('amount')
@@ -175,13 +173,14 @@ class FederalFilamentProductPage extends Page implements HasForms
                                         ->label('Quantidade')
                                         ->step($step)
                                         ->enableTooltips()
-                                        ->required(),
+                                        ->required(),*/
 
-                        /*TextInput::make('amount')
+                        TextInput::make('amount')
                                  ->label('Quantidade')
                                  ->numeric()
                                  ->reactive()
                                  ->live()
+                                 ->debounce(3)
                                  ->required()
                                  ->afterStateUpdated(
                                      function (Get $get, Set $set, $state) {
@@ -192,7 +191,7 @@ class FederalFilamentProductPage extends Page implements HasForms
                                      }
                                  )
                                  ->default($this?->productConfig?->limit_min_amount ?? 1)
-                                 ->minValue($this?->productConfig?->limit_min_amount ?? 1),*/
+                                 ->minValue($this?->productConfig?->limit_min_amount ?? 1),
 
                         Toggle::make("image_all")
                               ->label("Usar a mesma imagem")
