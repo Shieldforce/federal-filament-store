@@ -115,6 +115,8 @@ class FederalFilamentCartPage extends Page implements HasForms
 
         $this->items = json_decode($this?->cart?->items ?? "[]", true);
 
+        dd($this->items);
+
         $this->totalPrice = collect($this->items)->sum(
             function ($item) {
                 return $item['price'] * $item['amount'];

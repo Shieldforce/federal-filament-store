@@ -39,7 +39,6 @@
 
                         <div class="relative overflow-hidden">
                             <img
-
                                 style="height: 100% !important;"
                                 src="{{ $product['image']
                                         ? asset("storage/{$product['image']}")
