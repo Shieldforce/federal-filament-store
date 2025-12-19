@@ -109,12 +109,34 @@ class FederalFilamentCartPage extends Page implements HasForms
 
     public function decreaseQty()
     {
-        dd("1");
+        Notification::make()
+                    ->info()
+                    ->title('Não removido!')
+                    ->seconds(5)
+                    ->body("Não é possível remover um item, existem regras de montagem de carrinho!")
+                    ->send();
     }
 
     public function increaseQty()
     {
-        dd("2");
+        Notification::make()
+                    ->info()
+                    ->title('Não adicionado!')
+                    ->seconds(5)
+                    ->body("Não é possível adicionar um item, existem regras de montagem de carrinho!")
+                    ->send();
+    }
+
+    public function removeItem()
+    {
+        dd(json_decode($this->cart->items, true));
+
+        Notification::make()
+                    ->info()
+                    ->title('Remover todos!')
+                    ->seconds(5)
+                    ->body("Todos os itens removidos com sucesso!")
+                    ->send();
     }
 
     public
