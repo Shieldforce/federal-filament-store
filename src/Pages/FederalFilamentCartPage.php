@@ -134,9 +134,11 @@ class FederalFilamentCartPage extends Page implements HasForms
 
         $this->items = json_decode($this?->cart?->items ?? "[]", true);
 
-        unset($this->items[$uuid]);
+        $ar = array_column($this->items, "uuid");
 
-        dd($this->items);
+        //unset($this->items[$uuid]);
+
+        dd($ar);
 
         $this->cart->update(["items" => json_encode($this->items)]);
 
