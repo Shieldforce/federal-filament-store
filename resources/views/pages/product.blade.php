@@ -77,12 +77,14 @@
                                flex items-center justify-center
                                bg-gray-100 dark:bg-gray-900
                                overflow-hidden rounded-xl shadow-lg"
+                        style="height: 200px"
                     >
                         <img
                             :src="images[selected]"
                             alt=""
                             class="max-w-full max-h-full object-contain
                                    transition-opacity duration-500"
+                            style="height: auto"
                         />
                     </div>
 
