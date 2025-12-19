@@ -136,6 +136,8 @@ class FederalFilamentCartPage extends Page implements HasForms
 
         unset($this->items[$uuid]);
 
+        dd($this->items);
+
         $this->cart->update(["items" => json_encode($this->items)]);
 
         Notification::make()
