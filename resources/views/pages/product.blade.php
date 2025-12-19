@@ -68,12 +68,6 @@
                         }
                     }"
                     class="relative w-full"
-                    style="background: linear-gradient(
-                        to top,
-                        rgba(0,0,0,0.45),
-                        rgba(0,0,0,0),
-                        rgba(0,0,0,0.35)
-                    );"
                 >
 
                     {{-- CONTAINER DA IMAGEM (ALTURA MÁX 400px, SEM CORTE) --}}
@@ -83,7 +77,12 @@
                                flex items-center justify-center
                                bg-gray-100 dark:bg-gray-900
                                overflow-hidden rounded-xl shadow-lg"
-                        style="height: 350px"
+                        style="height: 350px; background: linear-gradient(
+                        to top,
+                        rgba(0,0,0,0.45),
+                        rgba(0,0,0,0),
+                        rgba(0,0,0,0.35)
+                    );"
                     >
                         <img
                             :src="images[selected]"
