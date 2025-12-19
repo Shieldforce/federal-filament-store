@@ -107,7 +107,8 @@ class FederalFilamentCartPage extends Page implements HasForms
         $this->loadData();
     }
 
-    public function decreaseQty()
+    public
+    function decreaseQty()
     {
         Notification::make()
                     ->info()
@@ -117,7 +118,8 @@ class FederalFilamentCartPage extends Page implements HasForms
                     ->send();
     }
 
-    public function increaseQty()
+    public
+    function increaseQty()
     {
         Notification::make()
                     ->info()
@@ -127,8 +129,10 @@ class FederalFilamentCartPage extends Page implements HasForms
                     ->send();
     }
 
-    public function removeItem($uuid)
-    {
+    public
+    function removeItem(
+        $uuid
+    ) {
         $this->cart = Cart::where("identifier", request()->cookie("ffs_identifier"))
                           ->first();
 
@@ -136,11 +140,9 @@ class FederalFilamentCartPage extends Page implements HasForms
 
         $ar = array_column($this->items, "uuid");
 
-        $ars = array_search($uuid, $this->items);
+        $ars = array_search($uuid, $ar);
 
-        //unset($this->items[$uuid]);
-
-        dd($ar, $ars);
+        unset($this->items[$ars]);
 
         $this->cart->update(["items" => json_encode($this->items)]);
 
