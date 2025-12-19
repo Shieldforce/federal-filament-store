@@ -280,8 +280,6 @@ class FederalFilamentProductPage extends Page implements HasForms
 
         $exists = false;
 
-        dd($this->product);
-
         $cart = isset($cartModel->items) ? json_decode($cartModel->items, true) : [];
 
         foreach ($cart as &$item) {
@@ -294,13 +292,18 @@ class FederalFilamentProductPage extends Page implements HasForms
 
         $data = $this->form->getState();
 
+        dd($cart);
+
         if (!$exists) {
             $cart[] = [
                 'uuid'         => $this->product['uuid'],
                 'name'         => $this->product['name'],
                 'amount'       => (int)$this->amount,
                 'price'        => $this->product['price'],
-                'data_product' => $data,
+                'data_product' => [
+                    "amount" => $data["amount"],
+                    "files" => $cartModel,
+                ],
             ];
         }
 
