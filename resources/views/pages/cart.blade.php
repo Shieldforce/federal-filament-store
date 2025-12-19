@@ -87,19 +87,19 @@
 
                                     {{-- CONTROLES --}}
                                     <div class="flex items-center gap-3">
-                                        <button
+                                        {{--<button
                                             wire:click="decreaseQty('{{ $item['uuid'] }}')"
                                             class="w-8 h-8 flex items-center justify-center border rounded-full hover:bg-gray-100"
-                                        >–</button>
+                                        >–</button>--}}
 
                                         <span class="font-semibold text-lg">
                                             {{ $item['amount'] }}
                                         </span>
 
-                                        <button
+                                        {{--<button
                                             wire:click="increaseQty('{{ $item['uuid'] }}')"
                                             class="w-8 h-8 flex items-center justify-center border rounded-full hover:bg-gray-100"
-                                        >+</button>
+                                        >+</button>--}}
                                     </div>
 
                                     {{-- SUBTOTAL --}}
