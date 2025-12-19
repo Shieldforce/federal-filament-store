@@ -68,6 +68,17 @@
                         }
                     }"
                     class="relative w-full"
+                    style="
+                        position: absolute;
+                        inset: 0;
+                        background: linear-gradient(
+                            to top,
+                            rgba(0,0,0,0.45),
+                            rgba(0,0,0,0),
+                            rgba(0,0,0,0.35)
+                        );
+                        pointer-events: none;
+                    "
                 >
 
                     {{-- CONTAINER DA IMAGEM (ALTURA MÁX 400px, SEM CORTE) --}}
