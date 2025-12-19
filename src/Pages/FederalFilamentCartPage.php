@@ -146,7 +146,13 @@ class FederalFilamentCartPage extends Page implements HasForms
 
         $this->cart->update(["items" => json_encode($this->items)]);
 
-        $this->redirect("/admin/ffs-cart");
+        $route = "/admin/ffs-cart";
+
+        if(count($this->items) > 1) {
+            $route = "/admin/ffs-store";
+        }
+
+        $this->redirect($route);
 
         Notification::make()
                     ->info()
