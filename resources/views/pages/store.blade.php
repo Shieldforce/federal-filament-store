@@ -39,7 +39,7 @@
 
                         <div class="relative overflow-hidden">
                             <img
-                                style="height: 100% !important;"
+                                style="height: 100% !important;max-height: 150px;"
                                 src="{{ $product['image']
                                         ? asset("storage/{$product['image']}")
                                         : asset('vendor/federal-filament-store/files/not-products-image.png') }}"
