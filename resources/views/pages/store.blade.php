@@ -37,13 +37,14 @@
                         style="border-radius: 10px !important;"
                     >
 
-                        <div class="relative h-48 flex items-center justify-center bg-gray-100 dark:bg-gray-900 overflow-hidden">
+                        <div class="relative overflow-hidden">
                             <img
+
+                                style="height: 100% !important;"
                                 src="{{ $product['image']
-            ? asset("storage/{$product['image']}")
-            : asset('vendor/federal-filament-store/files/not-products-image.png') }}"
-                                class="max-w-full max-h-full object-contain transition-transform duration-300 group-hover:scale-105"
-                                alt="{{ $product['name'] }}"
+                                        ? asset("storage/{$product['image']}")
+                                        : asset('vendor/federal-filament-store/files/not-products-image.png') }}"
+                                class="w-full h-48 object-cover transition-transform duration-300 group-hover:scale-105"
                             />
                         </div>
 
