@@ -107,6 +107,16 @@ class FederalFilamentCartPage extends Page implements HasForms
         $this->loadData();
     }
 
+    public function decreaseQty()
+    {
+        dd("1");
+    }
+
+    public function increaseQty()
+    {
+        dd("2");
+    }
+
     public
     function loadData()
     {
