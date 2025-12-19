@@ -136,7 +136,7 @@ class FederalFilamentCartPage extends Page implements HasForms
 
         $ar = array_column($this->items, "uuid");
 
-        $ars = array_search($uuid, $ar);
+        $ars = array_search($uuid, $this->items);
 
         //unset($this->items[$uuid]);
 
