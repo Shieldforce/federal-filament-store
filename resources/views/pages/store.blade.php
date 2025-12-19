@@ -37,7 +37,7 @@
                         style="border-radius: 10px !important;"
                     >
 
-                        <div class="relative overflow-hidden" style="height: 170px !important; padding: 10px;">
+                        <div class="relative overflow-hidden" style="height: 170px !important; padding: 1px;">
                             <img
                                 style="height: auto !important;"
                                 src="{{ $product['image']
