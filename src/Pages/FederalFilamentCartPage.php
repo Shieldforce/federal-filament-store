@@ -129,6 +129,11 @@ class FederalFilamentCartPage extends Page implements HasForms
 
     public function removeItem()
     {
+        $this->cart = Cart::where("identifier", request()->cookie("ffs_identifier"))
+                          ->first();
+
+        $this->items = json_decode($this?->cart?->items ?? "[]", true);
+
         dd(json_decode($this->cart->items, true));
 
         Notification::make()
