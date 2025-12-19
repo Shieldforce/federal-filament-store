@@ -70,8 +70,8 @@
                             <div class="w-24 h-24 flex-none bg-gray-100 rounded-xl overflow-hidden">
                                 <img
                                     src="{{
-                                        isset($item['data_product']['files'][0])
-                                        ? asset("storage/{$item['data_product']['files'][0]}")
+                                        isset($item['data_product']['image'])
+                                        ? asset("storage/{$item['data_product']['image']}")
                                         : asset('vendor/federal-filament-store/files/not-products-image.png') }}"
                                     alt="{{ $item['name'] }}"
                                     class="w-full h-full object-cover"
@@ -87,7 +87,7 @@
                                         {{ $item['name'] }}
                                     </h3>
                                     <p class="text-sm text-gray-500">
-                                        {{ count($item['data_product']['files'] ?? []) }}
+                                        {{ count($item['data_product']['images'] ?? []) }}
                                         imagens upadas para esse produto
                                     </p>
                                 </div>
