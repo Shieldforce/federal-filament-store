@@ -69,7 +69,7 @@
                             {{-- IMAGEM --}}
                             <div class="w-24 h-24 flex-none bg-gray-100 rounded-xl overflow-hidden">
 
-                                @dd($item['data_product'])
+                                @dd($item)
 
                                 <img
                                     src="{{
