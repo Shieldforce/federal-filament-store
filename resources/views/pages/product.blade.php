@@ -77,7 +77,7 @@
                                flex items-center justify-center
                                bg-gray-100 dark:bg-gray-900
                                overflow-hidden rounded-xl shadow-lg"
-                        style="height: 200px"
+                        style="height: 300px"
                     >
                         <img
                             :src="images[selected]"
