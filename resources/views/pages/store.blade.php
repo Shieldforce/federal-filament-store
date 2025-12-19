@@ -37,9 +37,9 @@
                         style="border-radius: 10px !important;"
                     >
 
-                        <div class="relative overflow-hidden" style="height: 170px !important;">
+                        <div class="relative overflow-hidden" style="height: 170px !important; padding: 10px;">
                             <img
-                                style="height: 100% !important;"
+                                style="height: auto !important;"
                                 src="{{ $product['image']
                                         ? asset("storage/{$product['image']}")
                                         : asset('vendor/federal-filament-store/files/not-products-image.png') }}"
