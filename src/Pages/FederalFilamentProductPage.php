@@ -292,7 +292,7 @@ class FederalFilamentProductPage extends Page implements HasForms
 
         $data = $this->form->getState();
 
-        dd($cart);
+        dd($this->product);
 
         if (!$exists) {
             $cart[] = [
@@ -302,7 +302,7 @@ class FederalFilamentProductPage extends Page implements HasForms
                 'price'        => $this->product['price'],
                 'data_product' => [
                     "amount" => $data["amount"],
-                    "files" => $cartModel,
+                    "files" => $this->product["images"],
                 ],
             ];
         }
