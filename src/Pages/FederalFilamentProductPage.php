@@ -280,6 +280,8 @@ class FederalFilamentProductPage extends Page implements HasForms
 
         $exists = false;
 
+        dd($this->product);
+
         $cart = isset($cartModel->items) ? json_decode($cartModel->items, true) : [];
 
         foreach ($cart as &$item) {
