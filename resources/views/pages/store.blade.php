@@ -48,7 +48,7 @@
                         </div>
 
                         <div class="p-4 flex flex-col gap-3">
-                            <h3 class="font-semibold text-lg" title="{{ Str::limit($product['name'], 300) }}">{{ Str::limit($product['name'], 17) }}</h3>
+                            <h3 class="font-semibold text-lg" title="{{ Str::limit($product['name'], 300) }}">{{ Str::limit($product['name'], 25) }}</h3>
                             <p class="text-gray-500 text-sm">{{ $product['code'] ? Str::limit($product['code'], 17) : '' }}</p>
 
                             <div class="flex items-center justify-between mt-auto pt-2">
