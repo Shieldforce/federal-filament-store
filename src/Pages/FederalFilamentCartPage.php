@@ -110,6 +110,11 @@ class FederalFilamentCartPage extends Page implements HasForms
     public
     function decreaseQty()
     {
+        $this->cart = Cart::where("identifier", request()->cookie("ffs_identifier"))
+                          ->first();
+
+        $this->items = json_decode($this?->cart?->items ?? "[]", true);
+
         Notification::make()
                     ->info()
                     ->title('Não removido!')
@@ -121,6 +126,11 @@ class FederalFilamentCartPage extends Page implements HasForms
     public
     function increaseQty()
     {
+        $this->cart = Cart::where("identifier", request()->cookie("ffs_identifier"))
+                          ->first();
+
+        $this->items = json_decode($this?->cart?->items ?? "[]", true);
+
         Notification::make()
                     ->info()
                     ->title('Não adicionado!')
