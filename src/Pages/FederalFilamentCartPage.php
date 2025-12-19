@@ -148,7 +148,7 @@ class FederalFilamentCartPage extends Page implements HasForms
 
         $route = "/admin/ffs-cart";
 
-        if(count($this->items) > 1) {
+        if(count($this->items) < 1) {
             $route = "/admin/ffs-store";
         }
 
