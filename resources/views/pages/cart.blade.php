@@ -41,47 +41,49 @@
             <div class="space-y-4">
                 @forelse($this->items as $item)
 
-                    <div class="flex gap-4 p-4 rounded-xl border bg-white shadow-sm items-start">
+                    <div class="flex gap-4 p-4 rounded-xl border bg-white shadow-sm">
 
-                        {{-- IMAGEM COM LIMITE FIXO --}}
+                        {{-- IMAGEM (PROPORCIONAL E MENOR) --}}
                         <div
-                            class="w-[140px] h-[140px] max-w-[140px] max-h-[140px]
-               flex-none flex items-center justify-center
-               bg-gray-100 rounded-xl overflow-hidden"
+                            class="w-[140px] h-[140px] flex-none
+                                   flex items-center justify-center
+                                   bg-gray-100 rounded-xl overflow-hidden"
                         >
                             <img
+                                style="height: 170px !important;"
                                 src="{{ isset($item['data_product']['image'])
-                ? asset("storage/{$item['data_product']['image']}")
-                : asset('vendor/federal-filament-store/files/not-products-image.png') }}"
+                                    ? asset("storage/{$item['data_product']['image']}")
+                                    : asset('vendor/federal-filament-store/files/not-products-image.png') }}"
                                 alt="{{ $item['name'] }}"
                                 class="max-w-full max-h-full object-contain"
                             >
                         </div>
 
-                        {{-- CONTEÚDO --}}
-                        <div class="flex-1 flex flex-col text-left">
+                        {{-- INFORMAÇÕES --}}
+                        <div class="flex-1 flex flex-col justify-between text-left">
 
-                            {{-- TÍTULO --}}
-                            <h3 class="text-lg font-semibold leading-tight">
-                                {{ $item['name'] }}
-                            </h3>
+                            {{-- TÍTULO + INFO --}}
+                            <div class="space-y-1">
+                                <h3 class="text-lg font-semibold leading-tight">
+                                    {{ $item['name'] }}
+                                </h3>
 
-                            {{-- SUBINFO --}}
-                            <p class="text-sm text-gray-500 mt-1">
-                                {{ count($item['data_product']['images'] ?? []) }}
-                                imagens cadastradas
-                            </p>
+                                <p class="text-sm text-gray-500">
+                                    {{ count($item['data_product']['images'] ?? []) }}
+                                    imagens cadastradas
+                                </p>
+                            </div>
 
                             {{-- QUANTIDADE --}}
-                            <div class="flex items-center gap-3 mt-4">
+                            <div class="flex items-center gap-3 mt-3">
                                 <button
                                     wire:click="decreaseQty('{{ $item['uuid'] }}')"
                                     class="w-8 h-8 flex items-center justify-center border rounded-full hover:bg-gray-100"
                                 >–</button>
 
                                 <span class="font-semibold text-lg">
-                {{ $item['amount'] }}
-            </span>
+                                    {{ $item['amount'] }}
+                                </span>
 
                                 <button
                                     wire:click="increaseQty('{{ $item['uuid'] }}')"
@@ -89,18 +91,19 @@
                                 >+</button>
                             </div>
 
-                            {{-- PREÇO --}}
-                            <p class="font-semibold text-lg mt-4">
-                                R$ {{ number_format($item['price'] * $item['amount'], 2, ',', '.') }}
-                            </p>
+                            {{-- PREÇO + REMOVER --}}
+                            <div class="mt-3">
+                                <p class="font-semibold text-lg">
+                                    R$ {{ number_format($item['price'] * $item['amount'], 2, ',', '.') }}
+                                </p>
 
-                            {{-- REMOVER --}}
-                            <button
-                                wire:click="removeItem('{{ $item['uuid'] }}')"
-                                class="text-red-500 text-sm hover:underline mt-1"
-                            >
-                                Remover
-                            </button>
+                                <button
+                                    wire:click="removeItem('{{ $item['uuid'] }}')"
+                                    class="text-red-500 text-sm hover:underline"
+                                >
+                                    Remover
+                                </button>
+                            </div>
 
                         </div>
 
