@@ -106,7 +106,6 @@ class FederalFilamentProductPage extends Page implements HasForms
             $this->images[] = env("APP_URL")."/storage/".$image['path'];
         }
 
-
         $product = DB::table("products")
                      ->where("uuid", $this->product['uuid'])
                      ->first();
