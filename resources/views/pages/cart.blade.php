@@ -68,9 +68,6 @@
 
                             {{-- IMAGEM --}}
                             <div class="w-24 h-24 flex-none bg-gray-100 rounded-xl overflow-hidden">
-
-                                @dd($item)
-
                                 <img
                                     src="{{
                                         isset($item['data_product']['files'][0])
