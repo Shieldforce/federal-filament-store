@@ -146,11 +146,13 @@ class FederalFilamentCartPage extends Page implements HasForms
 
         $this->cart->update(["items" => json_encode($this->items)]);
 
+        $this->redirect("/admin/ffs-cart");
+
         Notification::make()
                     ->info()
-                    ->title('Remover todos!')
+                    ->title('Itens removidos!')
                     ->seconds(5)
-                    ->body("Todos os itens removidos com sucesso!")
+                    ->body("Itens removidos do carrinho com sucesso!")
                     ->send();
     }
 
