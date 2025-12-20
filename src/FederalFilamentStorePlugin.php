@@ -117,7 +117,7 @@ class FederalFilamentStorePlugin implements Plugin
             )
             ->pages(
                 [
-                    //\Shieldforce\FederalFilamentStore\Pages\FederalFilamentStorePage::class,
+                    \Shieldforce\FederalFilamentStore\Pages\FederalFilamentStorePage::class,
                     \Shieldforce\FederalFilamentStore\Pages\FederalFilamentProductPage::class,
                     \Shieldforce\FederalFilamentStore\Pages\FederalFilamentCartPage::class,
                 ]
