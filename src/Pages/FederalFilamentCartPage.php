@@ -818,6 +818,8 @@ class FederalFilamentCartPage extends Page implements HasForms
                                                                    Get       $get,
                                                                    Component $livewire
                                                                ) {
+                                                                   $this->loadData();
+
                                                                    $msg = "Busca finalizada!";
                                                                    $msg .= " pode prosseguir com os dados de endereço!";
                                                                    Notification::make()
@@ -842,6 +844,8 @@ class FederalFilamentCartPage extends Page implements HasForms
                                                  ->hint("Busca de CEP")
                                                  ->afterStateUpdated(
                                                      function (Set $set, Get $get, Component $livewire) {
+                                                         $this->loadData();
+
                                                          $msg = "Busca finalizada!";
                                                          $msg .= " pode prosseguir com os dados de endereço!";
                                                          Notification::make()
