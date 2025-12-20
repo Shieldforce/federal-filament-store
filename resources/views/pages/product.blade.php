@@ -78,11 +78,11 @@
                                bg-gray-100 dark:bg-gray-900
                                overflow-hidden rounded-xl shadow-lg"
                         style="height: 350px; background: linear-gradient(
-                        to top,
-                        rgba(0,0,0,0.45),
-                        rgba(0,0,0,0),
-                        rgba(0,0,0,0.35)
-                    );"
+                            to top,
+                            rgba(0,0,0,0.45),
+                            rgba(0,0,0,0),
+                            rgba(0,0,0,0.35)
+                        );"
                     >
                         <img
                             :src="images[selected]"
