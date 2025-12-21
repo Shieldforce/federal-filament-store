@@ -49,8 +49,10 @@ class FederalFilamentCartPage extends Page implements HasForms
     public string            $document              = "";
     public string            $birthday              = "";
     public string            $name                  = "";
-    public string            $email                 = "";
-    public string            $password              = "";
+    public string            $register_email        = "";
+    public string            $login_email           = "";
+    public string            $register_password     = "";
+    public string            $login_password        = "";
     public string            $password_confirmation = "";
     public string            $cellphone             = "";
     public string            $zipcode               = "";
@@ -318,10 +320,10 @@ class FederalFilamentCartPage extends Page implements HasForms
         $data = $this->form->getState();
 
         $userModel = $user
-            ->where('email', $data['email'])
+            ->where('email', $data['register_email'])
             ->first();
 
-        if ($userModel && !Hash::check($data['password'], $userModel->password)) {
+        if ($userModel && !Hash::check($data['register_password'], $userModel->password)) {
             Notification::make()
                         ->danger()
                         ->title('Credenciais Incorretas!')
@@ -330,7 +332,7 @@ class FederalFilamentCartPage extends Page implements HasForms
             return null;
         }
 
-        if ($userModel && Hash::check($data['password'], $userModel->password)) {
+        if ($userModel && Hash::check($data['register_password'], $userModel->password)) {
             $msg = "Você já possui conta com esse email, clique em ";
             $msg .= " 'Já tenho conta', e coloque suas credenciais.";
             Notification::make()
@@ -342,10 +344,10 @@ class FederalFilamentCartPage extends Page implements HasForms
         }
 
         $userCreate = $user->updateOrCreate(
-            ["email" => $data["email"]],
+            ["email" => $data["register_email"]],
             [
                 "name"          => $data["name"],
-                "password"      => Hash::make($data["password"]),
+                "password"      => Hash::make($data["register_password"]),
                 "contact"       => $data["cellphone"],
                 "pass_auto_off" => true,
             ]
@@ -372,10 +374,10 @@ class FederalFilamentCartPage extends Page implements HasForms
         $data = $this->form->getState();
 
         $userModel = $user
-            ->where('email', $data['email'])
+            ->where('email', $data['login_email'])
             ->first();
 
-        if (!$userModel || $userModel && !Hash::check($data['password'], $userModel->password)) {
+        if (!$userModel || $userModel && !Hash::check($data['login_password'], $userModel->password)) {
             Notification::make()
                         ->danger()
                         ->title('Credenciais Incorretas!')
@@ -407,7 +409,7 @@ class FederalFilamentCartPage extends Page implements HasForms
         return $user
             ->clients()
             ->updateOrCreate(
-                ["email" => $data["email"]],
+                ["email" => $data["register_email"] ?? $data["login_email"]],
                 [
                     'name'        => $data["name"],
                     'document'    => $data["document"],
@@ -742,9 +744,8 @@ class FederalFilamentCartPage extends Page implements HasForms
                                                       fn(Get $get) => $get("people_type") == TypePeopleEnum::F->value
                                                   ),
 
-                                        TextInput::make('email')
+                                        TextInput::make('register_email')
                                                  ->label('E-mail')
-                                                 ->dehydrated(fn(Get $get) => $get('is_user'))
                                                  ->email()
                                                  ->debounce(500)
                                                  ->rule(
@@ -787,12 +788,11 @@ class FederalFilamentCartPage extends Page implements HasForms
                                                  ->required()
                                                  ->columnSpanFull(),
 
-                                        TextInput::make('password')
+                                        TextInput::make('register_password')
                                                  ->label('Senha')
                                                  ->password()
                                                  ->minLength(4)
                                                  ->maxLength(50)
-                                                 ->dehydrated(fn(Get $get) => $get('is_user'))
                                                  ->revealable()
                                                  ->required(),
 
@@ -805,7 +805,7 @@ class FederalFilamentCartPage extends Page implements HasForms
                                                  ->rule(
                                                      function (Get $get) {
                                                          return function (string $attribute, $value, $fail) use ($get) {
-                                                             $password = $get("password");
+                                                             $password = $get("register_password");
                                                              if ($password != $value) {
                                                                  $this->loadData();
                                                                  $fail("Confirmação de Senha Incorreta!");
@@ -939,16 +939,14 @@ class FederalFilamentCartPage extends Page implements HasForms
                                 ->visible(fn(Get $get) => $get("is_user"))
                                 ->schema(
                                     [
-                                        TextInput::make('email')
+                                        TextInput::make('login_email')
                                                  ->label('E-mail')
-                                                 ->dehydrated(fn(Get $get) => !$get('is_user'))
                                                  ->email()
                                                  ->required(),
 
-                                        TextInput::make('password')
+                                        TextInput::make('login_password')
                                                  ->label('Senha')
                                                  ->revealable()
-                                                 ->dehydrated(fn(Get $get) => !$get('is_user'))
                                                  ->password()
                                                  ->required(),
 
