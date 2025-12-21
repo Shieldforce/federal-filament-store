@@ -720,7 +720,8 @@ class FederalFilamentCartPage extends Page implements HasForms
                                                  ->rule(
                                                      function (Get $get) {
                                                          return function (string $attribute, $value, $fail) use ($get) {
-                                                             $existe = DB::table("clients")->where("document", $value)->exists();
+                                                             $document = preg_replace('/\D/', '', $value);
+                                                             $existe = DB::table("clients")->where("document", $document)->exists();
                                                              if ($existe) {
                                                                  $this->loadData();
 
