@@ -34,7 +34,7 @@ use Shieldforce\FederalFilamentStore\Models\Cart;
 use Shieldforce\FederalFilamentStore\Services\BuscarViaCepService;
 use Throwable;
 
-class FederalFilamentCartPage__old extends Page implements HasForms
+class FederalFilamentCartPage extends Page implements HasForms
 {
     use InteractsWithForms;
 
