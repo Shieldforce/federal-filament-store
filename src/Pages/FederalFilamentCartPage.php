@@ -149,7 +149,7 @@ class FederalFilamentCartPage extends Page implements HasForms
 
         $route = "/admin/ffs-cart";
 
-        if(count($this->items) < 1) {
+        if (count($this->items) < 1) {
             $route = "/admin/ffs-store";
         }
 
@@ -716,7 +716,19 @@ class FederalFilamentCartPage extends Page implements HasForms
                                                  ->maxLength(50)
                                                  ->required()
                                                  ->dehydrateStateUsing(fn($state) => preg_replace('/\D/', '', $state))
-                                                 ->unique('clients'),
+                                                 ->unique('clients')
+                                                 ->rule(
+                                                     function (Get $get) {
+                                                         return function (string $attribute, $value, $fail) use ($get) {
+                                                             $existe = DB::table("clients")->where("document", $value)->exists();
+                                                             if ($existe) {
+                                                                 $this->loadData();
+
+                                                                 $fail("Este documento já consta em nossas bases, você já possui usuário!");
+                                                             }
+                                                         };
+                                                     }
+                                                 ),
 
                                         DatePicker::make('birthday')
                                                   ->label("Nascimento")
