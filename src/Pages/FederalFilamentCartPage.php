@@ -948,6 +948,7 @@ class FederalFilamentCartPage extends Page implements HasForms
 
                                         TextInput::make('login_password')
                                                  ->label('Senha')
+                                                 ->disabled(fn(Get $get) => !$get('is_user'))
                                                  ->revealable()
                                                  ->password()
                                                  ->required(),
