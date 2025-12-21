@@ -11,6 +11,7 @@ use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Fieldset;
 use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Hidden;
+use Filament\Forms\Components\Placeholder;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
@@ -716,20 +717,24 @@ class FederalFilamentCartPage extends Page implements HasForms
                                                  ->maxLength(50)
                                                  ->required()
                                                  ->dehydrateStateUsing(fn($state) => preg_replace('/\D/', '', $state))
-                                                 //->unique('clients')
+                                            //->unique('clients')
                                                  ->rule(
-                                                     function (Get $get) {
-                                                         return function (string $attribute, $value, $fail) use ($get) {
-                                                             $document = preg_replace('/\D/', '', $value);
-                                                             $existe = DB::table("clients")->where("document", $document)->exists();
-                                                             if ($existe) {
-                                                                 $this->loadData();
+                                                function (Get $get) {
+                                                    return function (string $attribute, $value, $fail) use ($get) {
+                                                        $document = preg_replace('/\D/', '', $value);
+                                                        $existe = DB::table("clients")
+                                                                    ->where("document", $document)
+                                                                    ->exists();
+                                                        if ($existe) {
+                                                            $this->loadData();
 
-                                                                 $fail("Este documento já consta em nossas bases, você já possui usuário!");
-                                                             }
-                                                         };
-                                                     }
-                                                 ),
+                                                            $fail(
+                                                                "Este documento já consta em nossas bases, você já possui usuário!"
+                                                            );
+                                                        }
+                                                    };
+                                                }
+                                            ),
 
                                         DatePicker::make('birthday')
                                                   ->label("Nascimento")
@@ -741,6 +746,22 @@ class FederalFilamentCartPage extends Page implements HasForms
                                                  ->label('E-mail')
                                                  ->email()
                                                  ->debounce(1)
+                                                 ->rule(
+                                                     function (Get $get) {
+                                                         return function (string $attribute, $value, $fail) use ($get) {
+                                                             $existe = DB::table("users")
+                                                                         ->where("email", $value)
+                                                                         ->exists();
+                                                             if ($existe) {
+                                                                 $this->loadData();
+
+                                                                 $fail(
+                                                                     "Este email já consta em nossas bases, você já possui usuário!"
+                                                                 );
+                                                             }
+                                                         };
+                                                     }
+                                                 )
                                                  ->afterStateUpdated(
                                                      function ($state) {
                                                          $email = $state;
@@ -945,6 +966,15 @@ class FederalFilamentCartPage extends Page implements HasForms
                                                  ->revealable()
                                                  ->password()
                                                  ->required(),
+
+                                        Placeholder::make('forgot_password')
+                                                   ->content(
+                                                       new \Illuminate\Support\HtmlString(
+                                                           '<a href="'.route('password.request').'" class="text-sm text-primary-600 hover:underline">
+                                                                    Esqueci minha senha
+                                                                </a>'
+                                                       )
+                                                   ),
 
                                     ]
                                 ),
