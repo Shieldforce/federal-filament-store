@@ -744,7 +744,10 @@ class FederalFilamentCartPage extends Page implements HasForms
                                                              $email = mb_strtolower(trim($value));
                                                              $existe = DB::table('users')
                                                                          ->where('email', $email)
-                                                                         ->exists();
+                                                                         ->first();
+
+
+                                                             dd($existe);
                                                              if ($existe) {
                                                                  $fail(
                                                                      'Este e-mail já possui cadastro. Use "Já tenho conta".'
