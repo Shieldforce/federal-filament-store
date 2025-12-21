@@ -416,7 +416,6 @@ class FederalFilamentCartPage extends Page implements HasForms
                 [
                     'name'        => $data["name"],
                     'document'    => $data["document"],
-                    'email'       => $data["email"],
                     'people_type' => $data["people_type"],
                     'status'      => StatusClientEnum::ativo->value,
                     'birthday'    => $data["birthday"],
