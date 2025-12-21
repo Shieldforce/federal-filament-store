@@ -750,6 +750,9 @@ class FederalFilamentCartPage extends Page implements HasForms
                                                              }
 
                                                              if (isset($existe->id) && strlen($email) > 8) {
+
+                                                                 dd($existe, $email);
+
                                                                  $fail(
                                                                      'Este e-mail já possui cadastro. Use "Já tenho conta".'
                                                                  );
