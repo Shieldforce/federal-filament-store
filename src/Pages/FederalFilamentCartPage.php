@@ -25,7 +25,6 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Validation\Rule;
 use Livewire\Component;
 use Shieldforce\FederalFilamentStore\Enums\StatusCartEnum;
 use Shieldforce\FederalFilamentStore\Enums\StatusClientEnum;
@@ -663,10 +662,10 @@ class FederalFilamentCartPage extends Page implements HasForms
                 ->schema(
                     [
                         Hidden::make("cart_id")
-                              ->default(fn () => $this->cart?->id),
+                              ->default(fn() => $this->cart?->id),
 
                         Hidden::make("totalPrice")
-                              ->default(fn () => $this->totalPrice),
+                              ->default(fn() => $this->totalPrice),
 
                         Toggle::make("is_user")
                               ->label("Já tenho conta")
@@ -738,11 +737,23 @@ class FederalFilamentCartPage extends Page implements HasForms
                                         TextInput::make('register_email')
                                                  ->label('E-mail')
                                                  ->email()
-                                                 ->required()
-                                                 ->rules([
-                                                     Rule::unique('users', 'email'),
-                                                 ])
-                                                 ->disabled(fn (Get $get) => $get('is_user')),
+                                                 ->disabled(fn(Get $get) => $get('is_user'))
+                                                 ->rule(
+                                                     function () {
+                                                         return function (string $attribute, $value, $fail) {
+                                                             $email = mb_strtolower(trim($value));
+                                                             $existe = DB::table('users')
+                                                                         ->where('email', $email)
+                                                                         ->exists();
+                                                             if ($existe) {
+                                                                 $fail(
+                                                                     'Este e-mail já possui cadastro. Use "Já tenho conta".'
+                                                                 );
+                                                             }
+                                                         };
+                                                     }
+                                                 )
+                                                 ->required(),
 
                                         TextInput::make('name')
                                                  ->label('Nome completo')
