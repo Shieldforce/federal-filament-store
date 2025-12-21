@@ -745,47 +745,25 @@ class FederalFilamentCartPage extends Page implements HasForms
                                         TextInput::make('email')
                                                  ->label('E-mail')
                                                  ->email()
-                                                 ->debounce(1)
-                                                 ->rule(
-                                                     function (Get $get) {
-                                                         return function (string $attribute, $value, $fail) use ($get) {
-                                                             $existe = DB::table("users")
-                                                                         ->where("email", $value)
-                                                                         ->first();
-                                                             if (isset($existe->id)) {
-                                                                 $this->loadData();
+                                                 ->debounce(500)
+                                                 ->rule(function () {
+                                                     return function (string $attribute, $value, $fail) {
 
-                                                                 $fail(
-                                                                     "Este email já consta em nossas bases, você já possui usuário!"
-                                                                 );
-                                                             }
-                                                         };
-                                                     }
-                                                 )
-                                                 ->afterStateUpdated(
-                                                     function ($state) {
-                                                         $email = $state;
-
-                                                         if (
-                                                             isset($email) &&
-                                                             strlen($email) > 12 &&
-                                                             !!filter_var($email, FILTER_VALIDATE_EMAIL) &&
-                                                             DB::table("users")
-                                                               ->where("email", $email)
-                                                               ->exists()
-                                                         ) {
-                                                             $msg = "Você já possui conta com esse e-mail: {$email}.";
-                                                             $msg .= " Clique em 'Já tenho conta' ";
-                                                             $msg .= " para continuar o checkout!";
-                                                             Notification::make()
-                                                                         ->danger()
-                                                                         ->title('Usuário já existe!')
-                                                                         ->seconds(60)
-                                                                         ->body($msg)
-                                                                         ->send();
+                                                         if (! filter_var($value, FILTER_VALIDATE_EMAIL)) {
+                                                             return;
                                                          }
-                                                     }
-                                                 )
+
+                                                         $email = mb_strtolower(trim($value));
+
+                                                         $existe = DB::table('users')
+                                                                     ->whereRaw('LOWER(email) = ?', [$email])
+                                                                     ->exists();
+
+                                                         if ($existe) {
+                                                             $fail('Este e-mail já possui cadastro. Use "Já tenho conta".');
+                                                         }
+                                                     };
+                                                 })
                                                  ->required(),
 
                                         TextInput::make('name')
