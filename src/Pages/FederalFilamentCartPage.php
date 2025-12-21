@@ -317,6 +317,15 @@ class FederalFilamentCartPage extends Page implements HasForms
             ->where('email', $data['register_email'])
             ->first();
 
+        if(isset($userModel->id)) {
+            Notification::make()
+                        ->danger()
+                        ->title('Já Existe!')
+                        ->body("Você já possui conta! Clique em 'Já tenho conta' e acesse sua conta!")
+                        ->send();
+            return null;
+        }
+
         if ($userModel && !Hash::check($data['register_password'], $userModel->password)) {
             Notification::make()
                         ->danger()
@@ -738,7 +747,7 @@ class FederalFilamentCartPage extends Page implements HasForms
                                                  ->label('E-mail')
                                                  ->email()
                                                  ->disabled(fn(Get $get) => $get('is_user'))
-                                                 ->rule(
+                                                 /*->rule(
                                                      function () {
                                                          return function (string $attribute, $value, $fail) {
                                                              $email = mb_strtolower(trim($value));
@@ -757,7 +766,7 @@ class FederalFilamentCartPage extends Page implements HasForms
                                                              }
                                                          };
                                                      }
-                                                 )
+                                                 )*/
                                                  ->required(),
 
                                         TextInput::make('name')
