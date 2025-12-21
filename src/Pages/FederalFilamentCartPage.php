@@ -625,14 +625,13 @@ class FederalFilamentCartPage extends Page implements HasForms
             )
             ->first();
 
-        sleep(3);
-
         if(!isset($checkout->id)) {
             Notification::make()
                         ->danger()
                         ->title('Erro ao criar o checkout')
-                        ->body("Não foi possível criar checkout! Confira se o cpf é válido, e todas as informações são corretas!")
+                        ->body("Confira se o cpf é válido, e todas as informações são corretas!")
                         ->send();
+            DB::rollBack();
             return;
         }
 
