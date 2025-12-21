@@ -296,14 +296,14 @@ class FederalFilamentCartPage extends Page implements HasForms
         } catch (Throwable $throwable) {
             DB::rollBack();
 
-            /*Notification::make()
+            Notification::make()
                         ->danger()
                         ->title('Erro ao criar conta!')
                         ->body($throwable->getMessage())
                         ->persistent()
                         ->send();
 
-            throw $throwable;*/
+            throw $throwable;
         }
     }
 
