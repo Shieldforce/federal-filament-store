@@ -63,9 +63,9 @@ class FederalFilamentCartPage extends Page implements HasForms
     public string            $city                  = "";
     public string            $state                 = "";
     public bool              $is_user               = false;
-    protected array          $items                 = [];
+    public array             $items                 = [];
     public ?int              $cart_id               = null;
-    protected ?Cart          $cart                  = null;
+    public ?Cart             $cart                  = null;
     public float             $totalPrice;
 
     public
@@ -164,7 +164,7 @@ class FederalFilamentCartPage extends Page implements HasForms
     function loadData(
         bool $force = false
     ): void {
-        if ($this->cart !== null && !$force) {
+        if ($this->cart !== null && !$force && !empty($this->items)) {
             return;
         }
 
@@ -190,9 +190,7 @@ class FederalFilamentCartPage extends Page implements HasForms
         $this->cart = $cart;
         $this->cart_id = $cart->id;
 
-        if (empty($this->items)) {
-            $this->items = json_decode($cart->items ?? '[]', true);
-        }
+        $this->items = json_decode($cart->items ?? '[]', true);
 
         $this->totalPrice = collect($this->items)->sum(
             fn($item) => ($item['price'] ?? 0) * ($item['amount'] ?? 1)
@@ -664,10 +662,10 @@ class FederalFilamentCartPage extends Page implements HasForms
                 ->schema(
                     [
                         Hidden::make("cart_id")
-                              ->default($this->cart->id ?? null),
+                              ->default(fn () => $this->cart?->id),
 
                         Hidden::make("totalPrice")
-                              ->default($this->totalPrice ?? null),
+                              ->default(fn () => $this->totalPrice),
 
                         Toggle::make("is_user")
                               ->label("Já tenho conta")
