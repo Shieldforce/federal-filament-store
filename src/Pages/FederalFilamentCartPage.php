@@ -625,6 +625,8 @@ class FederalFilamentCartPage extends Page implements HasForms
             )
             ->first();
 
+        sleep(3);
+
         dd($checkout);
 
         Notification::make()
