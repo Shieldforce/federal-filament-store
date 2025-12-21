@@ -65,7 +65,7 @@ class FederalFilamentCartPage extends Page implements HasForms
     public bool              $is_user               = false;
     protected array          $items                 = [];
     public ?int              $cart_id               = null;
-    protected Cart           $cart;
+    protected ?Cart          $cart                  = null;
     public float             $totalPrice;
 
     public
@@ -164,8 +164,7 @@ class FederalFilamentCartPage extends Page implements HasForms
     function loadData(
         bool $force = false
     ): void {
-
-        if ($this->cart && !$force) {
+        if ($this->cart !== null && !$force) {
             return;
         }
 
@@ -772,7 +771,6 @@ class FederalFilamentCartPage extends Page implements HasForms
                                                          return function (string $attribute, $value, $fail) use ($get) {
                                                              $explode = explode(" ", $value);
                                                              if (count($explode) < 2) {
-
                                                                  $fail("Digite também o sobrenome!");
                                                              }
                                                          };
