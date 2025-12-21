@@ -200,7 +200,7 @@ class FederalFilamentCartPage extends Page implements HasForms
     public
     function submit()
     {
-        //DB::beginTransaction();
+        DB::beginTransaction();
 
         try {
             $data = $this->form->getState();
@@ -292,9 +292,9 @@ class FederalFilamentCartPage extends Page implements HasForms
 
             $this->processCheckout($transaction, $isUser, $data);
 
-            //DB::commit();
+            DB::commit();
         } catch (Throwable $throwable) {
-            //DB::rollBack();
+            DB::rollBack();
 
             Notification::make()
                         ->danger()
@@ -580,7 +580,10 @@ class FederalFilamentCartPage extends Page implements HasForms
                     "order_id" => $order->id,
                 ],
                 [
-                    'creator_id'         => $order->client->user->id ?? null,
+                    'creator_id'         => $order->client->user->id
+                        ?? DB::table("users")
+                             ->where("email", "admin@admin.com")
+                             ->first()->id,
                     'name'               => "Pagamento de carrinho de compras: {$data['cart_id']}",
                     'necessary'          => 1,
                     'type'               => TypeTransactionEnum::input->value,
