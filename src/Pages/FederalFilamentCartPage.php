@@ -582,7 +582,7 @@ class FederalFilamentCartPage extends Page implements HasForms
         }
 
         $transaction = DB::table("transactions")
-                         ->create(
+                         ->insert(
                              [
                                  "order_id"           => $order->id,
                                  'creator_id'         => DB::table("users")
@@ -605,6 +605,8 @@ class FederalFilamentCartPage extends Page implements HasForms
                                  'status'             => StatusTransactionEnum::AGUARDANDO->value,
                              ]
                          );
+
+        dd($transaction);
 
         return $transaction;
     }
