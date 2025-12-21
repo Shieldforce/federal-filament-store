@@ -573,44 +573,32 @@ class FederalFilamentCartPage extends Page implements HasForms
             return $transaction;
         }
 
-        $transactionExist = DB::table("transactions")
-                              ->where("order_id", $order->id)
-                              ->first();
+        $transaction = $order
+            ->transactions()
+            ->create(
+                [
+                    'creator_id'         => DB::table("users")
+                                              ->where("email", "admin@admin.com")
+                                              ->first()->id,
+                    'name'               => "Pagamento de carrinho de compras: {$data['cart_id']}",
+                    'necessary'          => 1,
+                    'type'               => TypeTransactionEnum::input->value,
+                    'value'              => $data["totalPrice"],
+                    'monthly'            => false,
+                    'date_monthly_start' => now()->format("Y-m-d"),
+                    'date_monthly_end'   => null,
+                    'booklet'            => false,
+                    'not_start_end'      => false,
+                    'reference'          => now()->format("m/Y"),
+                    'due_day'            => now()
+                        ->addDays(3)
+                        ->format("d"),
+                    'paid'               => false,
+                    'status'             => StatusTransactionEnum::AGUARDANDO->value,
+                ]
+            );
 
-        if (isset($transactionExist->id)) {
-            return $transactionExist;
-        }
-
-        DB::table("transactions")
-          ->insert(
-              [
-                  "order_id"           => $order->id,
-                  'creator_id'         => DB::table("users")
-                                            ->where("email", "admin@admin.com")
-                                            ->first()->id,
-                  'name'               => "Pagamento de carrinho de compras: {$data['cart_id']}",
-                  'necessary'          => 1,
-                  'type'               => TypeTransactionEnum::input->value,
-                  'value'              => $data["totalPrice"],
-                  'monthly'            => false,
-                  'date_monthly_start' => now()->format("Y-m-d"),
-                  'date_monthly_end'   => null,
-                  'booklet'            => false,
-                  'not_start_end'      => false,
-                  'reference'          => now()->format("m/Y"),
-                  'due_day'            => now()
-                      ->addDays(3)
-                      ->format("d"),
-                  'paid'               => false,
-                  'status'             => StatusTransactionEnum::AGUARDANDO->value,
-              ]
-          );
-
-        $transactionExist = DB::table("transactions")
-                              ->where("order_id", $order->id)
-                              ->first();
-
-        return $transactionExist;
+        return $transaction;
     }
 
     public
