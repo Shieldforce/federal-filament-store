@@ -609,8 +609,6 @@ class FederalFilamentCartPage extends Page implements HasForms
     ) {
         $date = $transaction->created_at->format("Y-m-d H");
 
-        dd($transaction);
-
         $checkout = $transaction
             ->checkouts()
             ->where("created_at", "like", "%{$date}%")
@@ -626,6 +624,8 @@ class FederalFilamentCartPage extends Page implements HasForms
                 }
             )
             ->first();
+
+        dd($checkout);
 
         Notification::make()
                     ->success()
