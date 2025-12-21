@@ -107,7 +107,7 @@ class FederalFilamentCartPage extends Page implements HasForms
             ;
         }
 
-        $this->loadData();
+        $this->loadData(true);
     }
 
     public
@@ -164,6 +164,7 @@ class FederalFilamentCartPage extends Page implements HasForms
     function loadData(
         bool $force = false
     ): void {
+
         if ($this->cart && !$force) {
             return;
         }
