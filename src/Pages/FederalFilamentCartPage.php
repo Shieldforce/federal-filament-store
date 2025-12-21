@@ -748,6 +748,7 @@ class FederalFilamentCartPage extends Page implements HasForms
                                                  ->label('E-mail')
                                                  ->email()
                                                  ->debounce(500)
+                                                 ->disabled(fn(Get $get) => $get('is_user'))
                                                  ->rule(
                                                      function () {
                                                          return function (string $attribute, $value, $fail) {
@@ -941,6 +942,7 @@ class FederalFilamentCartPage extends Page implements HasForms
                                     [
                                         TextInput::make('login_email')
                                                  ->label('E-mail')
+                                                 ->disabled(fn(Get $get) => !$get('is_user'))
                                                  ->email()
                                                  ->required(),
 
