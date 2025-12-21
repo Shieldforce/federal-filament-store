@@ -200,7 +200,7 @@ class FederalFilamentCartPage extends Page implements HasForms
     public
     function submit()
     {
-        DB::beginTransaction();
+        //DB::beginTransaction();
 
         try {
             $data = $this->form->getState();
@@ -292,9 +292,9 @@ class FederalFilamentCartPage extends Page implements HasForms
 
             $this->processCheckout($transaction, $isUser);
 
-            DB::commit();
+            //DB::commit();
         } catch (Throwable $throwable) {
-            DB::rollBack();
+            //DB::rollBack();
 
             Notification::make()
                         ->danger()
@@ -316,15 +316,6 @@ class FederalFilamentCartPage extends Page implements HasForms
         $userModel = $user
             ->where('email', $data['register_email'])
             ->first();
-
-        if (isset($userModel->id)) {
-            Notification::make()
-                        ->danger()
-                        ->title('Já Existe!')
-                        ->body("Você já possui conta! Clique em 'Já tenho conta' e acesse sua conta!")
-                        ->send();
-            return null;
-        }
 
         if ($userModel && !Hash::check($data['register_password'], $userModel->password)) {
             Notification::make()
@@ -416,6 +407,7 @@ class FederalFilamentCartPage extends Page implements HasForms
                 [
                     'name'        => $data["name"],
                     'document'    => $data["document"],
+                    'email'       => $data["email"],
                     'people_type' => $data["people_type"],
                     'status'      => StatusClientEnum::ativo->value,
                     'birthday'    => $data["birthday"],
@@ -719,7 +711,7 @@ class FederalFilamentCartPage extends Page implements HasForms
                                                  ->maxLength(50)
                                                  ->required()
                                                  ->dehydrateStateUsing(fn($state) => preg_replace('/\D/', '', $state))
-                                                 /*->rule(
+                                                 ->rule(
                                                      function (Get $get) {
                                                          return function (string $attribute, $value, $fail) use ($get) {
                                                              $document = preg_replace('/\D/', '', $value);
@@ -733,7 +725,7 @@ class FederalFilamentCartPage extends Page implements HasForms
                                                              }
                                                          };
                                                      }
-                                                 )*/,
+                                                 ),
 
                                         DatePicker::make('birthday')
                                                   ->label("Nascimento")
@@ -745,26 +737,26 @@ class FederalFilamentCartPage extends Page implements HasForms
                                                  ->label('E-mail')
                                                  ->email()
                                                  ->disabled(fn(Get $get) => $get('is_user'))
-                                            /*->rule(
-                                                function () {
-                                                    return function (string $attribute, $value, $fail) {
-                                                        $email = mb_strtolower(trim($value));
-                                                        $existe = DB::table('users')
-                                                                    ->where('email', $email)
-                                                                    ->first();
+                                                 ->rule(
+                                                     function () {
+                                                         return function (string $attribute, $value, $fail) {
+                                                             $email = mb_strtolower(trim($value));
+                                                             $existe = DB::table('users')
+                                                                         ->where('email', $email)
+                                                                         ->first();
 
-                                                        if(!$existe) {
-                                                            return;
-                                                        }
+                                                             if (!$existe) {
+                                                                 return;
+                                                             }
 
-                                                        if (isset($existe->id) && strlen($email) > 8) {
-                                                            $fail(
-                                                                'Este e-mail já possui cadastro. Use "Já tenho conta".'
-                                                            );
-                                                        }
-                                                    };
-                                                }
-                                            )*/
+                                                             if (isset($existe->id) && strlen($email) > 8) {
+                                                                 $fail(
+                                                                     'Este e-mail já possui cadastro. Use "Já tenho conta".'
+                                                                 );
+                                                             }
+                                                         };
+                                                     }
+                                                 )
                                                  ->required(),
 
                                         TextInput::make('name')
