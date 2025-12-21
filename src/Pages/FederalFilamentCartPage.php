@@ -580,10 +580,9 @@ class FederalFilamentCartPage extends Page implements HasForms
                     "order_id" => $order->id,
                 ],
                 [
-                    'creator_id'         => $order->client->user->id
-                        ?? DB::table("users")
-                             ->where("email", "admin@admin.com")
-                             ->first()->id,
+                    'creator_id'         => DB::table("users")
+                                              ->where("email", "admin@admin.com")
+                                              ->first()->id,
                     'name'               => "Pagamento de carrinho de compras: {$data['cart_id']}",
                     'necessary'          => 1,
                     'type'               => TypeTransactionEnum::input->value,
