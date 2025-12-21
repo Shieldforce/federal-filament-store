@@ -716,7 +716,7 @@ class FederalFilamentCartPage extends Page implements HasForms
                                                  ->maxLength(50)
                                                  ->required()
                                                  ->dehydrateStateUsing(fn($state) => preg_replace('/\D/', '', $state))
-                                                 ->unique('clients')
+                                                 //->unique('clients')
                                                  ->rule(
                                                      function (Get $get) {
                                                          return function (string $attribute, $value, $fail) use ($get) {
