@@ -6,6 +6,7 @@ use App\Enums\StatusOrderEnum;
 use App\Enums\StatusTransactionEnum;
 use App\Enums\TypeOrderEnum;
 use App\Enums\TypeTransactionEnum;
+use Exception;
 use Filament\Forms\Components\Actions\Action;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Fieldset;
@@ -627,7 +628,9 @@ class FederalFilamentCartPage extends Page implements HasForms
 
         sleep(3);
 
-        dd($checkout);
+        if(!isset($checkout->id)) {
+            throw new Exception("Erro ao processar o checkout");
+        }
 
         Notification::make()
                     ->success()
