@@ -752,6 +752,8 @@ class FederalFilamentCartPage extends Page implements HasForms
                                                                          ->whereRaw('LOWER(email) = ?', [$email])
                                                                          ->exists();
 
+                                                             dd($existe, $email);
+
                                                              if ($existe) {
                                                                  $fail(
                                                                      'Este e-mail já possui cadastro. Use "Já tenho conta".'
