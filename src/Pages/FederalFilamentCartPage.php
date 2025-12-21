@@ -582,7 +582,7 @@ class FederalFilamentCartPage extends Page implements HasForms
         }
 
         $transaction = DB::table("transactions")
-                         ->insert(
+                         ->create(
                              [
                                  "order_id"           => $order->id,
                                  'creator_id'         => DB::table("users")
