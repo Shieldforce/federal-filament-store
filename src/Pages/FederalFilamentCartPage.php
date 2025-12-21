@@ -200,7 +200,7 @@ class FederalFilamentCartPage extends Page implements HasForms
     public
     function submit()
     {
-        DB::beginTransaction();
+        //DB::beginTransaction();
 
         try {
             $data = $this->form->getState();
@@ -292,9 +292,9 @@ class FederalFilamentCartPage extends Page implements HasForms
 
             $this->processCheckout($transaction, $isUser, $data);
 
-            DB::commit();
+            //DB::commit();
         } catch (Throwable $throwable) {
-            DB::rollBack();
+            //DB::rollBack();
 
             Notification::make()
                         ->danger()
