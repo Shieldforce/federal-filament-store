@@ -744,26 +744,30 @@ class FederalFilamentCartPage extends Page implements HasForms
 
                                         TextInput::make('email')
                                                  ->label('E-mail')
+                                                 ->dehydrated(fn(Get $get) => $get('is_user'))
                                                  ->email()
                                                  ->debounce(500)
-                                                 ->rule(function () {
-                                                     return function (string $attribute, $value, $fail) {
+                                                 ->rule(
+                                                     function () {
+                                                         return function (string $attribute, $value, $fail) {
+                                                             if (!filter_var($value, FILTER_VALIDATE_EMAIL)) {
+                                                                 return;
+                                                             }
 
-                                                         if (! filter_var($value, FILTER_VALIDATE_EMAIL)) {
-                                                             return;
-                                                         }
+                                                             $email = mb_strtolower(trim($value));
 
-                                                         $email = mb_strtolower(trim($value));
+                                                             $existe = DB::table('users')
+                                                                         ->whereRaw('LOWER(email) = ?', [$email])
+                                                                         ->exists();
 
-                                                         $existe = DB::table('users')
-                                                                     ->whereRaw('LOWER(email) = ?', [$email])
-                                                                     ->exists();
-
-                                                         if ($existe) {
-                                                             $fail('Este e-mail já possui cadastro. Use "Já tenho conta".');
-                                                         }
-                                                     };
-                                                 })
+                                                             if ($existe) {
+                                                                 $fail(
+                                                                     'Este e-mail já possui cadastro. Use "Já tenho conta".'
+                                                                 );
+                                                             }
+                                                         };
+                                                     }
+                                                 )
                                                  ->required(),
 
                                         TextInput::make('name')
@@ -788,6 +792,7 @@ class FederalFilamentCartPage extends Page implements HasForms
                                                  ->password()
                                                  ->minLength(4)
                                                  ->maxLength(50)
+                                                 ->dehydrated(fn(Get $get) => $get('is_user'))
                                                  ->revealable()
                                                  ->required(),
 
@@ -936,17 +941,19 @@ class FederalFilamentCartPage extends Page implements HasForms
                                     [
                                         TextInput::make('email')
                                                  ->label('E-mail')
+                                                 ->dehydrated(fn(Get $get) => !$get('is_user'))
                                                  ->email()
                                                  ->required(),
 
                                         TextInput::make('password')
                                                  ->label('Senha')
                                                  ->revealable()
+                                                 ->dehydrated(fn(Get $get) => !$get('is_user'))
                                                  ->password()
                                                  ->required(),
 
                                         Placeholder::make('forgot_password')
-                                            ->label("Esqueceu a senha?")
+                                                   ->label("Esqueceu a senha?")
                                                    ->content(
                                                        new \Illuminate\Support\HtmlString(
                                                            '<a href="/admin/password-reset/request" class="text-sm text-primary-600 hover:underline" target="_blank">
