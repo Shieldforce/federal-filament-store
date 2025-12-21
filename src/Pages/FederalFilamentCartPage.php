@@ -751,8 +751,8 @@ class FederalFilamentCartPage extends Page implements HasForms
                                                          return function (string $attribute, $value, $fail) use ($get) {
                                                              $existe = DB::table("users")
                                                                          ->where("email", $value)
-                                                                         ->exists();
-                                                             if ($existe) {
+                                                                         ->first();
+                                                             if (isset($existe->id)) {
                                                                  $this->loadData();
 
                                                                  $fail(
