@@ -971,7 +971,7 @@ class FederalFilamentCartPage extends Page implements HasForms
                                             ->label("Esqueceu a senha?")
                                                    ->content(
                                                        new \Illuminate\Support\HtmlString(
-                                                           '<a href="/admin/password-reset/request" class="text-sm text-primary-600 hover:underline">
+                                                           '<a href="/admin/password-reset/request" class="text-sm text-primary-600 hover:underline" target="_blank">
                                                                     Clique aqui!
                                                                 </a>'
                                                        )
