@@ -968,10 +968,11 @@ class FederalFilamentCartPage extends Page implements HasForms
                                                  ->required(),
 
                                         Placeholder::make('forgot_password')
+                                            ->label("Esqueceu a senha?")
                                                    ->content(
                                                        new \Illuminate\Support\HtmlString(
                                                            '<a href="/admin/password-reset/request" class="text-sm text-primary-600 hover:underline">
-                                                                    Esqueci minha senha
+                                                                    Clique aqui!
                                                                 </a>'
                                                        )
                                                    ),
