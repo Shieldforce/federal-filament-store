@@ -219,11 +219,11 @@ class FederalFilamentCartPage extends Page implements HasForms
             }
 
             if ($isUser) {
-                $user = $this->isAccount($useModel);
+                $user = $this->isAccount($useModel, $data);
             }
 
             if (!$isUser) {
-                $user = $this->notAccount($useModel);
+                $user = $this->notAccount($useModel, $data);
             }
 
             if (!isset($user->id)) {
@@ -235,7 +235,7 @@ class FederalFilamentCartPage extends Page implements HasForms
                                    ->send();
             }
 
-            $client = $this->createOrExtractClient($user, $isUser);
+            $client = $this->createOrExtractClient($user, $isUser, $data);
 
             if (!isset($client->id)) {
                 return Notification::make()
@@ -246,7 +246,7 @@ class FederalFilamentCartPage extends Page implements HasForms
                                    ->send();
             }
 
-            $address = $this->createOrExtractAddress($client, $isUser);
+            $address = $this->createOrExtractAddress($client, $isUser, $data);
 
             if (!isset($address->id)) {
                 return Notification::make()
@@ -257,7 +257,7 @@ class FederalFilamentCartPage extends Page implements HasForms
                                    ->send();
             }
 
-            $contact = $this->createOrExtractContact($client, $isUser);
+            $contact = $this->createOrExtractContact($client, $isUser, $data);
 
             if (!isset($contact->id)) {
                 return Notification::make()
@@ -268,7 +268,7 @@ class FederalFilamentCartPage extends Page implements HasForms
                                    ->send();
             }
 
-            $order = $this->createOrExtractOrder($client, $isUser);
+            $order = $this->createOrExtractOrder($client, $isUser, $data);
 
             if (!isset($order->id)) {
                 return Notification::make()
@@ -279,7 +279,7 @@ class FederalFilamentCartPage extends Page implements HasForms
                                    ->send();
             }
 
-            $transaction = $this->createOrExtractTransaction($order, $isUser);
+            $transaction = $this->createOrExtractTransaction($order, $isUser, $data);
 
             if (!isset($transaction->id)) {
                 return Notification::make()
@@ -290,7 +290,7 @@ class FederalFilamentCartPage extends Page implements HasForms
                                    ->send();
             }
 
-            $this->processCheckout($transaction, $isUser);
+            $this->processCheckout($transaction, $isUser, $data);
 
             DB::commit();
         } catch (Throwable $throwable) {
@@ -309,10 +309,9 @@ class FederalFilamentCartPage extends Page implements HasForms
 
     public
     function notAccount(
-        Model $user
+        Model $user,
+              $data
     ) {
-        $data = $this->form->getState();
-
         $userModel = $user
             ->where('email', $data['register_email'])
             ->first();
@@ -363,10 +362,9 @@ class FederalFilamentCartPage extends Page implements HasForms
 
     public
     function isAccount(
-        Model $user
+        Model $user,
+              $data
     ) {
-        $data = $this->form->getState();
-
         $userModel = $user
             ->where('email', $data['login_email'])
             ->first();
@@ -386,10 +384,9 @@ class FederalFilamentCartPage extends Page implements HasForms
     public
     function createOrExtractClient(
         Model $user,
-        bool  $isUser
+        bool  $isUser,
+              $data
     ) {
-        $data = $this->form->getState();
-
         $client = $user->clients->first() ?? null;
 
         if (!isset($client->id) && $isUser) {
@@ -419,10 +416,9 @@ class FederalFilamentCartPage extends Page implements HasForms
     public
     function createOrExtractAddress(
         Model $client,
-        bool  $isUser
+        bool  $isUser,
+              $data
     ) {
-        $data = $this->form->getState();
-
         $address = $client
             ->addresses()
             ->where("main", 1)
@@ -458,10 +454,9 @@ class FederalFilamentCartPage extends Page implements HasForms
     public
     function createOrExtractContact(
         Model $client,
-        bool  $isUser
+        bool  $isUser,
+              $data
     ) {
-        $data = $this->form->getState();
-
         $contact = $client->contacts->first() ?? null;
 
         if (!isset($contact->id) && $isUser) {
@@ -494,10 +489,9 @@ class FederalFilamentCartPage extends Page implements HasForms
     public
     function createOrExtractOrder(
         Model $client,
-        bool  $isUser
+        bool  $isUser,
+              $data
     ) {
-        $data = $this->form->getState();
-
         $date = now()->format("Y-m-d H");
 
         $order = $client
@@ -559,10 +553,9 @@ class FederalFilamentCartPage extends Page implements HasForms
     public
     function createOrExtractTransaction(
         Model $order,
-        bool  $isUser
+        bool  $isUser,
+              $data
     ) {
-        $data = $this->form->getState();
-
         $date = $order->created_at->format("Y-m-d H");
 
         $transaction = $order
@@ -613,10 +606,9 @@ class FederalFilamentCartPage extends Page implements HasForms
     public
     function processCheckout(
         Model $transaction,
-        bool  $isUser
+        bool  $isUser,
+              $data
     ) {
-        $data = $this->form->getState();
-
         $date = $transaction->created_at->format("Y-m-d H");
 
         $checkout = $transaction
