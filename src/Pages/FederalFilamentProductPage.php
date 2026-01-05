@@ -334,9 +334,7 @@ class FederalFilamentProductPage extends Page implements HasForms
 
         $data = $this->form->getState();
 
-        dd($data);
-
-        /*if (!$exists) {
+        if (!$exists) {
             $cart[] = [
                 'uuid'         => $this->product['uuid'],
                 'name'         => $this->product['name'],
@@ -346,12 +344,12 @@ class FederalFilamentProductPage extends Page implements HasForms
                     "amount"                 => $data["amount"],
                     "image"                  => $this->product["image"],
                     "images"                 => $this->product["images"],
-                    "image_all"              => $data["image_all"],
-                    "publish_social_network" => $data["publish_social_network"],
-                    "color"                  => $data["color"],
+                    "image_all"              => $data["image_all"] ?? null,
+                    "publish_social_network" => $data["publish_social_network"] ?? null,
+                    "color"                  => $data["color"] ?? null,
                 ],
             ];
-        }*/
+        }
 
         $cartModel->update(["items" => json_encode($cart)]);
     }
