@@ -539,6 +539,7 @@ class FederalFilamentCartPage extends Page implements HasForms
                     'booklet'            => false,
                     'not_start_end'      => false,
                     'contract_type'      => TypeContractEnum::contrato_3->value,
+                    'billing_emails'      => json_encode([$client->email]),
                 ]
             );
 
