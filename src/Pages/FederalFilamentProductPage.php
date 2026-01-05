@@ -174,7 +174,7 @@ class FederalFilamentProductPage extends Page implements HasForms
                                      }
                                  ),
 
-                        /*Radio::make('color')
+                        Radio::make('color')
                              ->label('Escolha a cor')
                              ->required()
                              ->options($this->colors)
@@ -194,15 +194,15 @@ class FederalFilamentProductPage extends Page implements HasForms
                                             background:'.$hex.';
                                             border:1px solid #ccc;
                                         "></span>
-                                        '.e($name).' ('.$hex.')
+                                        '.e($name).'
                                         </div>'
                                          )
                                      )
                                      ->toArray()
                              )
-                             ->visible(fn() => count($this->colors) > 0),*/
+                             ->visible(fn() => count($this->colors) > 0),
 
-                        Radio::make('color')
+                        /*Radio::make('color')
                              ->label('Escolha a cor')
                              ->required()
                             ->visible(fn() => count($this->colors) > 0)
@@ -225,7 +225,7 @@ class FederalFilamentProductPage extends Page implements HasForms
                              ->disableLabel()
                              ->extraAttributes([
                                  'class' => 'color-swatch-radio'
-                             ]),
+                             ]),*/
 
                         Toggle::make("image_all")
                               ->label("Usar a mesma imagem")
