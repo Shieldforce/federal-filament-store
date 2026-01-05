@@ -174,7 +174,7 @@ class FederalFilamentProductPage extends Page implements HasForms
                                      }
                                  ),
 
-                        Radio::make('color')
+                        /*Radio::make('color')
                              ->label('Escolha a cor')
                              ->required()
                              ->options($this->colors)
@@ -200,7 +200,32 @@ class FederalFilamentProductPage extends Page implements HasForms
                                      )
                                      ->toArray()
                              )
-                             ->visible(fn() => count($this->colors) > 0),
+                             ->visible(fn() => count($this->colors) > 0),*/
+
+                        Radio::make('color')
+                             ->label('Escolha a cor')
+                             ->required()
+                            ->visible(fn() => count($this->colors) > 0)
+                             ->options(
+                                 collect($this->colors)->mapWithKeys(
+                                     fn ($name, $hex) => [
+                                         $hex => new HtmlString("
+                                            <div style='
+                                                width:36px;
+                                                height:36px;
+                                                background:{$hex};
+                                                border-radius:8px;
+                                                border:2px solid #ddd;
+                                            ' title='{$name} ({$hex})'></div>
+                                        ")
+                                     ]
+                                 )->toArray()
+                             )
+                             ->inline()
+                             ->disableLabel()
+                             ->extraAttributes([
+                                 'class' => 'color-swatch-radio'
+                             ]),
 
                         Toggle::make("image_all")
                               ->label("Usar a mesma imagem")
