@@ -187,44 +187,19 @@ class FederalFilamentProductPage extends Page implements HasForms
                                             align-items:center;
                                             gap:8px;
                                         ">
-                                        <span style="
-                                            width:20px;
-                                            height:20px;
-                                            border-radius:4px;
-                                            background:'.$hex.';
-                                            border:1px solid #ccc;
-                                        "></span>
-                                        </div><hr>'
+                                            <span style="
+                                                width:20px;
+                                                height:20px;
+                                                border-radius:4px;
+                                                background:'.$hex.';
+                                                border:1px solid #ccc;
+                                            "></span>
+                                        </div>'
                                          )
                                      )
                                      ->toArray()
                              )
                              ->visible(fn() => count($this->colors) > 0),
-
-                        /*Radio::make('color')
-                             ->label('Escolha a cor')
-                             ->required()
-                            ->visible(fn() => count($this->colors) > 0)
-                             ->options(
-                                 collect($this->colors)->mapWithKeys(
-                                     fn ($name, $hex) => [
-                                         $hex => new HtmlString("
-                                            <div style='
-                                                width:36px;
-                                                height:36px;
-                                                background:{$hex};
-                                                border-radius:8px;
-                                                border:2px solid #ddd;
-                                            ' title='{$name} ({$hex})'></div>
-                                        ")
-                                     ]
-                                 )->toArray()
-                             )
-                             ->inline()
-                             ->disableLabel()
-                             ->extraAttributes([
-                                 'class' => 'color-swatch-radio'
-                             ]),*/
 
                         Toggle::make("image_all")
                               ->label("Usar a mesma imagem")
@@ -366,9 +341,12 @@ class FederalFilamentProductPage extends Page implements HasForms
                 'amount'       => (int)$this->amount,
                 'price'        => $this->product['price'],
                 'data_product' => [
-                    "amount" => $data["amount"],
-                    "image"  => $this->product["image"],
-                    "images" => $this->product["images"],
+                    "amount"                 => $data["amount"],
+                    "image"                  => $this->product["image"],
+                    "images"                 => $this->product["images"],
+                    "image_all"              => $data["image_all"],
+                    "publish_social_network" => $data["publish_social_network"],
+                    "color"                  => $data["color"],
                 ],
             ];
         }
