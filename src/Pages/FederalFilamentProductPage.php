@@ -119,7 +119,7 @@ class FederalFilamentProductPage extends Page implements HasForms
         $this->image_all = false;
         $this->totalPrice = $this->amount * $this->product['price'];
 
-        $colors = DB::table('colors')
+        $colors = DB::table('colors_products')
                     ->where('product_id', $product->id)
                     ->get(['id', 'name', 'color']);
 
