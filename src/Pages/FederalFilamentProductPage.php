@@ -194,8 +194,7 @@ class FederalFilamentProductPage extends Page implements HasForms
                                             background:'.$hex.';
                                             border:1px solid #ccc;
                                         "></span>
-                                        '.e($name).'
-                                        </div>'
+                                        </div><hr>'
                                          )
                                      )
                                      ->toArray()
