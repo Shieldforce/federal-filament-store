@@ -4,6 +4,7 @@ namespace Shieldforce\FederalFilamentStore\Pages;
 
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Grid;
+use Filament\Forms\Components\Radio;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Forms\Concerns\InteractsWithForms;
@@ -15,6 +16,7 @@ use Filament\Forms\Contracts\HasForms;
 use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\HtmlString;
 use Livewire\WithPagination;
 use Shieldforce\FederalFilamentStore\Models\Cart;
 
@@ -32,6 +34,7 @@ class FederalFilamentProductPage extends Page implements HasForms
     public array             $categories      = [];
     public array             $images          = [];
     public array             $files           = [];
+    public array             $colors          = [];
     public string            $action          = '';
     public int               $amount          = 1;
     public array             $product;
@@ -115,6 +118,18 @@ class FederalFilamentProductPage extends Page implements HasForms
         $this->amount = $this?->productConfig?->limit_min_amount ?? 1;
         $this->image_all = false;
         $this->totalPrice = $this->amount * $this->product['price'];
+
+        $colors = DB::table('colors')
+                    ->where('product_id', $product->id)
+                    ->get(['id', 'name', 'color']);
+
+        $this->colors = $colors
+            ->mapWithKeys(
+                fn($color) => [
+                    $color->color => $color->name,
+                ]
+            )
+            ->toArray();
     }
 
     public
@@ -158,6 +173,34 @@ class FederalFilamentProductPage extends Page implements HasForms
                                          };
                                      }
                                  ),
+
+                        Radio::make('color')
+                             ->label('Escolha a cor')
+                             ->required()
+                             ->options($this->colors)
+                             ->descriptions(
+                                 collect($this->colors)
+                                     ->map(
+                                         fn($name, $hex) => new HtmlString(
+                                             '<div style="
+                                            display:flex;
+                                            align-items:center;
+                                            gap:8px;
+                                        ">
+                                        <span style="
+                                            width:20px;
+                                            height:20px;
+                                            border-radius:4px;
+                                            background:'.$hex.';
+                                            border:1px solid #ccc;
+                                        "></span>
+                                        '.e($name).' ('.$hex.')
+                                        </div>'
+                                         )
+                                     )
+                                     ->toArray()
+                             )
+                             ->visible(fn() => count($this->colors) > 0),
 
                         Toggle::make("image_all")
                               ->label("Usar a mesma imagem")
