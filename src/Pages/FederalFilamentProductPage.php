@@ -43,6 +43,7 @@ class FederalFilamentProductPage extends Page implements HasForms
     public                   $uuid;
     public bool              $image_all;
     public bool              $publish_social_network;
+    public string            $color;
 
     public
     function getTitle(): string|Htmlable
