@@ -5,7 +5,6 @@ namespace Shieldforce\FederalFilamentStore\Pages;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Radio;
-use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Forms\Concerns\InteractsWithForms;
@@ -203,28 +202,34 @@ class FederalFilamentProductPage extends Page implements HasForms
                              )
                              ->visible(fn() => count($this->colors) > 0),*/
 
-                        Select::make('color')
-                              ->label('Escolha a cor')
-                              ->required()
-                              ->options($this->colors) // ['Vermelho' => '#ff0000']
-                              ->getOptionLabelUsing(function ($value) {
-                                return new HtmlString('
-                                    <div style="display:flex;align-items:center;gap:8px;">
-                                        <span style="
-                                            width:18px;
-                                            height:18px;
-                                            border-radius:4px;
-                                            background:' . $value . ';
+                        Radio::make('color')
+                             ->label('Escolha a cor')
+                             ->required()
+                             ->options($this->colors)
+                             ->descriptions(
+                                 collect($this->colors)
+                                     ->map(
+                                         fn($name, $hex) => new HtmlString(
+                                             '
+                                        <div class="color-swatch" style="
+                                            width:24px;
+                                            height:24px;
+                                            border-radius:6px;
+                                            background:'.$hex.';
                                             border:1px solid #ccc;
-                                        "></span>
-                                        <span>' . $value . '</span>
-                                    </div>
-                                ');
-                            })
-                              ->allowHtml()
-                              ->searchable()
-                              ->native(false)
-                              ->visible(fn () => count($this->colors) > 0),
+                                        "></div>
+                                    '
+                                         )
+                                     )
+                                     ->toArray()
+                             )
+                             ->columns(6)
+                             ->extraAttributes(
+                                 [
+                                     'class' => 'color-radio'
+                                 ]
+                             )
+                             ->visible(fn() => count($this->colors) > 0),
 
                         Toggle::make("image_all")
                               ->label("Usar a mesma imagem")
