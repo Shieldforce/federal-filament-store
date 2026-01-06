@@ -205,7 +205,13 @@ class FederalFilamentProductPage extends Page implements HasForms
                         Radio::make('color')
                              ->label('Escolha a cor')
                              ->required()
-                             ->options($this->colors)
+                             ->options(
+                                 collect($this->colors)
+                                     ->mapWithKeys(
+                                         fn($hex) => [$hex => '']
+                                     )
+                                     ->toArray()
+                             )
                              ->descriptions(
                                  collect($this->colors)
                                      ->map(
