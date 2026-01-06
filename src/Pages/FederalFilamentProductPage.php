@@ -345,6 +345,7 @@ class FederalFilamentProductPage extends Page implements HasForms
                     "amount"                 => $data["amount"],
                     "image"                  => $this->product["image"],
                     "images"                 => $this->product["images"],
+                    "files"                  => $this->files,
                     "image_all"              => $data["image_all"] ?? null,
                     "publish_social_network" => $data["publish_social_network"] ?? null,
                     "color"                  => $data["color"] ?? null,
