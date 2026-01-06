@@ -157,7 +157,7 @@
         function redirectAfterDelay() {
             setTimeout(() => {
                 window.location.href = "/admin/ffs-store";
-            }, 30000);
+            }, 5000);
         }
     </script>
 @endpush

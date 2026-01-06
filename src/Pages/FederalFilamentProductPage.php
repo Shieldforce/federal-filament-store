@@ -175,33 +175,6 @@ class FederalFilamentProductPage extends Page implements HasForms
                                      }
                                  ),
 
-                        /*Radio::make('color')
-                             ->label('Escolha a cor')
-                             ->required()
-                             ->options($this->colors)
-                             ->descriptions(
-                                 collect($this->colors)
-                                     ->map(
-                                         fn($name, $hex) => new HtmlString(
-                                             '<div style="
-                                            display:flex;
-                                            align-items:center;
-                                            gap:8px;
-                                        ">
-                                            <span style="
-                                                width:20px;
-                                                height:20px;
-                                                border-radius:4px;
-                                                background:'.$hex.';
-                                                border:1px solid #ccc;
-                                            "></span>
-                                        </div>'
-                                         )
-                                     )
-                                     ->toArray()
-                             )
-                             ->visible(fn() => count($this->colors) > 0),*/
-
                         Radio::make('color')
                              ->label('Escolha a cor')
                              ->required()
