@@ -208,7 +208,14 @@ class FederalFilamentProductPage extends Page implements HasForms
                              ->options(
                                  collect($this->colors)
                                      ->mapWithKeys(
-                                         fn($hex) => [$hex => ' ']
+                                         fn($hex) => [$hex => '
+                                         <div class="color-swatch" style="
+                                            width:24px;
+                                            height:24px;
+                                            border-radius:6px;
+                                            background:'.$hex.';
+                                            border:1px solid #ccc;
+                                        "></div>']
                                      )
                                      ->toArray()
                              )
