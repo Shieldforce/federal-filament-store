@@ -175,13 +175,10 @@ class FederalFilamentProductPage extends Page implements HasForms
                                      }
                                  ),
 
-                        Radio::make('color')
+                        /*Radio::make('color')
                              ->label('Escolha a cor')
                              ->required()
                              ->options($this->colors)
-                            ->formatStateUsing(function ($value) {
-                                return "dhsasdvb";
-                            })
                              ->descriptions(
                                  collect($this->colors)
                                      ->map(
@@ -203,7 +200,36 @@ class FederalFilamentProductPage extends Page implements HasForms
                                      )
                                      ->toArray()
                              )
-                             ->visible(fn() => count($this->colors) > 0),
+                             ->visible(fn() => count($this->colors) > 0),*/
+
+                        Select::make('color')
+                              ->label('Escolha a cor')
+                              ->required()
+                              ->options(
+                                  collect($this->colors)
+                                      ->mapWithKeys(
+                                          fn($hex, $name) => [
+                                              $hex => new HtmlString(
+                                                  '
+                                                        <div style="display:flex;align-items:center;gap:8px;">
+                                                            <span style="
+                                                                width:18px;
+                                                                height:18px;
+                                                                border-radius:4px;
+                                                                background:'.$hex.';
+                                                                border:1px solid #ccc;
+                                                            "></span>
+                                                            <span>'.$name.'</span>
+                                                        </div>
+                                                    '
+                                              )
+                                          ]
+                                      )
+                                      ->toArray()
+                              )
+                              ->allowHtml()
+                              ->searchable()
+                              ->visible(fn() => count($this->colors) > 0),
 
                         Toggle::make("image_all")
                               ->label("Usar a mesma imagem")
