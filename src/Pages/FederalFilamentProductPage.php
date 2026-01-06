@@ -179,6 +179,9 @@ class FederalFilamentProductPage extends Page implements HasForms
                              ->label('Escolha a cor')
                              ->required()
                              ->options($this->colors)
+                            ->formatStateUsing(function ($value) {
+                                return "dhsasdvb";
+                            })
                              ->descriptions(
                                  collect($this->colors)
                                      ->map(
