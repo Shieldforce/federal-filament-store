@@ -69,7 +69,7 @@
                                 </h3>
 
                                 <p class="text-sm text-gray-500">
-                                    {{ count($item['data_product']['images'] ?? []) }}
+                                    {{ count($item['data_product']['files'] ?? []) }}
                                     imagens cadastradas
                                 </p>
                             </div>
